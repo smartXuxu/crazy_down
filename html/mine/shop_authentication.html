@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>商家认证</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/mine/shop_authen.css"/>
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">商家认证</h1>
+    </header>
+    <div class="main">
+        <div class="name">
+          <span>店铺名称</span>
+            <input type="text" placeholder="请输入店铺名称"/>
+        </div>
+        <div class="tel">
+          <span>联系方式</span>
+            <input type="text" placeholder="请输入联系方式"/>
+        </div>
+        <div class="address">
+          <span>详细地址</span>
+            <input type="text" placeholder="请输入详细地址"/>
+        </div>
+        <div class="auth">
+            <span>上传营业执照</span>
+            <div class="z_file">
+                <input type="file" accept="image/*" id="file" value="" />
+            </div>
+        </div>
+        <div class="img"></div>
+        <button class="submit">提交审核</button>
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+
+        document.querySelector("#file").onchange=function () {
+            var file=document.querySelector("#file").files;
+            html5IMG(file,".img")
+        }
+
+        function html5IMG(file,ele){
+            /* var file1 = file[0].size;
+             console.log(file1);*/
+            var reader = new FileReader();
+            // reader.readAsDataURL(file); //判断上传的图片大小
+            /*var fileData = file[0].size;*/
+            /* var size = file[0].size;
+             //console.log(size);//注意，这里读到的是字节数
+             var isAllow = false;
+             if (!size) isAllow = false;
+             var maxSize = 2048;
+             maxSize = maxSize * 1024;   //转化为字节
+             isAllow = size <= maxSize;
+             if (!isAllow) {
+             alert("大小超过2 M，请重新上传");
+             return false;
+             }*/
+          reader.readAsDataURL(file[0]);
+            reader.onload = function (e) {
+                //reader.result
+                var pic = document.querySelector(ele);
+                var pic_add=reader.result;
+                // console.log(reader.result);
+                var html=`<img src="${pic_add}"/>`;
+                //console.log(html);
+                  //pic.appendChild=html;
+               pic.innerHTML=html;
+               // console.log(pic);
+               // pic.innerHTML(html);
+                //pic.style.backgroundImage = "url(" + reader.result + ")";
+            }
+        }
+        // 验证电话号码
+        var regu = "^1[0-9]{10}$";
+        var re = new RegExp(regu);
+        var tel=new RegExp('^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$')
+        var parm={};
+        $(".submit").click(function () {
+            var merchantName =$(".name>input").val().trim();
+            if(merchantName==''){
+                sweetAlert(
+                        "sorry",
+                        '请您输入店铺名字',
+                        'error'
+                )
+                return false;
+            }else{
+                parm.merchantName=merchantName;
+            }
+            var phone=$(".tel>input").val().trim();
+            if(re.test(phone)||tel.test(phone)){
+                parm.mobilePhone=phone;
+            }else{
+                sweetAlert(
+                        "sorry",
+                        "请您核实正确的联系方式",
+                        'error'
+                )
+                return false;
+            }
+            var address =$(".address>input").val().trim();
+            if(address==''){
+                sweetAlert(
+                        "sorry",
+                        '请您输入店铺地址',
+                        'error'
+                )
+                return false;
+            }else{
+                parm.addresse=address;
+            }
+
+        var base64License=$(".img>img").attr("src");
+            console.log(base64License);
+            if(base64License==''){
+                sweetAlert(
+                        "sorry",
+                        '请您上传营业执照',
+                        'error'
+                )
+                return false;
+            }else{
+                parm.base64License=base64License;
+            }
+            myAjax({url:'/merchant/addMerchant',data:parm,type:"post"}, function (data) {
+                console.log(data);
+                var data=JSON.parse(data)
+                if(data.code==200){
+                    $(this).text(data.data.msg);
+                }else{
+                    sweetAlert(
+                            "sorry",
+                            data.msg,
+                            'error'
+                    )
+                }
+            })
+        })
+    })
+</script>
+</html>

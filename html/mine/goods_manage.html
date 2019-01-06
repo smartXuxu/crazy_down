@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>商品管理</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/mine/goods_manage.css"/>
+</head>
+<body>
+<div id="loading">
+<img src="../../img/login.gif" alt=""/>
+<div>请等待，正在加载...</div>
+</div>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">商品管理</h1>
+    </header>
+    <div class="main">
+        <ul>
+           <!-- <li>
+                <a href="./edit_goods.html">
+                    <div class="time_auction clearfix">
+                        &lt;!&ndash;判断时间是否进入倒计时 显示样式不同
+                        或直接显示竞拍时间&ndash;&gt;
+                            <span>
+                                <em>竞拍时间</em>
+                                <i>今晚20:00</i>
+                            </span>
+                            <span>
+                                <em>现价</em>
+                                <i>1999元</i>
+                            </span>
+                            <span>
+                                <em>数量</em>
+                                <i>100</i>
+                            </span>
+                    </div>
+                    <div class="middle_li">
+                        <img src="../../img/focus-img1.png" alt="">
+                        <div class="center_text">
+                            <p>鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造
+                            </p>
+                            <div class="center_footer clearfix">
+                                <span>竞拍数量：0</span>
+                                <em class="f_right">编辑商品</em>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </li>-->
+        </ul>
+        <div class="footer">
+            <div class="add_goods" onclick="location.href='add_news_goods.html'">添加新品</div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="list">
+    {{if data.length==0}}
+    <div class="no_in">对不起，您暂时还没有发布商品</div>
+    {{else}}
+    {{each data as value i}}
+    <li>
+        <a href="./edit_goods.html?id={{value.goodsId}}">
+            <div class="time_auction clearfix">
+                <!--判断时间是否进入倒计时 显示样式不同
+                或直接显示竞拍时间-->
+                            <span>
+                                <em>竞拍时间</em>
+                                <i>{{time(value.startTime)}}</i>
+                            </span>
+                            <span>
+                                <em>现价</em>
+                                <i>{{value.nowPrice}}元</i>
+                            </span>
+                            <span>
+                                <em>数量</em>
+                                <i>{{value.number}}</i>
+                            </span>
+            </div>
+            <div class="middle_li">
+                <img src="{{value.images==null||value.images.length==0?'../../img/beat.png':value.images[0].imagePath}}" onerror="this.src='../../img/beat.png'" alt="">
+                <div class="center_text">
+                    <p>{{value.title}} {{value.introduce}}
+                    </p>
+                    <div class="center_footer clearfix">
+                        <span>竞拍数量：{{value.number}}</span>
+                        <em class="f_right">编辑商品</em>
+                    </div>
+                </div>
+
+            </div>
+        </a>
+    </li>
+    {{/each}}
+    {{/if}}
+</script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+        //ajax 发送完毕
+        $(document).on('ajaxStop', function () {
+            $("#loading").hide();
+        })
+        var cr_userId=localStorage.getItem("cr_userId");
+   myAjax({url:`/goods/findGoodsByUserId/${cr_userId}`}, function (data) {
+       var data=JSON.parse(data);
+       console.log(data);
+       if(data.code==200){
+           template.helper("time",function(date){
+               var time=new Date(date).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,20).replace(/\//g,"-");
+               return time;
+               /* return new Date(parseInt(date) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');*/
+           });
+                $(".main>ul").html(template("list",data));
+            }
+        })
+    })
+</script>
+</html>

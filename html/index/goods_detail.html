@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>商品详情</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/index/goods_detail.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+   </head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">商品详情</h1>
+        <em class="iconfont icon-kefu" onclick="location.href='./chat.html'"></em>
+    </header>
+    <div class="main">
+        <!--<div class="img-box">
+            <img src="../../img/index_show.png" alt=""/>
+        </div>
+        <div class="info">
+                <p>鲁美诺斯3152 F-35全球限量版军表 瑞士制造 </p>
+            <div class="time_down row">
+                <span>倒计时：<em>01:22:00</em></span>
+                <span>现价：<em>￥1999</em></span>
+                <span>数量：<em>100</em></span>
+            </div>
+            <div class="freight">
+                <span>运费：</span>
+                <em>￥5.00</em>
+            </div>
+            <div class="business_shop">
+                <span>店铺名称：</span>
+                <em>金瑞兰度旗舰店</em>
+            </div>
+            <div class="business_address">
+                <span>店铺地址：</span>
+                <em>郑州市金水区商都路与郑汴路交叉口</em>
+            </div>
+        </div>
+        <div class="business_detail">
+            <p>商品详情</p>
+            <div class="text_detail">
+                免费刻字，价格优惠免费刻字，价格优惠免费刻字，价格优惠免费刻字，价格优惠免费刻字，价格优惠免费刻字，价格优惠
+            </div>
+            <img src="../../img/focus-img1.png" alt=""/>
+            <img src="../../img/focus-img1.png" alt=""/>
+        </div>
+        <div class="right_now" onclick="location.href='./sure_order.html'">
+            立即竞拍
+        </div>
+    -->
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="detail">
+    <div class="img-box">
+        <img src="{{data.images[0].imagePath}}" onerror="this.src='../../img/beat.png'" alt=""/>
+    </div>
+    <div class="info">
+        <p>{{data.title}} </p>
+        <div class="time_down row">
+            <span>开始时间：<em>{{time(data.startTime)}}</em></span>
+            <span>现价：<em>￥{{data.nowPrice}}</em></span>
+            <span>数量：<em>{{data.number}}</em></span>
+        </div>
+        <div class="freight">
+            <span>运费：</span>
+            <em>￥{{data.empressPrice}}</em>
+        </div>
+        <div class="business_shop">
+            <span>店铺名称：</span>
+            <em>{{data.merchant==null||data.merchant.merchantName==null?"名称不详":data.merchant.merchantName}}</em>
+        </div>
+        <div class="business_address">
+            <span>店铺地址：</span>
+            <em>{{data.merchant==null||data.merchant.address==null?"地址不详":data.merchant.address}}</em>
+        </div>
+    </div>
+    <div class="business_detail">
+        <p>商品详情</p>
+        <div class="text_detail">
+            {{data.introduce}}
+           </div>
+        {{if data.goodsImages!==null&&data.goodsImages.length!==0}}
+        {{each data.goodsImages as img i}}
+        <img src="{{img.path}}"onerror="this.src='../../img/beat.png'" alt=""/>
+        {{/each}}
+        {{/if}}
+    </div>
+    <div class="right_now" onclick="location.href='./sure_order.html?price={{data.nowPrice}}&goodsId={{data.goodsId}}&empressPrice={{data.empressPrice}}'">
+        立即竞拍
+    </div>
+
+</script>
+<script>
+    $(function () {
+        var goodsId=location.href.split("=")[1];
+        console.log(goodsId);
+        myAjax({url:`/goods/findGoodsByGoodsId/${goodsId}`,async:false}, function (data) {
+           // console.log(data);
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+
+                template.helper("time",function(date){
+                    var time=new Date(date).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,20).replace(/\//g,"-");
+                    return time;
+                    /* return new Date(parseInt(date) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');*/
+                });
+                $(".main").html(template("detail",data));
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                )
+            }
+        })
+    })
+</script>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>我的钱包</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <style>
+        .main{
+            background-color: #fff;
+        }
+        .main>p{
+            color:#FFF;
+            background-color: #999999;
+            height: 3rem;   
+        }
+        .main>p>span{
+            display: block;
+            text-align: center;
+
+        }
+        .main>p>span:first-of-type{
+            padding-top: 0.5rem;
+            font-size: .6rem;
+        }
+        .main>p>em{
+            display: block;
+            text-align: center;
+            font-size: .5rem;
+        }
+        .mui-table-view{
+            margin-top: .3rem;
+        }
+        .mui-table-view-cell:after,.mui-table-view:after,.mui-table-view:before{
+            height: 0;
+
+        }
+        .mui-table-view-cell{
+            padding: 11px 55px;
+          /*  height: .8rem;
+            line-height: .8rem;*/
+            margin-bottom: .2rem;
+
+        }
+        .mui-navigate-right{
+            margin: 0;
+            padding: 0;
+        }
+        .mui-table-view-cell>a:not(.mui-btn){
+            border:1px solid #eee;
+            font-size: .3rem;
+            color:#666;
+            /*height: .8rem;
+            line-height: .8rem;*/
+            box-shadow: 0 1px 0 1px rgba(0,0,0,.1);
+            border-radius: 10px;
+        }
+        .mui-table-view-cell>a>em{
+            margin-right: .3rem;
+            font-size: .4rem;
+        }
+        .icon-qiandai{
+            color:#1aaceb;
+        }
+        .icon-qianbao1{
+            color:#e07487;
+        }
+        .icon-dingdan1{
+         color:#ffb721;
+        }
+    </style>
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">我的钱包</h1>
+    </header>
+    <div class="main">
+        <p>
+            <span class="iconfont icon-tubiao-1"></span>
+            <span>当前金额</span>
+            <em>￥48.20</em>
+        </p>
+        <ul class="mui-table-view mine_center">
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right my_save" href="./recharge.html">
+                    <em class="iconfont icon-qiandai"></em>
+                   充值
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right my_save" href="./withdraw.html">
+                    <em class="iconfont icon-qianbao1"></em>
+                    提现
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right my_save" href="./my_pause_detail.html">
+                    <em class="iconfont icon-dingdan1"></em>
+                    明细
+                </a>
+            </li>
+            </ul>
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+    })
+</script
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>商家订单</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/mine/mine_order.css"/>
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">商家订单</h1>
+    </header>
+    <div class="main">
+        <nav>
+            <ul>
+                <li class="active">待发货</li>
+                <li>待收货</li>
+                <li>上门取货</li>
+                <li>退款售后</li>
+            </ul>
+        </nav>
+        <!--代发货-->
+        <div class="send_goods business_send_goods">
+            <ul>
+                <li>
+                    <a href="business_see_order_detail.html">
+                        <p class="shop_top clearfix">
+                            <!--买家姓名-->
+                            <span>Luminox </span>
+                        </p>
+                        <div class="shop_content">
+                            <img src="../../img/focus-img1.png" alt=""/>
+                            <div class="shop_middle">
+                                <div class="text">
+                                    鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                                    鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                                </div>
+                                <p class="clearfix">
+                                    <em>￥3000元</em>
+                                    <del class="f_right">X1</del>
+                                </p>
+                            </div>
+                            <div class="shop_info clearfix">
+                                <span class="f_right">共一件商品  合计：￥3000</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="shop_replay">
+                    <button class="sure_order color-red">确认发货</button>
+                </div>
+                </li>
+            </ul>
+        </div>
+        <!--待收货-->
+        <div class="receive_goods">
+            <ul>
+                <li>
+                    <a href="business_see_order_detail.html">
+                        <p class="shop_top clearfix">
+                            <span>Luminox </span>
+                        </p>
+                        <div class="shop_content">
+                            <img src="../../img/focus-img1.png" alt=""/>
+                            <div class="shop_middle">
+                                <div class="text">
+                                    鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                                    鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                                </div>
+                                <p class="clearfix">
+                                    <em>￥3000元</em>
+                                    <del class="f_right">X1</del>
+                                </p>
+                            </div>
+                            <div class="shop_info clearfix">
+                                <span class="f_right">共一件商品  合计：￥3000</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="shop_replay">
+                        <button class="see_logistics border-gray">查看物流</button>
+                        <button class="sure_order color-red">等待收货</button>
+                    </div>
+                </li>
+                <li>
+                    <a href="business_see_order_detail.html">
+                        <p class="shop_top clearfix">
+                            <span>Luminox </span>
+                        </p>
+                        <div class="shop_content">
+                            <img src="../../img/focus-img1.png" alt=""/>
+                            <div class="shop_middle">
+                                <div class="text">
+                                    鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                                    鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                                </div>
+                                <p class="clearfix">
+                                    <em>￥3000元</em>
+                                    <del class="f_right">X1</del>
+                                </p>
+                            </div>
+                            <div class="shop_info clearfix">
+                                <span class="f_right">共一件商品  合计：￥3000</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="shop_replay">
+                        <button class="see_logistics border-gray">查看物流</button>
+                        <button class="sure_order color-red">买家已收货</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--上门取货-->
+        <div class="visit_goods business_visit_goods">
+            <ul>
+                <li>
+                    <a href="business_see_order_detail.html">
+                        <p class="shop_top clearfix">
+                            <span>Luminox </span>
+                        </p>
+                        <div class="shop_content">
+                            <img src="../../img/focus-img1.png" alt=""/>
+                            <div class="shop_middle">
+                                <div class="text">
+                                    鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                                    鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                                </div>
+                                <p class="clearfix">
+                                    <em>￥3000元</em>
+                                    <del class="f_right">X1</del>
+                                </p>
+                            </div>
+                            <div class="shop_info clearfix">
+                                <span class="f_right">共一件商品  合计：￥3000</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="shop_replay">
+                        <button class=" color-red">确认取货</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--退款售后-->
+        <div class="quit_goods business_quit_goods">
+            <ul>
+                <li>
+                    <a href="business_see_order_detail.html">
+                        <p class="shop_top clearfix">
+                            <span>Luminox </span>
+                            <i class="f_right">申请退换</i>
+                        </p>
+                        <div class="shop_content">
+                            <img src="../../img/focus-img1.png" alt=""/>
+                            <div class="shop_middle">
+                                <div class="text">
+                                    鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                                    鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                                </div>
+                                <p class="clearfix">
+                                    <em>￥3000元</em>
+                                    <del class="f_right">X1</del>
+                                </p>
+                            </div>
+                            <div class="shop_info clearfix">
+                                <span class="f_right">共一件商品  合计：￥3000</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="shop_replay">
+                        <button class="color-red">同意退换</button>
+                        <button class="color-red">拒绝退换</button>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/zepto/touch.js"></script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+        //tab 栏的切换
+        $("nav>ul>li").click(function () {
+            $(this).addClass("active").siblings().removeClass("active");
+            var index=$(this).index();
+            console.log(index);
+            if(index==0){
+                //代发货
+                $(".main>div").eq(index).show().siblings("div").hide();
+            }else if(index==1){
+                //待收货
+                $(".main>div").eq(index).show().siblings("div").hide();
+            }else if(index==2){
+                //上门取货
+                $(".main>div").eq(index).show().siblings("div").hide();
+            }else{
+                //退款
+                $(".main>div").eq(index).show().siblings("div").hide();
+            }
+        })
+        //先默认渲染 代发货
+
+
+    })
+
+</script>
+</html>

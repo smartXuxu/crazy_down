@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>上门取货</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <style>
+        .main>div{
+            height: .88rem;
+            line-height: .88rem;
+            font-size: .3rem;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 0 .3rem;
+        }
+        .main>div>span{
+            width: 30%;
+
+        }
+        .main>div>input{
+            width: 65%;
+            text-align: right;
+            bottom: 0;
+            padding: 0;
+            left: 0;
+            height: .8rem;
+            line-height: .8rem;
+            border:none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">上门取货</h1>
+        <em class="save">确定</em>
+    </header>
+    <div class="main">
+        <div class="take_people">
+            <span>取货人</span>
+            <input type="text" placeholder="请输入取货人的姓名"/>
+        </div>
+        <div class="link_people">
+            <span>联系方式</span>
+            <input type="text" placeholder="请输入联系方式"/>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+
+        //上门取货 不发送请求 只是 设置取货人 和联系电话 保存本地 后退两个页面即可
+        $(".save").click(function () {
+            //localStorage.setItem("address",$(this).data("address"));
+            //localStorage.setItem("buy_status",$(this).data("status"));
+            //localStorage.setItem("receiver",$(this).data("receiver"));
+            //localStorage.setItem("receiverphone",$(this).data("receiverphone"));
+            var receiver=$(".take_people>input").val().trim();
+            if(receiver.length==0){
+                sweetAlert(
+                        "sorry",
+                        "请您填写取货人姓名",
+                        "error"
+                )
+                return false
+            }
+            localStorage.setItem("receiver",receiver);
+            var re = new RegExp("^1[0-9]{10}$");
+            var tel=new RegExp('^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$');
+            var receiverPhone=$(".link_people>input").val().trim();
+            if(re.test(receiverPhone)||tel.test(receiverPhone)){
+                localStorage.setItem("receiverphone",receiverPhone)
+            }else{
+                sweetAlert(
+                        "sorry",
+                        "请您核实取货人电话",
+                        "error"
+                )
+                return false;
+            }
+            localStorage.setItem("buy_status","self_pickUp");
+            sweetAlert(
+                    "恭喜",
+                    "设置取货成功",
+                    "success"
+            ).then(function () {
+                        history.go(-2);
+                    })
+        })
+
+
+
+    })
+</script>
+</html>

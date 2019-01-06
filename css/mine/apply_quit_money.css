@@ -1,0 +1,144 @@
+.footer {
+  font-size: .3rem;
+  text-align: center;
+  color: #ffffff;
+  height: 1rem;
+  background-color: #ff6600;
+  width: 100%;
+  line-height: 1rem;
+}
+.main > .info {
+  position: relative;
+  background-color: #eeeeee;
+  padding: 0.3rem 0;
+}
+.main > .info > img {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.3rem;
+  vertical-align: middle;
+}
+.main > .info > .info_middle {
+  position: absolute;
+  top: 20%;
+  left: 2rem;
+  right: 3%;
+}
+.main > .info > .info_middle > div {
+  font-size: .3rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+.main > .info > .info_middle > p {
+  margin-top: .2rem;
+}
+.main > .info > .info_middle > p > em {
+  font-size: .32rem;
+  color: #ff6600;
+}
+.main > .total,
+.main > .quit,
+.main .status {
+  background-color: #fff;
+  height: .88rem;
+  line-height: .88rem;
+  font-size: 0.3rem;
+  color: #666;
+  padding: 0 0.3rem;
+}
+.main > .total.total,
+.main > .quit.total,
+.main .status.total {
+  border-bottom: 1px solid #eeeeee;
+}
+.main > .total.status,
+.main > .quit.status,
+.main .status.status {
+  height: 1rem;
+  border-bottom: .2rem solid #eeeeee;
+}
+.main > .total.status > em,
+.main > .quit.status > em,
+.main .status.status > em {
+  color: #999;
+}
+.main > .total > em,
+.main > .quit > em,
+.main .status > em {
+  color: #ff6600;
+}
+.main > .total > input,
+.main > .quit > input,
+.main .status > input {
+  width: 75%;
+  border: none;
+  padding: 0;
+  height: .6rem;
+}
+.main > .proof {
+  border-top: 0.2rem solid #eeeeee;
+  background-color: #fff;
+}
+.main > .proof > p {
+  height: .6rem;
+  line-height: .6rem;
+  padding-left: 0.3rem;
+}
+.main > .footer {
+  font-size: .3rem;
+  text-align: center;
+  color: #ffffff;
+  height: 1rem;
+  background-color: #ff6600;
+  width: 100%;
+  line-height: 1rem;
+  position: fixed;
+  bottom: 0;
+}
+/*#mask{
+  display: block;
+}*/
+#show {
+  display: none;
+  position: fixed;
+  z-index: 5;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  background-color: #fff;
+}
+#show > h3 {
+  height: .88rem;
+  font-size: .3rem;
+  line-height: .88rem;
+  text-align: center;
+}
+#show > ul {
+  height: 5rem;
+  padding: 0 .5rem;
+}
+#show > ul > li {
+  height: 1rem;
+  line-height: 1rem;
+  font-size: .28rem;
+}
+#show > ul > li.active > em {
+  color: #ff6600;
+}
+#show > ul > li > em {
+  font-size: .4rem;
+  color: #999;
+}
+#show > .close {
+  font-size: .3rem;
+  text-align: center;
+  color: #ffffff;
+  height: 1rem;
+  background-color: #ff6600;
+  width: 100%;
+  line-height: 1rem;
+  border-radius: 0;
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>商品展示页面</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/index/index.css"/>
+    <link rel="stylesheet" href="../../css/categray/cat_show.css"/>
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">商品展示</h1>
+    </header>
+    <div class="main">
+        <div class="swiper">
+            <div class="swiper-slide">
+                <img src="../../img/index_show.png" alt=""/>
+                <div class="text">
+                    鲁美诺斯3152 F-35全球限量版军表 瑞士制造瑞士制造瑞士制造
+                </div>
+            </div>
+        </div>
+        <!-- 竞拍区域-->
+        <div class="auction_area">
+            <ul class="auction_top clearfix">
+                <li>
+                    <!--这个显示的竞拍时间or倒计时-->
+                    <span>竞拍时间</span>
+                    <em>09.12 09:00</em>
+                </li>
+                <li>
+                    <span>当前价格</span>
+                    <em>1998元</em>
+                </li>
+                <li>
+                    <span>剩余数量</span>
+                    <em>98</em>
+                </li>
+            </ul>
+            <div class="auction_middle">
+                <span class="beat"></span>
+                <p>竞拍还未开始，请敬请期待！</p>
+            </div>
+            <a class="replay" href="../index/goods_detail.html">
+            商品介绍
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+
+    })
+</script>
+</html>

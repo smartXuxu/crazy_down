@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>选择取货方式</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/mine/see_order_detail.css"/>
+    <style>
+        .mui-navigate-right{
+            font-size: .3rem;
+        }
+        .mui-table-view-cell{
+            border-bottom: 1px solid #eeeeee;
+        }
+        .mui-table-view-cell:after{
+            height: 0;
+        }
+        .mui-navigate-right:after, .mui-push-right:after{
+            font-size: .5rem;
+            color:#333;
+        }
+    </style>
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">取货方式</h1>
+    </header>
+    <div class="main">
+        <ul class="mui-table-view mine_center">
+        <li class="mui-table-view-cell">
+            <a class="mui-navigate-right my_save" href="./Business_takeaway.html">
+                商家发货
+            </a>
+        </li>
+            <li class="mui-table-view-cell">
+            <a class="mui-navigate-right my_save" href="./visit_takeaway.html">
+                上门取货
+            </a>
+        </li>
+        </ul>
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+    })
+</script>
+</html>

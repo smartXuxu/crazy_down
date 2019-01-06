@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>确认订单</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/mine/see_order_detail.css"/>
+</head>
+<body>
+<div class="layer sure_order">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">确定订单</h1>
+    </header>
+    <div class="main">
+        <div class="take_style clearfix">
+            <span>取货方式</span>
+            <div class="f_right" onclick="location.href='./take_style.html'">
+                <i class="mui-icon mui-icon-arrowright f_right"></i>
+                <input type="text" class="f_right"  placeholder="请点击选择" disabled/>
+               </div>
+        </div>
+        <!--判断取货方式 -->
+        <!--上门取货-->
+        <!--<div class="pick_people clearfix">
+            <span>取货人：魏雨</span>
+            <em class="f_right">  17685679322</em>
+        </div>-->
+        <!--卖家发货-->
+         <div class="order_people clearfix">
+            <!-- <span>取货人：魏雨</span>
+             <em class="f_right">  17685679322</em>-->
+            <!-- <div class="order_people_top">
+                 <span>收货人：魏雨</span>
+                 <em class="f_right">17685679322</em>
+             </div>
+            <div class="order_people_footer ">
+                <em class="iconfont icon-zuobiao1"></em>收货地址：河南省郑州市中原区梧桐街道祝福红城南区
+            </div>-->
+         </div>
+        <div class="info">
+           <!-- <img src="../../img/focus-img1.png" alt=""/>
+            <div class="info_middle">
+                <div>鲁美诺斯3152 F-35全球限量版 军表 瑞士制造鲁美诺斯3152 F-35全球限量版 军表 瑞士制造
+                </div>
+                <p class="clearfix">
+                    <em>￥2169</em>
+                    <i class="f_right">X1</i>
+                </p>
+            </div>-->
+        </div>
+        <div class="base_info">
+            <p class="clearfix">
+                <span>购买数量</span>
+                <i class="f_right">总计1件</i>
+            </p>
+            <p class="freight">
+                <span>freight</span>
+            </p>
+
+            <p class="clearfix">
+                <span class="order_id">订单号：02154451203</span>
+            </p>
+        </div>
+        <div class="pay_style">
+            <p>选择支付方式</p>
+            <div class="clearfix weChatPay" data-type="0">
+               <span><i class="iconfont icon-weixinzhifu" ></i>微信支付</span>
+                <em class="f_right active iconfont  icon-duihao"></em>
+            </div>
+            <div class="clearfix airPay" data-type="1">
+               <span ><i class="iconfont icon-changyonglogo30"></i>支付宝支付</span>
+                <em class="f_right  iconfont  icon-duihao"></em>
+            </div>
+        </div>
+        <div class="totalMoney">
+            <span>合计：<i>￥2169</i></span>
+            <button>提交订单</button>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="order_detail">
+    <img src="{{data.goods.images[0].imagePath}}" onerror="this.src='../../img/beat.png'" alt=""/>
+    <div class="info_middle">
+        <div>{{data.goods.title}} {{data.goods.introduce}}
+        </div>
+        <p class="clearfix">
+            <em>￥{{data.goods.nowPrice}}</em>
+            <i class="f_right">X1</i>
+        </p>
+    </div>
+</script>
+<script type="text/html" id="order_people">
+    <span>取货人：{{receiver}}</span>
+    <em class="f_right">  {{receiverphone}}</em>
+</script>
+<script type="text/html" id="pick_people">
+    <div class="order_people_top">
+        <span>收货人：{{receiver}}</span>
+        <em class="f_right">{{receiverphone}}</em>
+    </div>
+    <div class="order_people_footer ">
+        <em class="iconfont icon-zuobiao1"></em>收货地址：{address}}
+    </div>
+</script>
+<script>
+    $(function () {
+        $(".main").on("click",'.pay_style>div', function () {
+            $(this).children("em").addClass("active");
+            $(this).siblings("div").children("em").removeClass("active");
+            let type=$(this).data("type");
+            console.log(type);
+        });
+       var goodsId= getRequest().goodsId;
+        var goodsPrice=getRequest().price-0;
+        var empressPrice=getRequest().empressPrice-0
+        var price=goodsPrice+empressPrice;
+        myAjax({url:"/order/pushGoodsOrder",data:{'goods.goodsId':goodsId,price:price},type:"post",async:false}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+            $(".info").html(template("order_detail",data));
+                $(".info_middle>p>em").text(`￥${goodsPrice}`)
+                $(".order_id").text(`订单号：${data.data.goodsOrderId}`);
+                $(".freight").text(`运   费： ${empressPrice}`);
+                $(".totalMoney>span>i").text(`￥${price}`)
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        'error'
+                )
+            }
+        })
+        var json_data={};
+        /*
+        * :
+         backGoods
+         :
+         null
+         createTime
+         :
+         "2019-01-05T10:16:49.217+0000"
+         goods
+       */
+        if(localStorage.getItem("buy_status")){
+            if(localStorage.getItem("buy_status")=='self_pickUp'){
+
+                $(".take_style>.f_right>input").val("上门取货");
+                json_data.receiver=localStorage.getItem("receiver");
+                json_data.receiverphone=localStorage.getItem("receiverphone");
+                $(".order_people").html(template("order_people",json_data))
+            }else{
+                $(".take_style>.f_right>input").val("商家发货");
+                json_data.receiver=localStorage.getItem("receiver");
+                json_data.receiverphone=localStorage.getItem("receiverphone");
+                json_data.address=localStorage.getItem("address");
+                $(".order_people").html(template("pick_people",json_data))
+            }
+        }
+
+    })
+</script>
+</html>

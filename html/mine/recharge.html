@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>充值</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css" />
+    <link rel="stylesheet" href="../../css/common/base.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css" />
+    <link rel="stylesheet" href="../../css/mine/recharge.css" />
+    <link rel="stylesheet" href="../../css/header.css" />
+    <!--<link rel="stylesheet" href="../../css/all.css" />-->
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">充值</h1>
+    </header>
+    <div class="middle main">
+        <div class="name active" data-type="0">
+            <i class="iconfont icon-weixin wechat"></i>
+            <span>微信充值</span>
+            <em class="iconfont icon-duihao icon-right"></em>
+        </div>
+        <div class="name-two" data-type="1">
+            <i class="iconfont icon-changyonglogo30 airpay"></i>
+            <span>支付宝充值</span>
+            <em class="iconfont icon-duihao icon-right"></em>
+        </div>
+        <div>
+            <p class="sum">充值金额</p>
+            <div>
+                <span class="sums">￥</span>
+                <input type="number" placeholder="" class="resetUpwd-input" />
+            </div>
+        </div>
+    </div>
+
+   <button class="submit">确定</button>
+
+</div>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script>
+    $(function () {
+        $(".name").click(function () {
+            $(this).addClass("active").children("em").show();
+            $(this).siblings(".name-two").removeClass("active").children("em").hide();
+        })
+        $(".name-two").click(function () {
+            $(this).addClass("active").children("em").show();
+            $(this).siblings(".name").removeClass("active").children("em").hide();
+        })
+        $(".submit").click(function () {
+            console.log($(".active").data("type"));
+        })
+
+    })
+</script>
+</body>
+</html>

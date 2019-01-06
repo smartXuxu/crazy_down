@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/swiper/swiper.min.css"/>
+
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/index/index.css"/>
+</head>
+<body>
+<div class="layer">
+    <header>
+        <img src="../../img/focus-img1.png" alt=""/>
+        <input type="text" placeholder="搜店铺、搜商品"/>
+        <span class="quit">退出 <i class="iconfont icon-xialasanjiao"></i></span>
+    </header>
+    <div class="main">
+        <!--swiper  轮播图-->
+        <div class="swiper">
+            <div class="swiper-container" id="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="../../img/index_show.png" alt=""/>
+                        <div class="text">
+                            <p>鲁美诺斯3152 F-35全球限量版军表 瑞士制造 </p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../img/index_show.png" alt=""/>
+                        <div class="text">
+                            <p>鲁美诺斯3152 F-35全球限量版军表 瑞士制造 </p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../img/index_show.png" alt=""/>
+                        <div class="text">
+                        </div>
+                    </div>
+                </div>
+                <!-- 如果需要分页器 -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/swiper/swiper.min.js"></script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+        $('#footer').load('../common/footer.html');
+        /*swiper 轮播*/
+        var mySwiper = new Swiper ('.swiper-container', {
+            direction: 'horizontal', // 垂直切换选项
+            loop: true, // 循环模式选项
+            autoplay:true,
+            // 如果需要分页器
+            pagination: {
+                el: '.swiper-pagination',
+            },
+        })
+    })
+</script>
+</html>

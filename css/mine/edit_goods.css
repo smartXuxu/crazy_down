@@ -1,0 +1,241 @@
+html {
+  background-color: #eeeeee;
+}
+.main {
+  background-color: #fff;
+}
+.main > .img_show {
+  padding: 0;
+  height: 3.3rem;
+  width: 100%;
+  background-color: #eeeeee;
+  position: relative;
+  overflow: hidden;
+}
+.main > .img_show > img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+.main > .img_show > em,
+.main > .img_show > input {
+  height: .8rem;
+  line-height: .8rem;
+  width: .8rem;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 1;
+  right: 3%;
+  bottom: 5%;
+  padding-left: 2%;
+  font-size: .5rem;
+  color: #fff;
+  background-color: #fba840;
+}
+.main > .img_show > input {
+  opacity: 0;
+  z-index: 3;
+}
+.main > div {
+  padding: 0 0.3rem;
+  position: relative;
+  font-size: .3rem;
+  height: .8rem;
+}
+.main > div.detail {
+  line-height: .8rem;
+}
+.main #datePlugin {
+  height: 0;
+}
+.main > .title {
+  border-bottom: .2rem solid #eeeeee;
+  height: 1.5rem;
+}
+.main > .title > span {
+  margin-top: .5rem;
+  width: 25%;
+  display: inline-block;
+  vertical-align: middle;
+}
+.main > .title > input {
+  width: 70%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  height: 1rem;
+  margin-top: .1rem;
+  vertical-align: top;
+}
+.main > .categray {
+  height: 1rem;
+  line-height: .8rem;
+  border-bottom: .2rem solid #eeeeee;
+}
+.main > .lie > input {
+  /*  background-color: pink;*/
+  width: 67%;
+  text-align: right;
+}
+.main > .price,
+.main > .freight,
+.main > .number,
+.main > .down_price {
+  position: relative;
+  line-height: .8rem;
+}
+.main > .price > span,
+.main > .freight > span,
+.main > .number > span,
+.main > .down_price > span {
+  width: 30%;
+}
+.main > .price > input,
+.main > .freight > input,
+.main > .number > input,
+.main > .down_price > input {
+  width: 68%;
+  text-align: right;
+  padding: 0;
+  margin: 0;
+  height: .5rem;
+  line-height: .5rem;
+  padding-right: .5rem;
+}
+.main > .price:after,
+.main > .freight:after,
+.main > .number:after,
+.main > .down_price:after {
+  position: absolute;
+  right: 3%;
+  content: attr(data-content);
+  top: 3%;
+  width: .6rem;
+  height: .6rem;
+}
+.main > .down_price {
+  /* margin-bottom: 1rem;*/
+}
+.main > .down_price span {
+  width: 35%;
+}
+.main > .down_price > input {
+  width: 63%;
+}
+.main .delete {
+  width: 100%;
+  height: .8rem;
+  position: fixed;
+  bottom: 0;
+  background-color: #eeeeee;
+}
+.main .delete > .delete_goods {
+  position: fixed;
+  height: .6rem;
+  line-height: .6rem;
+  bottom: 1%;
+  width: 80%;
+  left: 10%;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  font-size: .3rem;
+  background-color: #ff6600;
+  color: #fff;
+  text-align: center;
+}
+.main > .goods_detail_show {
+  height: auto;
+}
+.main > .goods_detail_show > textarea {
+  border: none;
+  height: 1rem;
+  padding: .3rem;
+  font-size: .24rem;
+}
+.main > .goods_detail_show > img {
+  height: 3rem;
+  width: 100%;
+}
+.main > .z_photo {
+  height: auto;
+}
+/*����*/
+#show {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  width: 70%;
+  left: 50%;
+  top: 50%;
+  height: auto;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -50%);
+}
+#show > ul {
+  margin: .3rem 0;
+  width: 100%;
+  padding: 0 .5rem;
+}
+#show > ul > li {
+  height: .6rem;
+  color: #666;
+  line-height: .6rem;
+}
+#show > ul > li.active em {
+  color: #ff6600;
+}
+#show > ul > li > em {
+  font-size: .4rem;
+  margin-right: .5rem;
+}
+#show > .replay {
+  height: .8rem;
+  line-height: .8rem;
+}
+#show > .replay > button {
+  text-align: center;
+  height: .8rem;
+  line-height: .8rem;
+  width: 48%;
+  font-size: 0.3rem;
+}
+#show > .replay > button.sure {
+  border-left: 1px solid #eeeeee;
+  color: #007aff;
+}
+/*�����Ʒ*/
+.layer > .add_news > .img_show > em,
+.layer > .add_news > .img_show > input {
+  left: 50%;
+  bottom: 30%;
+  transform: translate(-50%, -50%);
+}
+.layer > .add_news > .img_show > del {
+  position: absolute;
+  z-index: 1;
+  right: 39%;
+  bottom: 25%;
+  color: #999;
+  font-size: .24rem;
+}
+.layer > .add_news > .title > input {
+  width: 70%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  height: 1rem;
+  margin-top: .1rem;
+  vertical-align: top;
+}
+.layer > .add_news .categray > em {
+  color: #666;
+}

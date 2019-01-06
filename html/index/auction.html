@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>竞拍</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/index/auction.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">竞拍</h1>
+    </header>
+    <div class="main">
+        <ul class="flex">
+
+           <!-- <li>
+                <div class="img_box">
+                    <img src="../../img/focus-img1.png" alt=""/>
+                    <span>今天 10；00开始</span>
+                </div>
+                <div class="box_content">
+                   <p>瑞士原装正行货军表 特种Luminox防瑞士原装正行货军表 特种Luminox防瑞士原装正行货军表 特种Luminox防水表 ... </p>
+                    <div class="box_footer">
+                        当前价：<span>233</span>
+                    </div>
+                </div>
+
+            </li>
+            <li>
+                <div class="img_box">
+                    <img src="../../img/focus-img1.png" alt=""/>
+                    <span>今天 10；00开始</span>
+                </div>
+                <div class="box_content">
+                   <p>瑞士原装正行货军表 特种Luminox防瑞士原装正行货军表 特种Luminox防瑞士原装正行货军表 特种Luminox防水表 ... </p>
+                    <div class="box_footer">
+                        当前价：<span>233</span>
+                    </div>
+                </div>
+
+            </li>-->
+        </ul>
+    </div>
+</div>
+</body>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template-web.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<!--<script type="text/html" id="auction">
+    {{if data=''||data.length==0||data==null}}
+    <div class="no_in">对不起，暂时没有合适的竞拍商品推荐</div>
+    {{else}}
+    {{each data as value i}}
+    <li onclick="location.href='../catgray/cat_show.html?id={{value.goodsId}}'">
+        <div class="img_box">
+            <img src="../../img/beat.png" alt=""/>
+            &lt;!&ndash; <img src="{{value.images==null?../../img/beat.png:value.images[0].imagePath}}" alt="" onerror="this.src='../../img/beat.png'"/>&ndash;&gt;
+            <span>{{time(value.startTime)}}开始</span>
+        </div>
+        <div class="box_content">
+            <p>瑞士原装正行货军表 特种Luminox防瑞士原装正行货军表 特种Luminox防瑞士原装正行货军表 特种Luminox防水表 ... </p>
+            <div class="box_footer">
+                当前价：<span>233</span>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+    {{/if}}
+</script>-->
+<script type="text/html" id="auction">
+    {{if data.length==0}}
+    <div class="no_in">对不起，暂时没有合适的竞拍商品推荐</div>
+    {{else}}
+{{each data as value i}}
+    <li onclick="location.href='../catgray/cat_show.html?id={{value.goodsId}}'">
+        <div class="img_box">
+            <img src="{{value.images==null?'../../img/beat.png':value.images[0].imagePath}}" alt="" onerror="this.src='../../img/beat.png'"/>
+            <span>{{time(value.startTime)}}开始</span>
+        </div>
+        <div class="box_content">
+            <p>{{value.title}}{{value.introduce}} </p>
+            <div class="box_footer">
+                当前价：<span>{{value.originalPrice}}</span>
+            </div>
+        </div>
+    </li>
+{{/each}}
+    {{/if}}
+</script>
+<script>
+    $(function () {
+        var keyWord=decodeURI(location.href.split("=")[1]);
+        console.log(keyWord);
+        myAjax({url:'/goods/findByKey/'+keyWord,async:false}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                template.helper("time", function (time) {
+                    return timea=new Date(time).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,20).replace(/\//g,"-");
+                })
+                $(".main>ul").html(template("auction",data));
+            }
+        })
+    })
+</script>
+</html>

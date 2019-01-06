@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>商家发货</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/index/business_takeaway.css"/>
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">商家发货</h1>
+        <em>确定</em>
+    </header>
+    <div class="main">
+       <!-- <ul>
+            <li>
+                <div data-id="1" class="li_top">
+                    <p class="clearfix">
+                        <span>收货人：魏雨</span>
+                        <em>176****8322</em>
+                    </p>
+                    <div class="address">
+                        取货地址：河南省郑州市中原区梧桐街道祝福红城南区
+                    </div>
+                </div>
+                <div class="replay">
+                    <span class="active">
+                        <em class="iconfont  icon-danxuankuangxuanzhong"></em>
+                        <i>设为默认地址</i>
+                    </span>
+                    <button data-id="1" class="edit">详情</button>
+                    <button data-id="1" class="delete">删除</button>
+                </div>
+            </li>
+            <li>
+                <div data-id="1" class="li_top">
+                    <p class="clearfix">
+                        <span>收货人：魏雨</span>
+                        <em>176****8322</em>
+                    </p>
+                    <div class="address">
+                        取货地址：河南省郑州市中原区梧桐街道祝福红城南区
+                    </div>
+                </div>
+                <div class="replay">
+                    <span>
+                        <em class="iconfont icon-danxuankuangxuanzhong"></em>
+                        <i>设为默认地址</i>
+                    </span>
+                    <button data-id="1" class="edit" onclick="location.href='add_new_address.html'">详情</button>
+                    <button data-id="1" class="delete">删除</button>
+                </div>
+            </li>
+            <li>
+                <div data-id="1" class="li_top">
+                    <p class="clearfix">
+                        <span>收货人：魏雨</span>
+                        <em>176****8322</em>
+                    </p>
+                    <div class="address">
+                        取货地址：河南省郑州市中原区梧桐街道祝福红城南区
+                    </div>
+                </div>
+                <div class="replay">
+                    <span>
+                        <em class="iconfont icon-danxuankuangxuanzhong"></em>
+                        <i>设为默认地址</i>
+                    </span>
+                    <button data-id="1" class="edit">编辑</button>
+                    <button data-id="1" class="delete">删除</button>
+                </div>
+            </li>
+        </ul>
+        <div class="add_new" onclick="location.href='add_new_address.html'">
+            添加新地址
+        </div>-->
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="list">
+    {{if data.length==0||data==null}}
+    <div class="no_in">对不起，您还未设置收货地址喔</div>
+    {{else}}
+    <ul>
+        {{each data as value i}}
+        <li>
+            <div data-status="business" data-address="{{value.expressAddress}}" data-receiver="{{value.receiver}}" data-receiverphone="{{value.receiverPhone}}" class="li_top">
+                <p class="clearfix">
+                    <span>收货人：{{value.receiver}}</span>
+                    <em>{{sub(value.receiverPhone,0,3)}}****{{sub(value.receiverPhone,7,11)}}</em>
+                </p>
+                <div class="address">
+                    取货地址：{{value.expressAddress}}
+                </div>
+            </div>
+            <div class="replay">
+                    <!--<span>
+                        <em class="iconfont icon-danxuankuangxuanzhong"></em>
+                        <i>设为默认地址</i>
+                    </span>-->
+                <button data-id="{{value.addressId}}" class="edit" onclick="location.href='./see_address_detail.html?id={{value.addressId}}'">查看详情</button>
+                <button data-id="{{value.addressId}}" onclick="delete_address('{{value.addressId}}',this)" class="delete">删除</button>
+            </div>
+        </li>
+        {{/each}}
+
+    </ul>
+    {{/if}}
+    <div class="add_new" onclick="location.href='add_new_address.html'">
+        添加新地址
+    </div>
+</script>
+<script>
+    function delete_address(id,e){
+        myAjax({url:`/address/deleteAddress/${id}`,type:"delete"}, function (data) {
+            console.log(data);
+            var data=JSON.parse(data);
+            if(data.code==200){
+                $(e).text("已删除");
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                )
+            }
+
+        })
+    }
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+   /* $(".main").on("click",".icon-danxuankuangxuanzhong", function () {
+            $(this).addClass("active").closest("li").children(".replay").children("span").children("em").removeClass(".active");*/
+        /*$(".main").on("click","ul>li", function ()
+        {
+            $(this).children(".replay").children("span").addClass("active");
+            $(this).siblings("li").children(".replay").children("span").removeClass("active");
+     });*/
+        var userId=localStorage.getItem("cr_userId");
+        myAjax({url:`/address/getAllAddressByUserId/${userId}`,async:false}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                template.helper("sub", function (a,b,c) {
+                   return a.substr(b,c)
+                });
+                $(".main").html(template("list",data));
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                )
+            }
+
+        })
+
+        $(".main").on("click",".li_top", function () {
+            /*
+            * data-status="business" data-address="{{value.expressAddress}}" data-receiver="{{value.receiver}}" data-receiverPhone="{{value.receiverPhone}}"
+            * */
+            localStorage.setItem("address",$(this).data("address"));
+            localStorage.setItem("buy_status",$(this).data("status"));
+            localStorage.setItem("receiver",$(this).data("receiver"));
+            localStorage.setItem("receiverphone",$(this).data("receiverphone"));
+            history.go(-2);
+        })
+
+    })
+</script>
+</html>

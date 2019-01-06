@@ -1,0 +1,219 @@
+html {
+  background-color: #eeeeee;
+}
+.second {
+  font-size: .3rem;
+  padding: 0 .3rem;
+  height: .88rem;
+  line-height: .88rem;
+}
+.main {
+  background-color: #fff;
+}
+.main > .take_style {
+  color: #666;
+  border-bottom: 1px solid #eeeeee;
+  font-size: .3rem;
+  padding: 0 .3rem;
+  height: .88rem;
+  line-height: .88rem;
+}
+.main > .take_style > em {
+  font-size: .32rem;
+}
+.main > .pick_people {
+  font-size: .3rem;
+  padding: 0 .3rem;
+  height: .88rem;
+  line-height: .88rem;
+}
+.main > .order_people {
+  padding: 0 .3rem;
+  vertical-align: middle;
+}
+.main > .order_people > .order_people_top {
+  font-weight: 600;
+  font-size: .3rem;
+  padding: 0 .3rem;
+  height: .88rem;
+  line-height: .88rem;
+  padding: 0 .8rem;
+}
+.main > .order_people > .order_people_top > em {
+  font-weight: 600;
+}
+.main > .order_people > .order_people_footer {
+  padding: 0 .3rem;
+  font-size: .24rem;
+}
+.main > .order_people > .order_people_footer > em {
+  vertical-align: middle;
+}
+.main > .info {
+  margin-top: 0.2rem;
+  position: relative;
+  background-color: #eeeeee;
+  padding: 0.3rem 0;
+}
+.main > .info > img {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.3rem;
+  vertical-align: middle;
+}
+.main > .info > .info_middle {
+  position: absolute;
+  top: 20%;
+  left: 2rem;
+  right: 3%;
+}
+.main > .info > .info_middle > div {
+  font-size: .3rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+.main > .info > .info_middle > p {
+  margin-top: .2rem;
+}
+.main > .info > .info_middle > p > em {
+  font-size: .32rem;
+  color: #ff6600;
+}
+.main > .base_info {
+  padding: .2rem 0;
+}
+.main > .base_info > p {
+  padding: 0 0.3rem;
+  height: .6rem;
+  line-height: .6rem;
+  font-size: .24rem;
+}
+.main > .base_info > p > a {
+  width: 15%;
+  height: .5rem;
+  line-height: .5rem;
+  border: 1px solid #d2d2d2;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+.main > .apply {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  height: 1rem;
+}
+.main > .apply > button {
+  position: relative;
+  left: 56%;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  border: 1px solid #d2d2d2;
+  width: 19%;
+  height: .6rem;
+  line-height: .6rem;
+  margin-top: .2rem;
+  text-align: center;
+  margin-right: .2rem;
+}
+.main > .apply > button.color-red {
+  color: #ff6600;
+}
+/*��ҳ�ϵ�ȷ������ ֧������*/
+.sure_order > .main {
+  padding-top: 1.6rem;
+}
+.sure_order > .main > .take_style > div {
+  height: .88rem;
+  line-height: .88rem;
+  width: 60%;
+}
+.sure_order > .main > .take_style > div > input {
+  text-align: right;
+  border: none;
+  padding: 0;
+  height: .8rem;
+  margin-bottom: 0;
+  width: 50%;
+}
+.sure_order > .main > .take_style > div > i {
+  color: #999;
+  height: .8rem;
+  line-height: .8rem;
+}
+.sure_order > .main > .pick_people > em {
+  padding-right: .2rem;
+}
+.sure_order > .main > .pay_style {
+  border-top: .2rem solid #eeeeee;
+}
+.sure_order > .main > .pay_style > p {
+  border-bottom: 1px solid #eee;
+  font-size: .36rem;
+  color: #333;
+  height: 1rem;
+  line-height: 1rem;
+  padding-left: .3rem;
+}
+.sure_order > .main > .pay_style > div {
+  border-bottom: 1px solid #eee;
+  height: .88rem;
+  line-height: .88rem;
+  padding: 0 .3rem;
+}
+.sure_order > .main > .pay_style > div > span > i {
+  margin-right: .2rem;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: .5rem;
+}
+.sure_order > .main > .pay_style > div > em {
+  color: #c4c4c4;
+  font-size: .5rem;
+}
+.sure_order > .main > .pay_style > div > em.active {
+  color: #ff6600;
+}
+.sure_order > .main > .pay_style > div.weChatPay i {
+  color: #42b035;
+}
+.sure_order > .main > .pay_style > div.airPay i {
+  font-size: .6rem;
+  color: #01aef0;
+}
+.sure_order > .main .totalMoney {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 1rem;
+  line-height: 1rem;
+  background-color: #fff;
+}
+.sure_order > .main .totalMoney > span {
+  width: 60%;
+  text-align: right;
+  padding-right: .3rem;
+  font-size: .24rem;
+}
+.sure_order > .main .totalMoney > span > i {
+  font-size: .3rem;
+  color: #ff6600;
+}
+.sure_order > .main .totalMoney > button {
+  background-color: #ff6600;
+  color: #fff;
+  position: absolute;
+  right: 0;
+  font-size: .28rem;
+  width: 39%;
+  height: 100%;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}

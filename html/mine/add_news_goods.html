@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>添加新品</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/common/start_time/date.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/mine/edit_goods.css"/>
+    <link rel="stylesheet" href="../../css/send_pic/send_pic.css"/>
+</head>
+<body>
+<div id="loading" style="display: none;">
+    <img src="../../img/login.gif" alt=""/>
+    <div>请等待，正在发送...</div>
+</div>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">添加新品</h1>
+    </header>
+    <div class="main add_news">
+        <div class="img_show">
+            <img src="" alt=""/>
+            <input type="file" accept="image/*" id="file1" value="" />
+            <em class="iconfont icon-xiangji"></em>
+            <del>添加商品图片</del>
+        </div>
+        <div class="title clearfix">
+            <span>标题</span>
+            <input type="text" placeholder="请填写商品标题"/>
+        </div>
+        <div class="categray clearfix">
+            <span>商品分类</span>
+            <i class="f_right iconfont icon-you"></i>
+           <em class="f_right">请选择商品分类</em>
+        </div>
+        <div id="show">
+            <ul>
+                <li data-cat="日用百货" class="active"> <em class="iconfont icon-danxuankuangxuanzhong"></em>日用百货</li>
+                <li data-cat="进口美食"> <em class="iconfont icon-danxuankuangxuanzhong"></em>进口美食</li>
+                <li data-cat="酒店住宿"> <em class="iconfont icon-danxuankuangxuanzhong"></em>酒店住宿</li>
+                <li data-cat="娱乐休闲"> <em class="iconfont icon-danxuankuangxuanzhong"></em>娱乐休闲</li>
+                <li data-cat="服装鞋帽"> <em class="iconfont icon-danxuankuangxuanzhong"></em>服装鞋帽</li>
+            </ul>
+            <!-- <div class="replay">
+                 <button class="quit">取消</button>
+                 <button class="sure">确定</button>
+             </div>-->
+        </div>
+        <div id="mask"></div>
+        <div class="price" data-content="元">
+            <span>现价</span>
+            <input type="text" />
+        </div>
+        <div class="number">
+            <span>竞拍数量</span>
+            <input type="number" max="100"/>
+        </div>
+        <div class="freight" data-content="元">
+            <span>运费</span>
+            <input type="text" />
+        </div>
+        <div class="down_price" data-content="元">
+            <span>每20秒降价金额</span>
+            <input type="number"/>
+        </div>
+        <div class="lie clearfix startTime">
+            <span>竞拍开始时间</span>
+            <input id="startTime" class="kbtn"  placeholder="请选择竞拍开始时间">
+            <i class="f_right iconfont icon-you"></i>
+        </div>
+        <div class="lie clearfix endTime">
+            <span>竞拍结束时间</span>
+            <input id="endTime" class="kbtn" placeholder="请选择竞拍结束时间">
+            <i class="f_right iconfont icon-you"></i>
+        </div>
+        <div id="datePlugin"></div>
+
+        <div class="detail clearfix">
+            <span>商品详情</span>
+            <!--  <i class="f_right iconfont icon-you"></i>-->
+        </div>
+        <!--商品详情-->
+        <div class="goods_detail_show">
+            <textarea name="" placeholder="请描述商品详情"></textarea>
+        </div>
+        <div class="z_photo">
+            <div class="z_file">
+                <!--   <img src="../img/publish_common.png" alt="" class="userImg"/>-->
+                <!--<span class="add_pic">点击添加图片</span>-->
+                <input type="file" capture="camera" name="file" id="file" value=""  accept="image/*" multiple onchange="imgChange('z_photo','z_file');" />
+            </div>
+        </div>
+
+        <div class="z_mask">
+
+            <div class="z_alert">
+                <p>确定要删除这张图片吗？</p>
+                <p>
+                    <span class="z_cancel">取消</span>
+                    <span class="z_sure">确定</span>
+                </p>
+            </div>
+        </div>
+        <div class="delete">
+            <button class="delete_goods">发布</button>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<!--<script src="../../js/common/zepto/zepto.min.js"></script>-->
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/start_time/jquery-1.10.2_7.js"></script>
+<script src="../../js/common/start_time/date.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script>
+    //添加商品啊
+    document.querySelector("#file1").onchange=function () {
+        var file=document.querySelector("#file1").files;
+        html5IMG(file,".img_show>img")
+    };
+    function html5IMG(file,ele){
+        /* var file1 = file[0].size;
+         console.log(file1);*/
+        var reader = new FileReader();
+        // reader.readAsDataURL(file); //判断上传的图片大小
+        /*var fileData = file[0].size;*/
+         var size = file[0].size;
+         //console.log(size);//注意，这里读到的是字节数
+         var isAllow = false;
+         if (!size) isAllow = false;
+         var maxSize = 2048;
+         maxSize = maxSize * 1024;   //转化为字节
+         isAllow = size <= maxSize;
+         if (!isAllow) {
+         alert("大小超过2 M，请重新上传");
+         return false;
+         }
+        reader.readAsDataURL(file[0]);
+        reader.onload = function (e) {
+            //reader.result
+            var pic = document.querySelector(ele);
+            var pic_add=reader.result;
+            pic.setAttribute("src",pic_add);
+            }
+    }
+    var obj={};
+    $(".delete_goods").click(function () {
+        var base64Images=$(".img_show>img").attr("src");
+        if(base64Images==''){
+            sweetAlert(
+                    "sorry",
+                    "请您添加商品图片",
+                    "error"
+            );
+            return;
+        }
+        console.log(base64Images);
+        //字符串转数组
+        obj.base64Images=base64Images.split().join("。").replace(/"/g,"");
+        obj.goodsImagesBase64=images.join("。").replace(/"/g,"");
+        var title=$(".title>input").val().trim();
+        if(title.length==0){
+            sweetAlert(
+                    "sorry",
+                    "请您填写商品标题",
+                    "error"
+            )
+            return false;
+        }
+        obj.title=$(".title>input").val().trim();
+        var goodsType=$(".categray>em").text();
+        if(goodsType=='请选择商品分类'){
+            sweetAlert(
+                    "sorry",
+                    "请您填写商品分类",
+                    "error"
+            )
+            return false;
+        }
+        obj.goodsType=goodsType;
+        var originalPrice=$(".price>input").val().trim();
+        if(originalPrice.length==0||parseFloat(originalPrice)<=0){
+            sweetAlert(
+                    "sorry",
+                    "请您设置物品现价",
+                    "error"
+            )
+            return;
+        }
+        obj.originalPrice=originalPrice;
+
+        var number=$(".number>input").val().trim();
+        if(number.length==0||parseInt(number)<=0){
+            sweetAlert(
+                    "sorry",
+                    "请您设置物品数量，只能是整数",
+                    "error"
+            )
+            return;
+        }
+        if(parseInt(number)>=100){
+            number=100
+        }
+        obj.number=number;
+        var  empressPrice=$(".freight>input").val().trim();
+        if(empressPrice.length==0||parseFloat(empressPrice)<=0){
+            obj.empressPrice=0;
+        }
+
+        var  downPrice=$(".down_price>input").val().trim();
+        console.log(downPrice);
+        if(downPrice.length==0||parseFloat(downPrice)<=0){
+            sweetAlert(
+                    "sorry",
+                    "请您设置每20秒降价金额",
+                    "error"
+            )
+            return;
+        }
+        obj.downPrice=downPrice;
+        var startTime=$(".startTime>input").val().trim();
+        var endTime=$(".endTime>input").val().trim();
+        if(startTime.length==0||endTime.length==0){
+            sweetAlert(
+                    "sorry",
+                    "请您设置商品竞价时间",
+                    "error"
+            )
+            return;
+        }
+        obj.startTime=new Date(startTime).getTime();
+        obj.endTime=new Date(endTime).getTime();
+        obj.introduce=$(".goods_detail_show>textarea").val();
+        console.log(obj);
+        /*
+                * title string 是 标题
+                 goodsType string 是 商品类型
+                 originalPrice BigDecimal 是 原价
+                 number integer 是 传入时需限定数量最大100
+                 empressPrice BigDecimal 是 邮费
+                 introduce string 是 商品简介
+                 startTime date 是 开始时间 (接收时间戳)
+                 endTime date 是 结束时间 (接收时间戳)
+                 downPrice BigDecimal 是 每20s降价金额
+                 base64Images string 是 商品图片 无论传的多张还是单张都以中文。分隔
+                * */
+    /*    myAjax({url:"/goods/addGoods",data:obj,type:"post"}, function (data) {
+            console.log(data);
+           // var data=JSON.parse(data);
+            if(data.code==200){
+                sweetAlert(
+                        "恭喜您",
+                        '上传成功了',
+                        "success"
+                )
+            }
+        })*/
+        $.ajax({
+            type:"post",
+            data:obj,
+            dataType:"json",
+            headers:{
+                'Authorization':localStorage.getItem("cToken")
+             },
+            url:baseUrl+"/goods/addGoods",
+            beforeSend: function () {
+                $("#loading").show();
+            },
+            success:function(data){
+                $("#loading").hide();
+                $('input').val('');
+                $('textarea').val('');
+                if(data.code==200){
+                    sweetAlert(
+                            "恭喜您",
+                            '上传成功了',
+                            "success"
+                    )
+                } else{
+                    sweetAlert(
+                            "sorry",
+                            data.msg,
+                            "error"
+                    )
+                }
+            },
+            error: function (data) {
+                $("#loading").hide();
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                )
+            }
+        });
+
+    })
+    /*上传图片
+     * */
+    function imgChange(obj1, obj2) {
+        //获取点击的文本框
+        var file = document.getElementById("file");
+        //存放图片的父级元素
+        var imgContainer = document.getElementsByClassName(obj1)[0];
+
+        //获取的图片文件
+        var fileList = file.files;
+        //文本框的父级元素
+        var input = document.getElementsByClassName(obj2)[0];
+
+        var imgArr = [];
+        //遍历获取到得图片文件
+        for (var i = 0; i < fileList.length; i++) {
+            //判断上传的图片大小
+            if(file.files && file.files[i]){
+                var fileData = file.files[i];
+                var size = fileData.size;   //注意，这里读到的是字节数
+                var isAllow = false;
+                if(!size) isAllow = false;
+                var maxSize = 2048;
+                maxSize = maxSize * 1024;   //转化为字节
+                isAllow = size <= maxSize;
+                if(!isAllow){
+                    alert("大小超过2 M，请重新上传");
+                    return false;
+                }
+            }
+
+            //结束
+
+            var imgUrl = window.URL.createObjectURL(file.files[i]);
+            imgArr.push(imgUrl);
+            var img = document.createElement("img");
+            img.setAttribute("src", imgArr[i]);
+            var imgAdd = document.createElement("div");
+            imgAdd.setAttribute("class", "z_addImg");
+            imgAdd.appendChild(img);
+            imgContainer.appendChild(imgAdd);
+            //getBase64Image(img,imgArr[i]);
+        };
+        //'console.log(imgArr);这个是图片的本地地址
+        for(let i=0;i<imgArr.length;i++){
+            (function(image, x, y,index){
+                drawing(image, x, y,index)
+            })(imgArr[i],0,0,i)
+        }
+        imgRemove();
+    };
+    function imgRemove() {
+        var imgList = document.getElementsByClassName("z_addImg");
+        var mask = document.getElementsByClassName("z_mask")[0];
+        var cancel = document.getElementsByClassName("z_cancel")[0];
+        var sure = document.getElementsByClassName("z_sure")[0];
+        for (var j = 0; j < imgList.length; j++) {
+            imgList[j].index = j;
+            imgList[j].onclick = function() {
+                var t = this;
+                mask.style.display = "block";
+                cancel.onclick = function() {
+                    mask.style.display = "none";
+                };
+                sure.onclick = function() {
+                    mask.style.display = "none";
+                    t.style.display = "none";
+                };
+
+            }
+        };
+    };
+    var container=document.querySelector(".z_photo");
+    var images=[];
+    function drawing(image, x, y,index) {
+        var img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = image;
+        img.onload = function () {
+            let id='canvas'+index;
+            createCanvas(id,img.width,img.height);
+            var cs = document.getElementById(id);
+            var ctx = cs.getContext("2d");
+            ctx.drawImage(img, x, y);
+            var imageUrl=cs.toDataURL('', 1);
+            images.push(imageUrl);
+            //转换成功
+            // console.log(images);
+            removeDom(id);
+        } ;
+    }
+
+    function createCanvas(id,width,height){
+        var canvas=document.createElement("canvas");
+        canvas.setAttribute('id',id);
+        canvas.setAttribute('width',width);
+        canvas.setAttribute('height',height);
+        canvas.style.display="none";
+        container.appendChild(canvas);
+    }
+    function removeDom(id){
+        document.getElementById(id).outerHTML='';
+    }
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+        $(".main").on("click","#show>ul>li", function () {
+            $(this).addClass("active").siblings("li").removeClass("active");
+            var type=$(this).data("cat");
+            //console.log(type);
+            $(".categray>em").text(type)
+            $("#show").hide();
+            $("#mask").hide();
+        });
+        $(".main").on("click","#mask", function (e) {
+            //console.log(e);
+            if(e.target!==$("#show>ul")){
+                $("#show").hide();
+                $("#mask").hide();
+            }
+        });
+        $(".main").on("click",".categray", function () {
+            $("#show").show();
+            $("#mask").show();
+        })
+
+        $('#endTime').date({theme:"datetime"});
+        $('#startTime').date({theme:"datetime"});
+
+    })
+</script>
+</html>

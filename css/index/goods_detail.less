@@ -1,0 +1,96 @@
+.layer{
+  >#header{
+    >em{
+      font-size: .4rem;
+    }
+  }
+  >.main{
+    >.img-box{
+      width: 100%;
+      height: 4rem;
+      overflow: hidden;
+      >img{
+        width: 100%;
+      }
+    }
+   >.info{
+     background-color: #fff;
+      >p{
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+        font-size: 0.28rem;
+        color:#333;
+        margin:0.1rem 0;
+        padding:0 0.3rem;
+
+      }
+     >.time_down{
+       height: .88rem;
+       line-height: .88rem;
+       border-bottom: 1px solid #eeeeee;
+
+       >span{
+         font-size: 0.24rem;
+         width: 28%;
+         text-align: center;
+         &:first-of-type{
+           width: 56%;
+         }
+         em{
+           font-size: 0.3rem;
+           color:#ff6600;
+         }
+       }
+     }
+     >.freight,.business_shop,.business_address{
+       height: 0.88rem;
+       line-height: .88rem;
+       padding: 0 0.3rem;
+       font-size: 0.28rem;
+       &.freight{
+         border-bottom: 1px solid #eeeeee;
+       }
+       >span{
+         width: 25%;
+       }
+     }
+
+    }
+    >.business_detail{
+      background-color: #fff;
+      padding-bottom: 1rem;
+      border-top: 0.2rem solid #eeeeee;
+      >p{
+        height: 1rem;
+        line-height: 1rem;
+        font-size: .32rem;
+        padding-left: 0.3rem;
+      }
+      >div{
+        font-size: .3rem;
+        text-align: center;
+        font-weight: 600;
+        line-height: .4rem;
+        padding:0 .3rem;
+        margin-bottom: .2rem;
+      }
+      >img{
+        width: 100%;
+      }
+    }
+    >.right_now{
+      height: 1rem;
+      line-height: 1rem;
+      font-size: 0.3rem;
+      text-align: center;
+      color:#fff;
+      background-color: #ff6600;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+    }
+  }
+}

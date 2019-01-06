@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>申请退款</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/send_pic/send_pic.css"/>
+    <link rel="stylesheet" href="../../css/mine/apply_quit_money.css"/>
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">申请退款</h1>
+    </header>
+    <div class="main">
+        <div class="info">
+            <img src="../../img/focus-img1.png" alt=""/>
+            <div class="info_middle">
+                <div>鲁美诺斯3152 F-35全球限量版 军表 瑞士制造鲁美诺斯3152 F-35全球限量版 军表 瑞士制造
+                </div>
+                <p class="clearfix">
+                    <em>￥2169</em>
+                    <i class="f_right">X1</i>
+                </p>
+            </div>
+        </div>
+        <div class="total">
+            <span>退款金额：</span>
+            <em>￥ 2169.00</em>
+        </div>
+        <div class="quit">
+            <span>退款说明：</span>
+            <input type="text" placeholder="选填"/>
+        </div>
+        <div class="proof">
+            <p>上传凭证</p>
+            <div class="z_photo">
+                <div class="z_file">
+                    <!--   <img src="../img/publish_common.png" alt="" class="userImg"/>-->
+                    <!--<span class="add_pic">点击添加图片</span>-->
+                    <input type="file" capture="camera" name="file" id="file" value="" accept="image/*" multiple="" onchange="imgChange('z_photo','z_file');">
+                </div>
+            </div>
+            <div class="z_mask">
+                <div class="z_alert">
+                    <p>确定要删除这张图片吗？</p>
+                    <p>
+                        <span class="z_cancel">取消</span>
+                        <span class="z_sure">确定</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            提交
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script>
+    $(function () {
+
+    })
+</script>
+</html>

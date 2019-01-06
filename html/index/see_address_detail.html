@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>添加地址</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/mui/mui.picter.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/common/address/address.css"/>
+    <style>
+        html{
+            background-color: #eeeeee;
+        }
+        .main>div{
+            height: 1rem;
+            line-height: 1rem;
+            font-size: .3rem;
+            background-color: #fff;
+            padding:0 .3rem;
+            border-bottom: 1px solid #eeeeee;
+        }
+        .main>.info{
+            border:none;
+            height: 3rem;
+        }
+        .main>div>span{
+            width: 30%;
+        }
+        .main>div>input{
+            height: .8rem;
+            line-height: .8rem;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            width: 67%;
+            text-align: right;
+        }
+        .info>textarea{
+            border:none;
+            font-size: .28rem;
+            padding: .1rem .3rem;
+            height:2rem;
+        }
+        .mui-icon-arrowright{
+            margin-top: 4%;
+        }
+        .main>.save{
+            margin-top: .5rem;
+            width: 90%;
+            position: relative;
+            height: .88rem;
+            background-color: #ff6600;
+            line-height: .88rem;
+            font-size: .3rem;
+            color:#fff;
+            text-align: center;
+            left: 5%;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;;
+        }
+    </style>
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">查看地址详情</h1>
+    </header>
+    <div class="main">
+      <!--  <div class="name">
+            <span>收货人</span>
+            <input type="text" placeholder="姓名" disabled/>
+        </div>
+        <div class="link">
+            <span>
+                联系方式
+            </span>
+            <input type="tel" placeholder="手机号码" disabled/>
+        </div>
+        <div class="area">
+            <span class="f_left">所在地区</span>
+            <i class="mui-icon mui-icon-arrowright f_right"></i>
+            <div id="city" class="address f_right">请选择</div>
+        </div>
+        <div class="info">
+            <span>详细地址</span>
+            <textarea placeholder="详细地址：如道路、门牌号、可精确到街道"></textarea>
+        </div>-->
+    </div>
+
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.picker.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/zepto/selector.js"></script>
+<script src="../../js/common/zepto/touch.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template-web.js"></script>
+<script type="text/html" id="address">
+    <div class="name">
+        <span>收货人</span>
+        <input type="text" placeholder="姓名" disabled value="{{data.receiver}}"/>
+    </div>
+    <div class="link">
+            <span>
+                联系方式
+            </span>
+        <input type="tel" placeholder="手机号码" disabled value="{{data.receiverPhone}}"/>
+    </div>
+
+    <div class="info">
+        <span>详细地址</span>
+        <textarea placeholder="详细地址：如道路、门牌号、可精确到街道">{{data.expressAddress}}</textarea>
+    </div>
+</script>
+<script>
+    $(function () {
+        mui.init({
+            swipeBack:true //启用右滑关闭功能
+        });
+        /* mui('body').on('tap','a',function(){document.location.href=this.href;});
+         */
+        var id=location.href.split("=")[1];
+        myAjax({url:`/address/findAddressByAddressId/${id}`}, function (data) {
+
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                $(".main").html(template("address",data));
+            }
+        })
+
+    })
+</script>
+</html>

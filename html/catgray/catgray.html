@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>宝贝分类</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/base.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/categray/category.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+   </head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <span class="mui-icon mui-icon-location" onclick="location.href='./select_city.html'">郑州</span>
+        <h1 class="mui-title">宝贝分类</h1>
+    </header>
+    <div class="main clearfix">
+    <div class="ct_left">
+        <span>站内分类</span>
+        <ul>
+            <li data-type="日用百货" >日用百货</li>
+            <li data-type="进口美食" class="active">进口美食</li>
+            <li data-type="酒店住宿">酒店住宿</li>
+            <li data-type="娱乐休闲">娱乐休闲</li>
+            <li data-type="服装鞋帽">服装鞋帽</li>
+        </ul>
+    </div>
+        <div class="ct_right">
+            <div class="search_header">
+                <input type="text" placeholder="搜店铺，搜商品"  onfocus="location.href='../index/search.html'"/>
+            </div>
+            <div class="content">
+                <ul>
+
+                   <!-- <li>
+                        <div class="time_auction clearfix">
+                            &lt;!&ndash;判断时间是否进入倒计时 显示样式不同
+                            或直接显示竞拍时间&ndash;&gt;
+                            <span>
+                                <em>竞拍时间</em>
+                                <i>今晚20:00</i>
+                            </span>
+                            <span>
+                                <em>现价</em>
+                                <i>1999元</i>
+                            </span>
+                            <span>
+                                <em>数量</em>
+                                <i>100</i>
+                            </span>
+                        </div>
+                        <div class="middle_li">
+                            <img src="../../img/focus-img1.png" alt=""/>
+                            <div class="center_text">
+                                鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="time_auction clearfix">
+                            &lt;!&ndash;判断时间是否进入倒计时 显示样式不同
+                            或直接显示竞拍时间&ndash;&gt;
+                            <span>
+                                <em>竞拍时间</em>
+                                <i>今晚20:00</i>
+                            </span>
+                            <span>
+                                <em>现价</em>
+                                <i>1999元</i>
+                            </span>
+                            <span>
+                                <em>数量</em>
+                                <i>100</i>
+                            </span>
+                        </div>
+                        <div class="middle_li">
+                            <img src="../../img/focus-img1.png" alt=""/>
+                            <div class="center_text">
+                                鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="time_auction clearfix">
+                            &lt;!&ndash;判断时间是否进入倒计时 显示样式不同
+                            或直接显示竞拍时间&ndash;&gt;
+                            <span>
+                                <em>竞拍时间</em>
+                                <i>今晚20:00</i>
+                            </span>
+                            <span>
+                                <em>现价</em>
+                                <i>1999元</i>
+                            </span>
+                            <span>
+                                <em>数量</em>
+                                <i>100100100</i>
+                            </span>
+                        </div>
+                        <div class="middle_li">
+                            <img src="../../img/focus-img1.png" alt=""/>
+                            <div class="center_text">
+                                鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造
+                            </div>
+                        </div>
+                    </li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+</div>
+</body>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="show">
+    {{if data==null||data.length==0}}
+    <div class="no_in">对不起，暂时没有合适的商品推荐</div>
+    {{else}}
+    {{each data as value i}}
+    <li onclick="location.href='cat_show.html'">
+        <div class="time_auction clearfix">
+            <!--判断时间是否进入倒计时 显示样式不同
+            或直接显示竞拍时间-->
+                            <span>
+                                <em>竞拍时间</em>
+                                <i>今晚20:00</i>
+                            </span>
+                            <span>
+                                <em>现价</em>
+                                <i>1999元</i>
+                            </span>
+                            <span>
+                                <em>数量</em>
+                                <i>100</i>
+                            </span>
+        </div>
+        <div class="middle_li">
+            <img src="../../img/focus-img1.png" alt=""/>
+            <div class="center_text">
+                鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造
+            </div>
+        </div>
+    </li>
+    {{/each}}
+    {{/if}}
+</script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+        $('#footer').load('../common/footer.html');
+        (function($, doc) {
+            $.init();
+            $.plusReady(function() {
+                var backButtonPress = 0;
+                $.back = function(event) {
+                    backButtonPress++;
+                    if (backButtonPress > 1) {
+                        plus.runtime.quit();
+                    } else {
+                        plus.nativeUI.toast('再按一次退出应用');
+                    }
+                    setTimeout(function() {
+                        backButtonPress = 0;
+                    }, 1000);
+                    return false;
+                };
+            });
+        }(mui, document));
+        setTimeout(function () {
+            $("#footer .mui-tab-item:nth-of-type(2)").addClass("mui-active").siblings(".mui-tab-item").removeClass("mui-active");
+        },300)
+        var goodsType='进口美食';
+        $(".ct_left").on("tap","ul>li", function () {
+            $(this).addClass("active").siblings("li").removeClass("active");
+            goodsType=$(this).data("type");
+            render(goodsType);
+            console.log($(this).data("type"));
+        })
+        //此页面是根据城市和类型进行检索
+        /*
+        * 根据城市 和 商品类型进行检索
+         /goods/findByCityAndType/{city}/{goodsType}
+        * */
+        var city='郑州';
+        if(localStorage.getItem("city")!==null){
+            city=localStorage.getItem("city");
+            $("#header>span").text(city);
+        }
+        render(goodsType);
+        function render(goodsType){
+            myAjax({url:`/goods/findByCityAndType/${city}/${goodsType}`,async:false},function(data){
+                       // console.log(data);
+                        var data=JSON.parse(data);
+                        console.log(data);
+                        if(data.code==200){
+                        $(".ct_right>.content").html(template("show",data))
+                        }else{
+                            sweetAlert(
+                                    "sorry",
+                                    data.msg,
+                                    "error"
+
+                            )
+                        }
+                    }
+            )
+        }
+
+    })
+
+</script>
+</html>

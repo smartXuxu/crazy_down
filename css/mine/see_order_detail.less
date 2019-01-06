@@ -1,0 +1,231 @@
+html{
+  background-color: #eeeeee;
+}
+.second{
+  font-size: .3rem;
+  padding: 0 .3rem;
+  height: .88rem;
+  line-height: .88rem;
+
+}
+
+.main{
+  background-color: #fff;
+  >.take_style{
+    color:#666;
+    border-bottom: 1px solid #eeeeee;
+    .second;
+    >em{
+      font-size: .32rem;
+    }
+  }
+  >.pick_people{
+    .second;
+
+  }
+  >.order_people{
+    padding:0 .3rem;
+    vertical-align: middle;
+    >.order_people_top{
+      font-weight: 600;
+      >em{
+        font-weight: 600;
+      }
+    .second;
+      padding: 0 .8rem;
+  }
+  >.order_people_footer{
+    >em{
+      vertical-align: middle;
+    }
+    padding: 0 .3rem;
+    font-size: .24rem;
+  }
+  }
+  >.info{
+    margin-top: 0.2rem;
+    position: relative;
+    background-color: #eeeeee;
+    padding:0.3rem 0;
+    >img{
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-left: 0.3rem;
+      vertical-align: middle;
+    }
+    >.info_middle{
+      position: absolute;
+      top: 20%;
+      left: 2rem;
+      right: 3%;
+      >div{
+        font-size: .3rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+      }
+      >p{
+        margin-top: .2rem;
+
+        >em{
+          font-size: .32rem;
+          color:#ff6600;
+        }
+      }
+    }
+  }
+  >.base_info{
+padding:.2rem 0;
+    >p{
+      padding:0 0.3rem;
+      height: .6rem;
+      line-height: .6rem;
+      font-size: .24rem;
+     >a{
+       width: 15%;
+       height: .5rem;
+       line-height: .5rem;
+       border:1px solid #d2d2d2;
+       -webkit-border-radius: 10px;
+       -moz-border-radius: 10px;
+       border-radius: 10px;
+       text-align: center;
+
+      }
+    }
+  }
+  >.apply {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    height: 1rem;
+    >button{
+      position: relative;
+      left: 56%;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      border:1px solid #d2d2d2;
+      width: 19%;
+      height: .6rem;
+      line-height: .6rem;
+      margin-top: .2rem;
+      text-align: center;
+      margin-right: .2rem;
+      &.color-red{
+        color:#ff6600;
+      }
+    }
+  }
+
+}
+/*首页上的确定订单 支付购买*/
+.sure_order{
+  >.main{
+    padding-top: 1.6rem;
+   >.take_style{
+     >div{
+       height: .88rem;
+       line-height: .88rem;
+       width: 60%;
+       >input{
+         text-align: right;
+         border:none;
+         padding: 0;
+         height: .8rem;
+         margin-bottom: 0;
+         width: 50%;
+       }
+       >i{
+         color:#999;
+         height: .8rem;
+         line-height: .8rem;
+       }
+     }
+   }
+    >.pick_people{
+      >em{
+        padding-right: .2rem;
+      }
+
+    }
+    >.pay_style{
+      border-top: .2rem solid #eeeeee;
+      >p{
+        border-bottom: 1px solid #eee;
+        font-size: .36rem;
+        color:#333;
+        height: 1rem;
+        line-height: 1rem;
+        padding-left: .3rem;
+      }
+      >div{
+        border-bottom: 1px solid #eee;
+        height: .88rem;
+        line-height: .88rem;
+        padding:0 .3rem;
+        >span{
+          >i{
+            margin-right: .2rem;
+            display: inline-block;
+            vertical-align: middle;
+            font-size: .5rem;
+          }
+        }
+        >em{
+          color:#c4c4c4;
+          font-size:.5rem;
+          &.active{
+            color:#ff6600;
+          }
+        }
+        &.weChatPay{
+          i{
+            color:#42b035;
+          }
+        }
+        &.airPay{
+          i{
+            font-size: .6rem;
+            color:#01aef0;
+          }
+        }
+
+      }
+
+    }
+    .totalMoney{
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 1rem;
+      line-height: 1rem;
+      background-color: #fff;
+      >span{
+        width: 60%;
+        text-align: right;
+        padding-right: .3rem;
+        font-size: .24rem;
+        >i{
+          font-size: .3rem;
+          color:#ff6600;
+        }
+      }
+      >button{
+        background-color: #ff6600;
+        color:#fff;
+        position: absolute;
+        right: 0;
+        font-size: .28rem;
+        width: 39%;
+        height: 100%;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+      }
+    }
+  }
+}

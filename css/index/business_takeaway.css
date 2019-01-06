@@ -1,0 +1,62 @@
+html {
+  background-color: #eeeeee;
+}
+.main > ul > li {
+  border-top: 0.2rem solid #eeeeee;
+  background-color: #fff;
+}
+.main > ul > li > .li_top {
+  padding: 0 .3rem;
+  border-bottom: 1px solid #eeeeee;
+}
+.main > ul > li > .li_top > p {
+  height: .88rem;
+  line-height: .8rem;
+  font-size: .3rem;
+  color: #333;
+}
+.main > ul > li > .li_top > .address {
+  color: #666;
+  font-size: .24rem;
+  line-height: .6rem;
+}
+.main > ul > li > .replay {
+  height: .88rem;
+  line-height: .88rem;
+  padding: 0 .3rem;
+  position: relative;
+  left: 45%;
+}
+.main > ul > li > .replay > span {
+  width: 55%;
+}
+.main > ul > li > .replay > span.active > em {
+  color: #b1db77;
+}
+.main > ul > li > .replay > span > em {
+  font-size: .4rem;
+  vertical-align: middle;
+}
+.main > ul > li > .replay > button {
+  width: 20%;
+  height: .6rem;
+  line-height: .6rem;
+  border: 1px solid #d2d2d2;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin-top: .2rem;
+  color: #666;
+  margin-right: 5%;
+}
+.main > .add_new {
+  width: 100%;
+  bottom: 0;
+  position: fixed;
+  height: 1rem;
+  line-height: 1rem;
+  text-align: center;
+  color: #fff;
+  background-color: #ff6600;
+  font-size: .3rem;
+}

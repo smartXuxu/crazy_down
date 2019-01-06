@@ -1,0 +1,87 @@
+html {
+  background-color: #fff;
+}
+.main {
+  background-color: #fff;
+}
+.main > .submit {
+  height: 0.8rem;
+  line-height: 0.8rem;
+  position: fixed;
+  bottom: 3%;
+  left: 5%;
+  width: 90%;
+  background-color: #ff6600;
+  color: #fff;
+  font-size: 0.3rem;
+}
+.main > .name,
+.main > .tel,
+.main > .address {
+  height: 1rem;
+  line-height: 1rem;
+  padding: 0 0.3rem;
+  font-size: 0.28rem;
+  color: #666;
+}
+.main > .name > span,
+.main > .tel > span,
+.main > .address > span {
+  width: 30%;
+}
+.main > .name > input,
+.main > .tel > input,
+.main > .address > input {
+  height: 0.6rem;
+  line-height: 0.8rem;
+  width: 65%;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.main > .name.name,
+.main > .tel.name,
+.main > .address.name {
+  border-top: 0.2rem solid #eeeeee;
+}
+.main > .name.address,
+.main > .tel.address,
+.main > .address.address {
+  border-bottom: 0.2rem solid #eeeeee;
+}
+.main > .auth > span {
+  display: block;
+  padding-left: 0.3rem;
+  height: 1rem;
+  line-height: 1rem;
+  font-size: 0.3rem;
+  color: #666;
+}
+.main > .auth > .z_file {
+  width: 2.3rem;
+  height: 2.3rem;
+  margin-left: 0.3rem;
+  background: url("../../img/add_pic.jpg") no-repeat center;
+  -webkit-background-size: 100%;
+  background-size: 100%;
+}
+.main > .auth > .z_file > input {
+  width: 2.3rem;
+  height: 2.3rem;
+  opacity: 0;
+}
+.main > .img {
+  width: 100%;
+  height: 4rem;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 1rem;
+}
+.main > .img > img {
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}

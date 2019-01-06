@@ -1,0 +1,244 @@
+html{
+  background-color: #eeeeee;
+  
+}
+.main{
+  background-color: #fff;
+  >.img_show{
+    padding: 0;
+    height: 3.3rem;
+    width: 100%;
+    background-color: #eeeeee;
+    position: relative;
+    overflow: hidden;
+   >img{
+     position: absolute;
+     left: 50%;
+     top: 50%;
+     transform: translate(-50%,-50%);
+     width: 100%;
+   }
+    >em,>input{
+      height: .8rem;
+      line-height: .8rem;
+      width: .8rem;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      position: absolute;
+      z-index: 1;
+      right: 3%;
+      bottom: 5%;
+      padding-left: 2%;
+      font-size: .5rem;
+      color:#fff;
+      background-color: #fba840;
+
+    }
+    >input{
+      opacity: 0;
+      z-index: 3;
+    }
+  }
+  >div{
+    padding:0 0.3rem;
+    position: relative;
+    font-size: .3rem;
+    height: .8rem;
+    &.detail{
+      line-height: .8rem;
+    }
+  }
+  #datePlugin{
+    height: 0;
+  }
+  >.title{
+    border-bottom: .2rem solid #eeeeee;
+    height: 1.5rem;
+    >span{
+      margin-top: .5rem;
+      width: 25%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    >input{
+      width: 70%;
+      padding: 0;
+      margin: 0;
+      border: none;
+      height: 1rem;
+      margin-top: .1rem;
+      vertical-align: top;
+    }
+  }
+  >.categray{
+    height: 1rem;
+    line-height: .8rem;
+    border-bottom: .2rem solid #eeeeee;
+  }
+  >.lie{
+    >input{
+    /*  background-color: pink;*/
+      width: 67%;
+      text-align: right;
+    }
+  }
+  >.price,>.freight,>.number,>.down_price{
+    position: relative;
+    line-height: .8rem;
+    >span{
+      width: 30%;
+    }
+    >input{
+      width: 68%;
+      text-align: right;
+      padding: 0;
+      margin: 0;
+      height: .5rem;
+      line-height: .5rem;
+      padding-right: .5rem;
+    }
+    &:after{
+      position: absolute;
+      right: 3%;
+    content:attr(data-content);
+      top: 3%;
+      width: .6rem;
+      height: .6rem;
+    }
+  }
+  >.down_price{
+   /* margin-bottom: 1rem;*/
+    span{
+      width: 35%;
+    }
+    >input{
+      width: 63%;
+    }
+  }
+  .delete{
+    width: 100%;
+    height: .8rem;
+    position: fixed;
+    bottom: 0;
+    background-color: #eeeeee;
+    >.delete_goods{
+      position: fixed;
+      height: .6rem;
+      line-height: .6rem;
+      bottom: 1%;
+      width: 80%;
+      left: 10%;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      font-size: .3rem;
+      background-color: #ff6600;
+      color:#fff;
+      text-align: center;
+    }
+  }
+    >.goods_detail_show{
+      height:auto;
+      >textarea{
+        border:none;
+        height: 1rem;
+        padding: .3rem;
+        font-size: .24rem;
+      }
+      >img{
+        height: 3rem;
+        width: 100%;
+      }
+    }
+  >.z_photo{
+    height:auto;
+  }
+}
+/*µ¯´°*/
+#show{
+  display: none;
+  position: fixed;
+  z-index:10;
+  width: 70%;
+  left: 50%;
+  top: 50%;
+  height: auto;
+  -webkit-border-radius: 10px;
+  -moz-border-radius:10px;
+  border-radius: 10px;
+  background-color: #fff;
+box-shadow: 0 0 0 1px rgba(0,0,0,.2);
+  transform:translate(-50%,-50%);
+  >ul{
+    margin: .3rem 0;
+    width: 100%;
+    padding:0 .5rem;
+    >li{
+      height: .6rem;
+      color:#666;
+      line-height: .6rem;
+      &.active{
+        em{
+          color:#ff6600;
+        }
+      }
+      >em{
+        font-size: .4rem;
+        margin-right: .5rem;
+      }
+
+    }
+  }
+  >.replay{
+    height: .8rem;
+    line-height: .8rem;
+    >button{
+      text-align: center;
+      height: .8rem;
+      line-height: .8rem;
+      width: 48%;
+      font-size: 0.3rem;
+      &.sure{
+        border-left: 1px solid #eeeeee;
+        color:#007aff;
+      }
+    }
+  }
+}
+/*Ìí¼ÓÐÂÆ·*/
+.layer{
+  >.add_news{
+    >.img_show{
+      >em,>input{
+        left: 50%;
+        bottom: 30%;
+        transform: translate(-50%,-50%);
+      }
+     >del{
+       position: absolute;
+       z-index: 1;
+       right: 39%;
+       bottom: 25%;
+       color:#999;
+       font-size: .24rem;
+      }
+    }
+    >.title{
+      >input{
+        width: 70%;
+        padding: 0;
+        margin: 0;
+        border:none;
+        height:1rem;
+       margin-top: .1rem;
+        vertical-align: top;
+      }
+    }
+   .categray{
+      >em{
+        color:#666;
+      }
+    }
+  }
+}

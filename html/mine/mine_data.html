@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>编辑资料</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/mui/mui.picter.min.css"/>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/mine/mine_data.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+</head>
+<body>
+<div class="layer">
+    <header id="header" class="mui-bar mui-bar-nav">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <h1 class="mui-title">编辑资料</h1>
+        <em class="save">保存</em>
+    </header>
+    <div class="main">
+       <!-- <div class="img clearfix" onclick="location.href='./head.html'">
+            <span>头像</span>
+            <img src="../../img/focus-img1.png" alt=""/>
+        </div>
+        <div class="clearfix">
+            <span>签名：</span>
+            <input type="text" placeholder="请输入您的个性签名"/>
+        </div>
+        <div  class="clearfix userId">
+            <span>ID：</span>
+            <input type="text" value="1425041" disabled/>
+        </div>
+        <div  class="clearfix">
+            <span>昵称：</span>
+            <input type="text" placeholder="请输入您的昵称"/>
+        </div>
+        <div  class="clearfix">
+            <span>性别：</span>
+            <button id='showUserPicker1' class="mui-btn input" type='button'>请选择</button>
+        </div>-->
+
+
+    </div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.picker.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="mine">
+    <div class="img clearfix" onclick="location.href='./head.html'">
+        <span>头像</span>
+        <img src="{{data.avatar==null?'../../img/beat.png':data.avatar}}" alt=""/>
+        <em class="f_right">若更换头像，请至首页（我的）</em>
+    </div>
+    <div class="clearfix sign">
+        <span>签名：</span>
+        <input type="text" placeholder="请输入您的个性签名" value="{{data.sign}}"/>
+    </div>
+    <div  class="clearfix userId">
+        <span>ID：</span>
+        <input type="text" value="{{data.userId}} （不可更改）" disabled/>
+    </div>
+    <div  class="clearfix nickName">
+        <span>昵称：</span>
+        <input type="text" placeholder="请输入您的昵称" value="{{data.nickName}}"/>
+    </div>
+    <div  class="clearfix gender">
+        <span>性别：</span>
+        <button id='showUserPicker1' class="mui-btn input" type='button'>{{data.sex==null?'请选择':data.sex}}</button>
+    </div>
+</script>
+<script>
+    $(function () {
+        mui.init();
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+        function showLevel1() {
+            var picker = new mui.PopPicker({
+                layer: 1,
+                buttons: ['取消', '确认']
+            });
+            picker.setData([{
+                value: "first",
+                text: "女"
+            }, {
+                value: "second",
+                text: "男"
+            }]);
+            document.getElementById("showUserPicker1").addEventListener('tap', function(event) {
+                $("#info").text("");
+                // 默认显示第4项
+                picker.pickers[0].setSelectedIndex(0, 2000);
+                picker.show(function(selectItems) {
+                    var text = selectItems[0].text;
+                   // console.log(text);
+                    $("#showUserPicker1").text(text);
+                });
+            });
+        }
+        //获取用户信息
+      myAjax({url:"/user/getCurrentUserMessage",data:''}, function (data) {
+          console.log(data);
+          //将获取到的data 转为对象object类型
+          var data=JSON.parse(data);
+          console.log(data);
+          if(data.code==200){
+             $(".main").html(template("mine",data));
+              showLevel1();
+             // $(".userId>input").val(data.data.userId)
+          }else{
+              sweetAlert(
+                      "sorry",
+                      data.msg,
+                      "error"
+              )
+          }
+      })
+        let obj={};
+        $(".save").click(function () {
+        obj.sign=$(".sign>input").val().trim();
+        obj.nickName=$(".nickName>input").val().trim();
+        obj.sex=$(".gender>button").text();
+            if(obj.sign==''&&obj.nickName==''&&obj.sex=='请选择'){
+                sweetAlert(
+                        "sorry",
+                        "没有可完善的信息",
+                        'error'
+                )
+                return false;
+            }
+            myAjax({url:"/user/updateUserMessage",type:"post",data:obj}, function (data) {
+                console.log(data);
+                var data=JSON.parse(data);
+               if(data.code==200){
+                sweetAlert(
+                        "恭喜您",
+                        data.msg,
+                        "success"
+                )
+               }else{
+                   sweetAlert(
+                           "sorry",
+                           data.msg,
+                           "error"
+                   )
+               }
+
+            })
+        })
+
+    })
+</script>
+</html>

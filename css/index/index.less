@@ -1,0 +1,193 @@
+.layer{
+  >header{
+    &:after{
+      content:'';
+      height: 0.6rem;
+      width: 0.6rem;
+      background: url("../../img/search.png") no-repeat center;
+      -webkit-background-size: 100%;
+      background-size: 100%;
+      position: absolute;
+      left: 22%;
+      top:52%;
+    }
+      >img{
+        width: 0.74rem;
+        height: 0.74rem;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        margin-left: 0.3rem;
+      }
+    >input{
+      position: absolute;
+      left: 20%;
+      top: 48%;
+      height: 0.7rem;
+      width: 60%;
+      text-indent: 2em;
+      font-size: 0.28rem;
+      background-color: #fff;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 40px;
+      border-radius: 40px;
+
+    }
+    >span{
+      position: absolute;
+      right: 3%;
+      top: 6%;
+      color:#fff;
+      height: 1.5rem;
+      font-size: 0.28rem;
+      >i{
+        color:#7c351d;
+        font-size: 0.3rem;
+        vertical-align: middle;
+      }
+    }
+  }
+ >.main{
+    >.swiper{
+      height: 4.3rem;
+      width: 100%;
+      overflow: hidden;
+      .swiper-slide{
+        width: 100%;
+        height: 100%;
+        position: relative;
+        img{
+          width: 100%;
+        }
+        .text{
+          text-align: center;
+          bottom: 0;
+          padding:0 0.3rem;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          word-break: break-all;
+          height: 0.8rem;
+          line-height: 0.8rem;
+          width: 100%;
+          color:#fff;
+          font-size: 0.28rem;
+          position: absolute;
+          background: rgba(0,0,0,.2);
+        }
+      }
+    }
+   >.auction_area{
+
+     border-top: 0.2rem solid #eeeeee;
+     background:#fff;
+    >.auction_top{
+      width: 100%;
+      height: 0.98rem;
+      >li{
+        float: left;
+        width: 32%;
+        height: 100%;
+        padding-top: 0.1rem;
+        text-align: center;
+        >em{
+          font-size: 0.3rem;
+        }
+        >span{
+          font-size: 0.24rem;
+          opacity: 0.6;
+        }
+        &:first-of-type{
+          color:#fff;
+          background:-moz-linear-gradient(left,#fff,#f9693a);/*Mozilla*/
+          background:-webkit-gradient(linear,0 50%,100% 50%,from(#fff),to(#f9693a));/*Old gradient for webkit*/
+          background:-webkit-linear-gradient(left,#fff,#f9693a);/*new gradient for Webkit*/
+
+          background:-o-linear-gradient(left,#fff,#f9693a); /*Opera11*/
+        }
+        &:last-of-type{
+          color:#fff;
+          background:-moz-linear-gradient(left,#f9693a,#fff);/*Mozilla*/
+
+          background:-webkit-gradient(linear,0 50%,100% 50%,from(#f9693a),to(#fff));/*Old gradient for webkit*/
+
+          background:-webkit-linear-gradient(left,#f9693a,#fff);/*new gradient for Webkit*/
+
+          background:-o-linear-gradient(left,#f9693a,#fff); /*Opera11*/
+        }
+        >span{
+          display: block;
+        }
+      }
+    }
+     >.auction_middle{
+       text-align: center;
+       border-bottom: 0.2rem solid #eeeeee;
+      >.beat{
+        display: block;
+        width: 30%;
+        height: 1.8rem;
+        background: url("../../img/beat.png") no-repeat center;
+        margin:0.8rem auto;
+        -webkit-background-size:54%;
+        background-size: 54%;
+      }
+       >p{
+         font-size: 0.3rem;
+         margin-bottom: 0.3rem;
+       }
+     }
+    >.replay{
+      >ul{
+        height: 0.88rem;
+        line-height: 0.88rem;
+      >li{
+        display: inline-block;
+        width: 49%;
+        font-size: 0.3rem;
+        height: 0.88rem;
+        line-height: 0.88rem;
+        text-align: center;
+        &:first-of-type{
+          border-right: 1px solid #d2d2d2;
+        }
+      }
+      }
+    }
+   }
+ }
+}
+/*swiper ÂÖ²¥Í¼*/
+.swiper{
+  >#swiper{
+    height: 4.3rem;
+    width: 100%;
+    .swiper-slide{
+      position: relative;
+      img{
+        width: 100%;
+      }
+      .text{
+        bottom: 0;
+        height: 0.8rem;
+        width: 100%;
+        position: absolute;
+        background: rgba(0,0,0,.2);
+      }
+    }
+  }
+}
+/*swiperÂÖ²¥Í¼*/
+.swiper-pagination-bullet{
+  width: 15px;
+  height: 15px;
+}
+.swiper-pagination-bullet-active{
+  background: #fff;
+}
+.swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet{
+  margin:0 8px;
+}
+/*½¥±ä
+ background:-webkit-gradient(linear, 0 0, 0 100%, from(££2074af), to(££2c91d2));*/

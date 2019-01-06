@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>搜索页面</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/index/search.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+
+</head>
+<body>
+<div class="layer">
+    <div class="head">
+        <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
+        <input type="text" placeholder="搜店铺，搜商品"/>
+        <span class="search">搜索</span>
+    </div>
+    <div class="main">
+        <ul>
+           <!-- <li>
+                <a href="../catgray/cat_show.html">
+                    <div class="time_auction clearfix">
+                        &lt;!&ndash;判断时间是否进入倒计时 显示样式不同
+                        或直接显示竞拍时间&ndash;&gt;
+                            <span>
+                                <em>竞拍时间</em>
+                                <i>今晚20:00</i>
+                            </span>
+                            <span>
+                                <em>现价</em>
+                                <i>1999元</i>
+                            </span>
+                            <span>
+                                <em>数量</em>
+                                <i>100</i>
+                            </span>
+                    </div>
+                    <div class="middle_li">
+                        <img src="../../img/focus-img1.png" alt="">
+                        <div class="center_text">
+                            鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造
+                        </div>
+                    </div>
+                </a>
+            </li>-->
+        </ul>
+
+    </div>
+</div>
+
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="result">
+{{if data.length==0}}
+<div class="no_in">对不起，暂时没有合适的搜索结果</div>
+{{else}}
+{{each data as value i}}
+<li>
+    <a href="../catgray/cat_show.html?id={{value.goodsId}}">
+        <div class="time_auction clearfix">
+            <!--判断时间是否进入倒计时 显示样式不同
+            或直接显示竞拍时间-->
+                            <span>
+                                <em>竞拍时间</em>
+                                <i>{{time(value.startTime)}}</i>
+                            </span>
+                            <span>
+                                <em>现价</em>
+                                <i>{{value.originalPrice}}元</i>
+                            </span>
+                            <span>
+                                <em>数量</em>
+                                <i>{{value.number}}</i>
+                            </span>
+        </div>
+        <div class="middle_li">
+            <img src="{{value.images.length==0||value.images==null?'../../img/beat.png':value.images[0].imagePath}}" alt="" onerror="this.src='../../img/beat.png'">
+            <div class="center_text">
+                {{value.title}} {{value.introduce}}
+            </div>
+        </div>
+    </a>
+</li>
+{{/each}}
+    {{/if}}
+</script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+        //此页面 作为仅根据关键字进行检索即可
+        /*
+        * /goods/findByCityAndKey/{key}
+        * */
+        $(".search").click(function () {
+            var keyWord=$(".head>input").val().trim();
+            console.log(keyWord);
+            if(keyWord==''||keyWord.length==0){
+                sweetAlert(
+                        "sorry",
+                        '请您收入搜索内容',
+                        'error'
+                )
+                return false;
+            }
+            myAjax({url:'/goods/findByKey/'+keyWord,async:false}, function (data) {
+             var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==200){
+                    template.helper("time",function(date){
+                        var time=new Date(date).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,20).replace(/\//g,"-");
+                        return time;
+                        /* return new Date(parseInt(date) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');*/
+                    });
+                    template.helper("GetRTime",function(data){
+                        //结束时间
+                        var EndTime = new Date(data).getTime();
+                        // console.log(EndTime);
+                        //当前时间
+                        var NowTime = new Date().getTime();
+                        //console.log(NowTime);
+                        var titm = "l";
+                        if (EndTime < NowTime) {
+                            titm = new Date(data).getTime().toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,11).replace(/\//g,"-");
+                            // window.clearInterval(t1);
+                        } else {
+                            //结束时间减去当前时间剩余的毫秒数
+                            //var t = EndTime.getTime() - NowTime.getTime();
+                            var t = EndTime-NowTime;
+                            var h = Math.floor(t / 1000 / 60 / 60);//时
+                            var m = Math.floor(t / 1000 / 60 % 60);//分
+                            var s = Math.floor(t / 1000 % 60);//秒
+                            /* if (h > 2) {
+                             //window.clearInterval(t1);
+                             titm = "活动正在进行中";
+                             } else*/
+                            if (h == 0 && m == 0 && s == 0) {
+                                // window.clearInterval(t1);
+                                titm = titm = new Date(data).getTime().toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,11).replace(/\//g,"-")
+                            } else {
+                                h < 10 ? h = '0' + h : h = h;//判断是否小于10，是则在时间前面加0
+                                m < 10 ? m = '0' + m : m = m;
+                                s < 10 ? s = '0' + s : s = s;
+                                titm = h + ":" + m + ":" + s ;
+                            }
+                        }
+                        return titm;
+                    });
+                    $(".main>ul").html(template("result",data));
+                }
+             })
+        })
+
+    })
+</script>
+</html>

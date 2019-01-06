@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>个人中心</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/mine/mine_index.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+</head>
+<body>
+<div class="layer">
+    <aside>
+        <h3>我的</h3>
+        <div class="mine_data">
+            <img src="../../img/beat.png" alt="" onclick="location.href='head.html'"/>
+            <div class="mine_data_middle">
+                <span>李磊的韩梅梅</span>
+                <em>ID：1425041
+                    <del class=" iconfont icon-bianji" onclick="location.href='./mine_data.html'"></del>
+                </em>
+            </div>
+        </div>
+    </aside>
+    <div class="main">
+        <ul class="mui-table-view mine_center">
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right my_save" href="./my_order.html">
+                    <em class="iconfont icon-dingdan"></em>
+                    我的订单
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right my_save" href="./business_order.html">
+                    <em class="iconfont icon-shangjia"></em>
+                    商家订单
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right my_save" href="./goods_manage.html">
+                    <em class="iconfont icon-shangpin"></em>
+                    商品管理
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right my_save" href="./shop_authentication.html">
+                    <em class="iconfont icon-renzheng"></em>
+                    商家认证
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right my_save" href="./my_pause.html">
+                    <em class="iconfont icon-qianbao"></em>
+                   我的钱包
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right my_save" href="./message_notice.html">
+                    <em class="iconfont icon-xiaoxi"></em>
+                  消息中心
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right my_save" href="./setting.html">
+                    <em class="iconfont icon-shezhi"></em>
+                 设置
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="footer"></div>
+</div>
+</body>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/zepto/selector.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script>
+    $(function () {
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+        (function($, doc) {
+            $.init();
+            $.plusReady(function() {
+                var backButtonPress = 0;
+                $.back = function(event) {
+                    backButtonPress++;
+                    if (backButtonPress > 1) {
+                        plus.runtime.quit();
+                    } else {
+                        plus.nativeUI.toast('再按一次退出应用');
+                    }
+                    setTimeout(function() {
+                        backButtonPress = 0;
+                    }, 1000);
+                    return false;
+                };
+            });
+        }(mui, document));
+        $('#footer').load('../common/footer.html');
+        setTimeout(function () {
+          $("#footer .mui-tab-item:last-of-type").addClass("mui-active").siblings(".mui-tab-item").removeClass("mui-active");
+        },300);
+       /* //判断用户是否登录
+         if(localStorage.getItem("uName")==null){
+         sweetAlert(
+         "sorry",
+         "请您先登录",
+         'error'
+         ).then(function () {
+         location.href='../login.html';
+         })
+         //return false;
+         }*/
+        myAjax({url:"/user/getCurrentUserMessage",data:''}, function (data) {
+            console.log(data);
+            //将获取到的data 转为对象object类型
+            var data = JSON.parse(data);
+            console.log(data);
+            if(data.code == 200) {
+                //console.log(data.data.avatar);
+                localStorage.setItem("cr_userId",data.data.userId);
+                if(data.data.avatar==null){
+                    data.data.avatar='../../img/beat.png'
+                }
+                $(".mine_data>img").attr("src",data.data.avatar);
+           //data.data.nickName==null?data.data.realName==null?'疯狂倒拍':data.data.realName:data.data.nickName
+                //var name='疯狂倒拍';
+                if(data.data.nickName==null){
+                   if(data.data.userName!==null){
+                      name= data.data.userName
+                    }else{
+                       name='疯狂倒拍'
+                   }
+               }else{
+                        name= data.data.nickName
+               }
+                $(".mine_data_middle>span").text(name);
+                $(".mine_data_middle>em").html(`ID：${data.data.userId}<del class=" iconfont icon-bianji" onclick="location.href='./mine_data.html'"></del>
+                `);
+
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                )
+            }
+        })
+    })
+
+</script>
+</html>

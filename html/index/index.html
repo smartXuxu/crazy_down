@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>疯狂倒拍首页</title>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/index/index.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+  </head>
+<body>
+<div id="loading">
+    <img src="../../img/login.gif" alt=""/>
+    <div>请等待，正在加载...</div>
+</div>
+<div class="layer">
+    <!--判断登录状态 两套样式-->
+    <header>
+        <!--未登录就是 登录-->
+       <!-- <img src="../../img/focus-img1.png" alt=""/>
+        <input type="text" placeholder="搜店铺、搜商品" onfocus="location.href='./search.html'"/>
+        <span class="quit" onclick="location.href='../login.html'">登录 <i class="iconfont icon-xialasanjiao"></i></span>
+-->
+        <!-- <img src="../../img/focus-img1.png" alt=""/>
+         <input type="text" placeholder="搜店铺、搜商品" onfocus="location.href='./search.html'"/>
+         <span class="quit" onclick="location.href='../regist.html'">退出 <i class="iconfont icon-xialasanjiao"></i></span>
+    -->
+    </header>
+    <div class="main">
+<!--        <div class="swiper">
+                    <div class="swiper-slide">
+                        <img src="../../img/index_show.png" alt=""/>
+                        <div class="text">
+                            鲁美诺斯3152 F-35全球限量版军表 瑞士制造瑞士制造瑞士制造
+                        </div>
+                    </div>
+        </div>
+        &lt;!&ndash; 竞拍区域&ndash;&gt;
+        <div class="auction_area">
+                <ul class="auction_top clearfix">
+                    <li>
+                        <span>倒计时</span>
+                        <em>14:57:31</em>
+                    </li>
+                    <li>
+                        <span>当前价格</span>
+                        <em>1998元</em>
+                    </li>
+                    <li>
+                        <span>剩余数量</span>
+                        <em>98</em>
+                    </li>
+                </ul>
+            <div class="auction_middle" onclick="location.href='./sure_order.html'">
+                <span class="beat"></span>
+                <p>参与竞拍人数：6</p>
+            </div>
+            <div class="replay">
+                <ul>
+                    <li onclick="location.href='./auction.html'">
+                      竞拍
+                    </li>
+                    <li onclick="location.href='./goods_detail.html'">
+                      商品介绍
+                    </li>
+                </ul>
+            </div>
+
+        </div>-->
+    </div>
+    <div id="footer"></div>
+</div>
+</body>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/zepto/touch.js"></script>
+<script src="../../js/common/zepto/ajax.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="no_login">
+    <img src="../../img/beat.png" alt=""/>
+    <input type="text" placeholder="搜店铺、搜商品" onfocus="location.href='./search.html'"/>
+    <span class="quit" onclick="location.href='../login.html'">登录 <i class="iconfont icon-xialasanjiao"></i></span>
+</script>
+<script type="text/html" id="has_login">
+    <img src="{{data.avatar==null?'../../img/beat.png':data.avatar}}" alt=""/>
+    <input type="text" placeholder="搜店铺、搜商品" onfocus="location.href='./search.html'"/>
+    <span class="quit" onclick="location.href='../regist.html'">退出 <i class="iconfont icon-xialasanjiao"></i></span>
+</script>
+<script type="text/html" id="content">
+    <div class="swiper">
+        <div class="swiper-slide">
+            <img src="{{data.商品基本信息.images[0].imagePath}}" alt=""/>
+            <div class="text">
+                {{data.商品基本信息.introduce}}
+            </div>
+        </div>
+    </div>
+    <!-- 竞拍区域-->
+    <div class="auction_area">
+        <ul class="auction_top clearfix">
+            <li>
+                <span>倒计时</span>
+                <em>{{GetRTime(data.商品基本信息.endTime)}}</em>
+            </li>
+            <li>
+                <span>当前价格</span>
+                <em>{{data.商品基本信息.nowPrice}}元</em>
+            </li>
+            <li>
+                <span>剩余数量</span>
+                <em>{{data.商品基本信息.number}}</em>
+            </li>
+        </ul>
+        <div class="auction_middle" onclick="location.href='./sure_order.html?price={{data.商品基本信息.nowPrice}}&goodsId={{data.商品基本信息.goodsId}}&empressPrice={{data.商品基本信息.empressPrice}}'">
+            <span class="beat"></span>
+            <p>参与竞拍人数：{{data.参与竞拍人数}}</p>
+        </div>
+        <div class="replay">
+            <ul>
+                <li onclick="location.href='./auction.html?key={{data.商品基本信息.goodsType}}'">
+                    竞拍
+                </li>
+                <li onclick="location.href='./goods_detail.html?id={{data.商品基本信息.goodsId}}'">
+                    商品介绍
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</script>
+<script>
+    $(function () {
+        //ajax 发送完毕
+        $(document).on('ajaxStop', function () {
+            $("#loading").hide();
+        })
+        /*$(document).ajaxStop(function(){
+            $("#loading").hide();
+        });*/
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+        $('#footer').load('../common/footer.html');
+        (function($, doc) {
+            $.init();
+            $.plusReady(function() {
+                var backButtonPress = 0;
+                $.back = function(event) {
+                    backButtonPress++;
+                    if (backButtonPress > 1) {
+                        plus.runtime.quit();
+                    } else {
+                        plus.nativeUI.toast('再按一次退出应用');
+                    }
+                    setTimeout(function() {
+                        backButtonPress = 0;
+                    }, 1000);
+                    return false;
+                };
+            });
+        }(mui, document));
+        // 获取用户的登录信息 登录与未登录 显示两个模板
+        myAjax({url:"/user/getCurrentUserMessage",data:''}, function (data) {
+            console.log(data);
+            //将获取到的data 转为对象object类型
+            var data = JSON.parse(data);
+            console.log(data);
+            if(data.code == 200) {
+                //已登录
+                localStorage.setItem("cr_userId",data.data.userId);
+                $(".layer>header").html(template("has_login",data))
+
+            }else if(data.code==707){
+                //未登录
+                $(".layer>header").html(template("no_login",data))
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                );
+                return false
+            }
+        })
+        var data_length=0;
+        var data_data;
+        var tl=setInterval(function () {
+
+        },1000);
+        function render(id){
+            myAjax({url:`/goods/getAuctionIndex/${id}`,async:false}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==200){
+                    //倒计时 js
+                    var status=true;
+                    template.helper("sub", function (a,b) {
+                        return (a-0)+(b-0);
+                    });
+                    template.helper("GetRTime",function(data){
+                        //结束时间
+                        var EndTime = new Date(data).getTime();
+                       // console.log(EndTime);
+                        //当前时间
+                        var NowTime = new Date().getTime();
+                        //console.log(NowTime);
+                        var titm = "l";
+                        if (EndTime < NowTime) {
+                            status=false;
+                            titm = "活动已经超时";
+                        // window.clearInterval(tl);
+                        } else {
+                            //结束时间减去当前时间剩余的毫秒数
+                            //var t = EndTime.getTime() - NowTime.getTime();
+                            status=true
+                            var t = EndTime-NowTime;
+                            var h = Math.floor(t / 1000 / 60 / 60);//时
+                            var m = Math.floor(t / 1000 / 60 % 60);//分
+                            var s = Math.floor(t / 1000 % 60);//秒
+                            /* if (h > 2) {
+                             //window.clearInterval(t1);
+                             titm = "活动正在进行中";
+                             } else*/
+                            if (h == 0 && m == 0 && s == 0) {
+                              //window.clearInterval(t1);
+                                titm = "活动已经超时";
+                                status=false;
+                            } else {
+                                h < 10 ? h = '0' + h : h = h;//判断是否小于10，是则在时间前面加0
+                                m < 10 ? m = '0' + m : m = m;
+                                s < 10 ? s = '0' + s : s = s;
+                                titm = h + ":" + m + ":" + s ;
+                             /*  tl=setInterval(function () {
+                                    s--;
+                                    if(s<0){
+                                        s=60;
+                                        s--
+                                    }
+                                   if(m<0){
+                                       m--;
+                                       m=0;
+                                   }
+                                   if(h<0){
+                                       titm='活动已结束';
+                                   }
+                                },1000)*/
+                            }
+
+                        }
+                        return titm;
+                    });
+                    $(".main").html(template("content",data));
+                    if(status){
+                        //clearInterval(tl);
+                        //var tot_time=$(".tot_time>.add_time").text();
+                        var tot_time=$(".auction_top>li:first-of-type>em").text();
+                        tot_time=tot_time.split(":");
+                        var sec=tot_time[2];
+                        var min=tot_time[1];
+                        var hour=tot_time[0];
+                        console.log(tot_time+"/"+sec+"/"+min+"/"+hour);
+                         tl=setInterval(function () {
+                         sec--;
+                         if(sec<0){
+                         sec=60;
+                         sec--;
+                           min--;
+                         }
+                         if(min<0){
+                         min--;
+                             hour--;
+                             min=0;
+                         }
+                         if(hour<0){
+                             $(".auction_top>li:first-of-type>em").text('活动已结束');
+                         }
+                      $(".auction_top>li:first-of-type>em").text(hour+":"+min+":"+sec);
+                         },1000)
+
+                    }
+
+                }else{
+
+                }
+            });
+        }
+        myAjax({url:"/goods/getAllGoodsId",async:false}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                data_length=data.data.length;
+                console.log(data_length);
+                data_data=data.data;
+                console.log(data_data);
+                render(data_data[0]);
+            }
+        })
+        var num=0;
+        $(".main").swipeLeft(function () {
+            //console.log(1);
+            //alert(1);
+            num--;
+            if(num<0){
+                num=data_length-1;
+
+            }
+            console.log(num);
+             render(data_data[num]);
+
+        });
+
+        $(".main").swipeRight(function () {
+            //console.log(2);
+            num++;
+            if(num>data_length-1){
+                num=0;
+            }
+            console.log(num);
+            //alert(2);
+            render(data_data[num]);
+
+        });
+
+        /*zepto 在安卓手机上滑动无效*/
+        var sUserAgent = navigator.userAgent.toLowerCase();
+        if(sUserAgent.match(/android/i) == 'android'){
+            var startPos = {x: 0, y: 0, time: +new Date};
+            var isScrolling = 0;// 记录是垂直滚动还是水平滚动
+            document.addEventListener('touchstart', function(event){
+                var touch = event.targetTouches[0];//touches数组对象获得屏幕上所有的touch，取第一个touch
+                startPos.x = touch.pageX;
+                startPos.y = touch.pageY;
+            }, false);
+            document.addEventListener('touchmove', function(event){
+                if(event.targetTouches.length > 1 || event.scale && event.scale !== 1) return;
+                var touchmove = event.targetTouches[0];
+                var endPos = {x:touchmove.pageX - startPos.x, y: touchmove.pageY - startPos.y};
+                isScrolling = Math.abs(endPos.x) < Math.abs(endPos.y) ? 1:0; //isScrolling为1时，表示纵向滑动，0为横向滑动
+                if(isScrolling === 0){
+                    event.preventDefault();
+                }
+            }, false);
+        }
+
+
+       /* $(".main").swipeLeft(function () {
+            console.log(1);
+            alert(1)
+        });
+        $(".main").swipeRight(function () {
+            console.log(2);
+            alert(2)
+        });*/
+      /*  var count = 0; //判断用户是否第一次进行touchmove操作
+        var startX, startY;
+        var endX, endY;
+        var distanceX, distanceY;
+        $('.main').bind('touchstart', function(event) {
+            count = 0; //每次开始点击时清零
+            startX = event.targetTouches[0].clientX;
+            startY = event.targetTouches[0].clientY;
+        }).bind('touchmove', function(event) {
+            if (count === 0) { //如果是第一次滑动
+                endX = event.changedTouches[0].clientX;
+                endY = event.changedTouches[0].clientY;
+                distanceX = Math.abs(startX - endX);
+                distanceY = Math.abs(startY - endY);
+                if (distanceX > distanceY) { //如果X绝对距离大于Y绝对距离
+                    event.preventDefault();
+                }
+            }
+            count++;
+        }).bind('touchend', function(event) {
+            endX = event.changedTouches[0].clientX;
+            endY = event.changedTouches[0].clientY;
+            distanceX = Math.abs(startX - endX);
+            distanceY = Math.abs(startY - endY);
+            if (distanceX > distanceY) {
+                startX - endX > 0 ? swipeLeft() : swipeRight();
+            }
+        });*/
+    })
+</script>
+</html>

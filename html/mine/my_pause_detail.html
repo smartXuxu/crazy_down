@@ -13,13 +13,17 @@
  <!--   <link rel="stylesheet" href="../../css/all.css" />-->
 </head>
 <body>
+<div id="loading">
+    <img src="../../img/login.gif" alt=""/>
+    <div>请等待，正在加载...</div>
+</div>
 <div class="layer">
     <header id="header" class="mui-bar mui-bar-nav">
         <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
         <h1 class="mui-title">钱包明细</h1>
     </header>
     <div class="middle main">
-        <div class="income">
+       <!-- <div class="income">
             <div class="clearfix">
                 <span class="income-one">提现</span><span class="income-two">2018-10-14</span>
             </div>
@@ -34,86 +38,49 @@
             <div class="clearfix">
                 <span class="income-three">余额：3.90</span><span class="income-four">+100</span>
             </div>
-        </div>
-        <div class="income">
-            <div class="clearfix">
-                <span class="income-one">提现</span><span class="income-two">2018-10-14</span>
-            </div>
-            <div class="clearfix">
-                <span class="income-three">余额：3.90</span><span class="income-four">-100</span>
-            </div>
-        </div>
-        <div class="income">
-            <div class="clearfix">
-                <span class="income-one">充值</span><span class="income-two">2018-10-14</span>
-            </div>
-            <div class="clearfix">
-                <span class="income-three">余额：3.90</span><span class="income-four">+20</span>
-            </div>
-        </div>
-        <div class="income">
-            <div class="clearfix">
-                <span class="income-one">充值</span><span class="income-two">2018-10-14</span>
-            </div>
-            <div class="clearfix">
-                <span class="income-three">余额：3.90</span><span class="income-four">+100</span>
-            </div>
-        </div>
-        <div class="income">
-            <div class="clearfix">
-                <span class="income-one">提现</span><span class="income-two">2018-10-14</span>
-            </div>
-            <div class="clearfix">
-                <span class="income-three">余额：3.90</span><span class="income-four">-100</span>
-            </div>
-        </div>
-        <div class="income">
-            <div class="clearfix">
-                <span class="income-one">充值</span><span class="income-two">2018-10-14</span>
-            </div>
-            <div class="clearfix">
-                <span class="income-three">余额：3.90</span><span class="income-four">+100</span>
-            </div>
-        </div>
-        <div class="income">
-            <div class="clearfix">
-                <span class="income-one">提现</span><span class="income-two">2018-10-14</span>
-            </div>
-            <div class="clearfix">
-                <span class="income-three">余额：3.90</span><span class="income-four">-100</span>
-            </div>
-        </div>
-        <div class="income">
-            <div class="clearfix">
-                <span class="income-one">提现</span><span class="income-two">2018-10-14</span>
-            </div>
-            <div class="clearfix">
-                <span class="income-three">余额：3.90</span><span class="income-four">-100</span>
-            </div>
-        </div>
-        <div class="income">
-            <div class="clearfix">
-                <span class="income-one">提现</span><span class="income-two">2018-10-14</span>
-            </div>
-            <div class="clearfix">
-                <span class="income-three">余额：3.90</span><span class="income-four">-100</span>
-            </div>
-        </div>
-        <div class="income">
-            <div class="clearfix">
-                <span class="income-one">提现</span><span class="income-two">2018-10-14</span>
-            </div>
-            <div class="clearfix">
-                <span class="income-three">余额：3.90</span><span class="income-four">-100</span>
-            </div>
-        </div>
+        </div>-->
+
     </div>
 </div>
 <script src="../../js/common/x_rem.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="detail">
+    {{if data.length==0}}
+    <div class="no_in">对不起，您暂时没有消费明细</div>
+    {{else}}
+    {{each data as value i}}
+    <!--类型 0代表支出 1代表充值 2代表收入 3代表退款 4转账-->
+    <div class="income">
+        <div class="clearfix">
+            <span class="income-one">{{value.introduce}}</span><span class="income-two" style="color:#999;">{{time(value.time)}}</span>
+        </div>
+        <div class="clearfix" style="height:.8rem;line-height: .8rem">
+            <span class="income-three">金额：{{value.price}}</span><span class="income-four">{{value.type==0||value.type==4?"-":"+"}}{{value.price}}</span>
+        </div>
+    </div>
+    {{/each}}
+    {{/if}}
+</script>
 <script>
     $(function () {
-
+        //ajax 发送完毕
+        $(document).on('ajaxStop', function () {
+            $("#loading").hide();
+        })
+        var userId=localStorage.getItem("cr_userId");
+        myAjax({url:`/pay/getBills/${userId}`,async:false},function(data){
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                template.helper("time", function (data) {
+                    return new Date(data).toLocaleString().replace(/:\d{1,2}$/,' ').replace(/\//g,"-");
+                })
+                $(".main").html(template("detail",data));
+            }
+        })
     })
 </script>
 </body>

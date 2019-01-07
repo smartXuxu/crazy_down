@@ -189,7 +189,7 @@
         //遍历获取到得图片文件
         for (var i = 0; i < fileList.length; i++) {
             //判断上传的图片大小
-           /* if(file.files && file.files[i]){
+            if(file.files && file.files[i]){
                 var fileData = file.files[i];
                 var size = fileData.size;   //注意，这里读到的是字节数
                 var isAllow = false;
@@ -201,7 +201,7 @@
                     alert("大小超过2 M，请重新上传");
                     return false;
                 }
-            }*/
+            }
             //结束
             var imgUrl = window.URL.createObjectURL(file.files[i]);
             imgArr.push(imgUrl);

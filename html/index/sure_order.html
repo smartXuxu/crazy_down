@@ -45,7 +45,7 @@
             </div>-->
          </div>
         <div class="info">
-           <!-- <img src="../../img/focus-img1.png" alt=""/>
+           <!--<img src="../../img/focus-img1.png" alt=""/>
             <div class="info_middle">
                 <div>鲁美诺斯3152 F-35全球限量版 军表 瑞士制造鲁美诺斯3152 F-35全球限量版 军表 瑞士制造
                 </div>
@@ -70,13 +70,13 @@
         </div>
         <div class="pay_style">
             <p>选择支付方式</p>
-            <div class="clearfix weChatPay" data-type="0">
+            <!--<div class="clearfix weChatPay" data-type="0">
                <span><i class="iconfont icon-weixinzhifu" ></i>微信支付</span>
                 <em class="f_right active iconfont  icon-duihao"></em>
-            </div>
+            </div>-->
             <div class="clearfix airPay" data-type="1">
                <span ><i class="iconfont icon-changyonglogo30"></i>支付宝支付</span>
-                <em class="f_right  iconfont  icon-duihao"></em>
+                <em class="f_right active iconfont  icon-duihao"></em>
             </div>
         </div>
         <div class="totalMoney">
@@ -114,7 +114,7 @@
         <em class="f_right">{{receiverphone}}</em>
     </div>
     <div class="order_people_footer ">
-        <em class="iconfont icon-zuobiao1"></em>收货地址：{address}}
+        <em class="iconfont icon-zuobiao1"></em>收货地址：{{address}}
     </div>
 </script>
 <script>
@@ -137,7 +137,8 @@
                 $(".info_middle>p>em").text(`￥${goodsPrice}`)
                 $(".order_id").text(`订单号：${data.data.goodsOrderId}`);
                 $(".freight").text(`运   费： ${empressPrice}`);
-                $(".totalMoney>span>i").text(`￥${price}`)
+                $(".totalMoney>span>i").text(`￥${price}`);
+                $(".totalMoney>button").attr('data-goodsorderid',`${data.data.goodsOrderId}`)
             }else{
                 sweetAlert(
                         "sorry",
@@ -157,14 +158,16 @@
          "2019-01-05T10:16:49.217+0000"
          goods
        */
+
         if(localStorage.getItem("buy_status")){
             if(localStorage.getItem("buy_status")=='self_pickUp'){
-
                 $(".take_style>.f_right>input").val("上门取货");
                 json_data.receiver=localStorage.getItem("receiver");
                 json_data.receiverphone=localStorage.getItem("receiverphone");
                 $(".order_people").html(template("order_people",json_data))
             }else{
+                $(".totalMoney>span>i").text(`￥(${price}-0)+(${empressPrice}-0)`);
+                console.log((price-0) + (empressPrice-0));
                 $(".take_style>.f_right>input").val("商家发货");
                 json_data.receiver=localStorage.getItem("receiver");
                 json_data.receiverphone=localStorage.getItem("receiverphone");
@@ -172,6 +175,52 @@
                 $(".order_people").html(template("pick_people",json_data))
             }
         }
+        $(".main").on("click",".totalMoney>button", function () {
+            var goodsOrderId=$(this).data("goodsorderid");
+           if(localStorage.getItem("buy_status")){
+
+               if(localStorage.getItem("buy_status")=='self_pickUp'){
+                   //上门取货
+                   var pay_json={
+                       "linkMan.userName":localStorage.getItem("receiver"),
+                       "linkMan.mobilePhone":localStorage.getItem("receiverphone"),
+                       'pickUp':'0',
+                       "goodsOrderId":goodsOrderId
+                   }
+                   console.log(pay_json);
+               }else{
+                   //商家发货
+                   var pay_json={
+                      "addressId":localStorage.getItem("addressid"),
+                       'pickUp':'1',
+                       "goodsOrderId":goodsOrderId
+                   };
+                   console.log(pay_json);
+               }
+           }else{
+              sweetAlert(
+                      "sorry",
+                      "请您选择收货方式",
+                      "error"
+              )
+               return false;
+           }
+            myAjax({url:"/pay/aliPay",data:pay_json,type:"post"}, function (data) {
+                console.log(data);
+                if(data!==''){
+                    localStorage.setItem("purseData",data);
+                    //清除本地存储的订单信息等
+                    localStorage.removeItem("receiver");
+                    localStorage.removeItem("buy_status");
+                    localStorage.removeItem("addressid");
+                    localStorage.removeItem("receiverphone");
+                    localStorage.removeItem("address");
+                    location.href='my_purse_recharge_b.html';
+                }
+                //window.location.href=data.data
+
+            })
+        })
 
     })
 </script>

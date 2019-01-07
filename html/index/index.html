@@ -218,7 +218,7 @@
                         } else {
                             //结束时间减去当前时间剩余的毫秒数
                             //var t = EndTime.getTime() - NowTime.getTime();
-                            status=true
+                            status=true;
                             var t = EndTime-NowTime;
                             var h = Math.floor(t / 1000 / 60 / 60);//时
                             var m = Math.floor(t / 1000 / 60 % 60);//分
@@ -236,20 +236,6 @@
                                 m < 10 ? m = '0' + m : m = m;
                                 s < 10 ? s = '0' + s : s = s;
                                 titm = h + ":" + m + ":" + s ;
-                             /*  tl=setInterval(function () {
-                                    s--;
-                                    if(s<0){
-                                        s=60;
-                                        s--
-                                    }
-                                   if(m<0){
-                                       m--;
-                                       m=0;
-                                   }
-                                   if(h<0){
-                                       titm='活动已结束';
-                                   }
-                                },1000)*/
                             }
 
                         }
@@ -257,7 +243,7 @@
                     });
                     $(".main").html(template("content",data));
                     if(status){
-                        //clearInterval(tl);
+                        clearInterval(tl);
                         //var tot_time=$(".tot_time>.add_time").text();
                         var tot_time=$(".auction_top>li:first-of-type>em").text();
                         tot_time=tot_time.split(":");
@@ -279,6 +265,7 @@
                          }
                          if(hour<0){
                              $(".auction_top>li:first-of-type>em").text('活动已结束');
+                        return;
                          }
                       $(".auction_top>li:first-of-type>em").text(hour+":"+min+":"+sec);
                          },1000)

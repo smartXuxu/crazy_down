@@ -99,7 +99,7 @@
     <ul>
         {{each data as value i}}
         <li>
-            <div data-status="business" data-address="{{value.expressAddress}}" data-receiver="{{value.receiver}}" data-receiverphone="{{value.receiverPhone}}" class="li_top">
+            <div data-addressid='{{value.addressId}}' data-status="business" data-address="{{value.expressAddress}}" data-receiver="{{value.receiver}}" data-receiverphone="{{value.receiverPhone}}" class="li_top">
                 <p class="clearfix">
                     <span>收货人：{{value.receiver}}</span>
                     <em>{{sub(value.receiverPhone,0,3)}}****{{sub(value.receiverPhone,7,11)}}</em>
@@ -178,6 +178,7 @@
             localStorage.setItem("buy_status",$(this).data("status"));
             localStorage.setItem("receiver",$(this).data("receiver"));
             localStorage.setItem("receiverphone",$(this).data("receiverphone"));
+            localStorage.setItem("addressid",$(this).data("addressid"));
             history.go(-2);
         })
 

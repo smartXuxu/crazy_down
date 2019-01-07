@@ -18,19 +18,19 @@
         <h1 class="mui-title">确认订单</h1>
     </header>
     <div class="main">
-        <div class="take_style clearfix">
+       <!-- <div class="take_style clearfix">
             <span>取货方式</span>
             <em class="f_right">商家发货</em>
             <em class="f_right">上门取货</em>
         </div>
-        <!--判断取货方式 -->
-        <!--上门取货-->
+        &lt;!&ndash;判断取货方式 &ndash;&gt;
+        &lt;!&ndash;上门取货&ndash;&gt;
         <div class="pick_people clearfix">
             <span>取货人：魏雨</span>
             <em class="f_right">  17685679322</em>
         </div>
-        <!--卖家发货-->
-       <!-- <div class="order_people clearfix">
+        &lt;!&ndash;卖家发货&ndash;&gt;
+       &lt;!&ndash; <div class="order_people clearfix">
             <div class="order_people_top">
                 <span>收货人：魏雨</span>
                 <em class="f_right">17685679322</em>
@@ -38,7 +38,7 @@
            <div class="order_people_footer ">
                <em class="iconfont icon-zuobiao1"></em>收货地址：河南省郑州市中原区梧桐街道祝福红城南区
            </div>
-        </div>-->
+        </div>&ndash;&gt;
 
         <div class="info">
             <img src="../../img/focus-img1.png" alt=""/>
@@ -62,24 +62,24 @@
 
             <p class="clearfix">
                 <span>订单号：02154451203</span>
-                <!--只有待收货状态才有 退换-->
+                &lt;!&ndash;只有待收货状态才有 退换&ndash;&gt;
                 <a href="./quit_goods.html" class="f_right">退换</a>
             </p>
         </div>
         <div class="apply">
-            <!--代发货-->
+            &lt;!&ndash;代发货&ndash;&gt;
             <button onclick=location.href='./apply_quit_money.html'>申请退款</button>
             <button class="color-red">已付款</button>
-            <!--待收货-->
+            &lt;!&ndash;待收货&ndash;&gt;
             <button onclick="location.href='see_Logistics.html'">查看物流</button>
             <button class="color-red">确认收货</button>
-            <!--上门取货-->
+            &lt;!&ndash;上门取货&ndash;&gt;
             <button>申请退款</button>
             <button class="color-red">确认取货</button>
-            <!--退款收货-->
+            &lt;!&ndash;退款收货&ndash;&gt;
             <button class="color-red">退款中</button>
             <button class="color-red">退款成功</button>
-        </div>
+        </div>-->
 
     </div>
 </div>
@@ -89,11 +89,108 @@
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/mui/mui.min.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/template/template-web.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<!-- 0确定订单 1买家已支付 2卖家发货/等待上门取货&ndash;&gt;3买家确认收货&ndash;&gt;4取消订单(30min内未支付)
+ 'pickUp':'1', 商家发货
+-->
+<script type="text/html" id="detail">
+    <div class="take_style clearfix">
+        <span>取货方式</span>
+        <em class="f_right" >{{data.pickUp==0?"上门取货":"商家发货"}}</em>
+       <!-- <em class="f_right"></em>-->
+    </div>
+    <!--判断取货方式 -->
+    <!--上门取货-->
+    {{if data.pickUp==0}}
+    <div class="pick_people clearfix">
+        <span>取货人：{{data.linkMan.userName}}</span>
+        <em class="f_right">  {{data.linkMan.mobilePhone}}</em>
+    </div>
+    {{/if}}
+    <!--卖家发货-->
+    {{if data.pickUp==1}}
+     <div class="order_people clearfix">
+         <div class="order_people_top">
+             <span>收货人：{{data.goodsExpress.address.receiver}}</span>
+             <em class="f_right">{{data.goodsExpress.address.receiverPhone}}</em>
+         </div>
+        <div class="order_people_footer ">
+            <em class="iconfont icon-zuobiao1"></em> 收货地址：{{data.goodsExpress.address.expressAddress}}
+        </div>
+     </div>
+    {{/if}}
+    <div class="info">
+        <img src="{{data.goods.images[0].imagePath}}" alt=""/>
+        <div class="info_middle">
+            <div>{{data.goods.title}} {{data.goods.introduce}}
+            </div>
+            <p class="clearfix">
+                <em>￥{{data.price}}</em>
+                <i class="f_right">X1</i>
+            </p>
+        </div>
+    </div>
+    <div class="base_info">
+        <p class="clearfix">
+            <span>购买数量</span>
+            <i class="f_right">总计1件</i>
+        </p>
+        <p>
+            <span>运   费： {{data.goods.empressPrice}}</span>
+        </p>
+
+        <p class="clearfix">
+            <span>订单号：{{data.goodsOrderId}}</span>
+            <!--只有待收货状态才有 退换-->
+            {{if data.status==2}}
+            <a href="./quit_goods.html" class="f_right">退换</a>
+            {{/if}}
+        </p>
+    </div>
+    <div class="apply">
+        <!--代发货-->
+        {{if data.backGoods==null&&data.status==1}}
+        <button onclick=location.href='./apply_quit_money.html?goodsOrderId={{data.goodsOrderId}}'>申请退款</button>
+        <button class="color-red">已付款</button>
+        {{/if}}
+        <!--待收货-->
+        {{if data.status==2}}
+        <button onclick="location.href='see_Logistics.html?goodsOrderId={{data.goodsOrderId}}'">查看物流</button>
+        <button class="color-red">确认收货</button>
+        {{/if}}
+        <!--上门取货-->
+        {{if data.pickUp==0&&data.status==2}}
+        <button>申请退款</button>
+        <button class="color-red">确认取货</button>
+        {{/if}}
+        {{if data.pickUp==0&&data.status==3}}
+        <button style="opacity:0;">申请退款</button>
+        <button class="color-red">完成取货</button>
+        {{/if}}
+        <!--退款收货-->
+        {{if data.status==3}}
+        <button class="color-red">退款中</button>
+        <button class="color-red">退款成功</button>
+        {{/if}}
+    </div>
+</script>
 <script>
     $(function () {
         mui('body').on('tap','a',function(){document.location.href=this.href;});
+        var goodsOrderId=location.href.split("=")[1];
 
-
+        myAjax({url:`/order/getGoodsOrderByOrderId/${goodsOrderId}`}, function (data) {
+          var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                template.helper("obj_length", function (msg) {
+                    return Object.keys(msg)
+                });
+                $(".main").html(template("detail",data));
+            }
+        })
     })
 </script>
 </html>

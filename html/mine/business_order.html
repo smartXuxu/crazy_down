@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../css/header.css"/>
     <link rel="stylesheet" href="../../css/iconfont.css"/>
     <link rel="stylesheet" href="../../css/mine/mine_order.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
 </head>
 <body>
 <div class="layer">
@@ -30,10 +31,10 @@
         <!--代发货-->
         <div class="send_goods business_send_goods">
             <ul>
-                <li>
+               <!-- <li>
                     <a href="business_see_order_detail.html">
                         <p class="shop_top clearfix">
-                            <!--买家姓名-->
+                            &lt;!&ndash;买家姓名&ndash;&gt;
                             <span>Luminox </span>
                         </p>
                         <div class="shop_content">
@@ -56,13 +57,13 @@
                     <div class="shop_replay">
                     <button class="sure_order color-red">确认发货</button>
                 </div>
-                </li>
+                </li>-->
             </ul>
         </div>
         <!--待收货-->
         <div class="receive_goods">
             <ul>
-                <li>
+             <!--   <li>
                     <a href="business_see_order_detail.html">
                         <p class="shop_top clearfix">
                             <span>Luminox </span>
@@ -115,13 +116,13 @@
                         <button class="see_logistics border-gray">查看物流</button>
                         <button class="sure_order color-red">买家已收货</button>
                     </div>
-                </li>
+                </li>-->
             </ul>
         </div>
         <!--上门取货-->
         <div class="visit_goods business_visit_goods">
             <ul>
-                <li>
+              <!--  <li>
                     <a href="business_see_order_detail.html">
                         <p class="shop_top clearfix">
                             <span>Luminox </span>
@@ -146,13 +147,13 @@
                     <div class="shop_replay">
                         <button class=" color-red">确认取货</button>
                     </div>
-                </li>
+                </li>-->
             </ul>
         </div>
         <!--退款售后-->
         <div class="quit_goods business_quit_goods">
             <ul>
-                <li>
+              <!--  <li>
                     <a href="business_see_order_detail.html">
                         <p class="shop_top clearfix">
                             <span>Luminox </span>
@@ -180,7 +181,7 @@
                         <button class="color-red">拒绝退换</button>
                     </div>
 
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>
@@ -191,9 +192,188 @@
 <script src="../../js/common/mui/mui.min.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
 <script src="../../js/common/zepto/touch.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<!--代发货订单-->
+<script type="text/html" id="send_goods">
+    {{if data.length==0||data==null}}
+    <div class="no_in">对不起，您暂时没有等待发货的订单</div>
+    {{else}}
+    {{each data as value i}}
+    <li>
+        <a href="business_see_order_detail.html?goodsOrderId={{value.goodsOrderId}}">
+            <p class="shop_top clearfix">
+                <span>{{value.goods.merchant.merchantName}} </span>
+                <i class="f_right">商家待发货</i>
+            </p>
+            <div class="shop_content">
+                <img src="{{value.goods.images[0].imagePath}}" alt="" onerror="this.src='../../img/beat.png'"/>
+                <div class="shop_middle">
+                    <div class="text">
+                        {{value.goods.title}} {{value.goods.introduce}}
+                    </div>
+                    <p class="clearfix">
+                        <em>￥{{value.price}}元</em>
+                        <del class="f_right">X1</del>
+                    </p>
+                </div>
+                <div class="shop_info clearfix">
+                    <span class="f_right">共一件商品  合计：￥{{value.price}}</span>
+                </div>
+            </div>
+        </a>
+        <div class="shop_replay">
+            <button class="sure_order color-red">确认发货</button>
+        </div>
+    </li>
+    {{/each}}
+    {{/if}}
+</script>
+<!--待收货-->
+<script id="receive_goods" type="text/html">
+    {{if data.length==0||data==null}}
+    <div class="no_in">对不起，您暂时没有等待收货的订单</div>
+    {{else}}
+    {{each data as value i}}
+    <li>
+        <a href="business_see_order_detail.html?goodsOrderId={{value.goodsOrderId}}">
+            <p class="shop_top clearfix">
+                <span>Luminox </span>
+                <i class="f_right">商家已发货</i>
+            </p>
+            <div class="shop_content">
+                <img src="../../img/focus-img1.png" alt=""/>
+                <div class="shop_middle">
+                    <div class="text">
+                        鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                        鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                    </div>
+                    <p class="clearfix">
+                        <em>￥3000元</em>
+                        <del class="f_right">X1</del>
+                    </p>
+                </div>
+                <div class="shop_info clearfix">
+                    <span class="f_right">共一件商品  合计：￥3000</span>
+                </div>
+            </div>
+        </a>
+        <div class="shop_replay">
+            <button class="see_logistics border-gray">查看物流</button>
+            <button class="sure_order color-red">等待收货</button>
+            <button class="sure_order color-red">买家已收货</button>
+        </div>
+    </li>
+    {{/each}}
+    {{/if}}
+</script>
+<!--上门取货-->
+<script id="visit_goods" type="text/html">
+    {{if data!==null&&data.已完成订单.length==0&&data.待完成订单.length==0}}
+    <div class="no_in">对不起，您暂时没有上门取货订单</div>
+    {{else}}
+    {{if data.已完成订单.length!==0}}
+    {{each data.已完成订单 as value i}}
+    <li>
+        <a href="business_see_order_detail.html?goodsOrderId={{value.goodsOrderId}}" >
+            <p class="shop_top clearfix">
+                <span>{{value.linkMan.userName}} </span>
+            </p>
+            <div class="shop_content">
+                <img src="{{value.goods.images[0].imagePath}}" alt="" onerror="this.src='../../img/beat.png'"/>
+                <div class="shop_middle">
+                    <div class="text">
+                        {{value.goods.title}} {{value.goods.introduce}}
+                    </div>
+                    <p class="clearfix">
+                        <em>￥{{value.price}}元</em>
+                        <del class="f_right">X1</del>
+                    </p>
+                </div>
+                <div class="shop_info clearfix">
+                    <span class="f_right">共一件商品  合计：￥{{value.price}}</span>
+                </div>
+            </div>
+        </a>
+        <div class="shop_replay">
+            <button class=" color-red">订单已完成</button>
+        </div>
+    </li>
+    {{/each}}
+    {{/if}}
+    {{if data.待完成订单.length!==0}}
+    {{each data.待完成订单 as value i}}
+    <li>
+        <a href="business_see_order_detail.html?goodsOrderId={{value.goodsOrderId}}">
+            <p class="shop_top clearfix">
+                <span>{{value.linkMan.userName}}</span>
+            </p>
+            <div class="shop_content">
+                <img src="{{value.goods.images[0].imagePath}}" alt="" onerror="this.src='../../img/beat.png'"/>
+                <div class="shop_middle">
+                    <div class="text">
+                        {{value.goods.title}} {{value.goods.introduce}}
+                    </div>
+                    <p class="clearfix">
+                        <em>￥{{value.price}}元</em>
+                        <del class="f_right">X1</del>
+                    </p>
+                </div>
+                <div class="shop_info clearfix">
+                    <span class="f_right">共一件商品  合计：￥{{value.price}}</span>
+                </div>
+            </div>
+        </a>
+        <div class="shop_replay">
+            <button class=" color-red">等待取货</button>
+        </div>
+    </li>
+    {{/each}}
+    {{/if}}
+    {{/if}}
+</script>
+<script id="quit_goods" type="text/html">
+    {{if data.length==0}}
+    <div class="no_in">对不起，您暂时没有需要处理的退款售后订单</div>
+    {{else}}
+    {{each data as value i}}
+    <li>
+        <a href="business_see_order_detail.html?goodsOrderId={{value.goodsOrderId}}">
+            <p class="shop_top clearfix">
+                <span>{{value.goods.merchant.merchantName}}</span>
+                <i class="f_right">申请退换</i>
+                <!--<i class="f_right">退款成功</i>-->
+            </p>
+            <div class="shop_content">
+                <img src="{{value.goods.images[0].imagePath}}" alt="" onerror="this.src='../../img/beat.png'"/>
+                <div class="shop_middle">
+                    <div class="text">
+                        {{value.goods.title}} {{value.goods.introduce}}
+                    </div>
+                    <p class="clearfix">
+                        <em>￥{{value.price}}元</em>
+                        <del class="f_right">X1</del>
+                    </p>
+                </div>
+                <div class="shop_info clearfix">
+                    <span class="f_right">共一件商品  合计：￥{{value.price}}</span>
+                </div>
+            </div>
+        </a>
+        <div class="shop_replay">
+            <button class="color-red">同意退换</button>
+            <button class="color-red">拒绝退换</button>
+        </div>
+    </li>
+    {{/each}}
+    {{/if}}
+</script>
 <script>
     $(function () {
         mui('body').on('tap','a',function(){document.location.href=this.href;});
+        var userId=localStorage.getItem("cr_userId");
         //tab 栏的切换
         $("nav>ul>li").click(function () {
             $(this).addClass("active").siblings().removeClass("active");
@@ -202,20 +382,59 @@
             if(index==0){
                 //代发货
                 $(".main>div").eq(index).show().siblings("div").hide();
+                render("order/getOrderByStatus",1,".send_goods>ul","send_goods");
             }else if(index==1){
                 //待收货
                 $(".main>div").eq(index).show().siblings("div").hide();
+
+                render("order/getOrderByStatus",2,".receive_goods>ul","receive_goods");
             }else if(index==2){
                 //上门取货
                 $(".main>div").eq(index).show().siblings("div").hide();
+                pick_quit_order("order/getOrderByPickUp",".visit_goods>ul","visit_goods");
+
             }else{
                 //退款
                 $(".main>div").eq(index).show().siblings("div").hide();
+                pick_quit_order("/order/getApplyBackOrderBySeller",".quit_goods>ul","quit_goods");
             }
         })
         //先默认渲染 代发货
 
-
+        render("order/getOrderByStatus",1,".send_goods>ul","send_goods");
+        function render(url,sta,src,tel){
+            myAjax({url:`/${url}/${userId}/${sta}`}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==200){
+                    $(src).html(template(tel,data))
+                }else{
+                    sweetAlert(
+                            "sorry",
+                            data.msg,
+                            "error"
+                    )
+                }
+            })
+        }
+        function pick_quit_order(url,src,tel){
+            myAjax({url:`/${url}/${userId}`}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==200){
+                    template.helper("obj_length", function (msg) {
+                        return Object.keys(msg)
+                    });
+                    $(src).html(template(tel,data))
+                }else{
+                    sweetAlert(
+                            "sorry",
+                            data.msg,
+                            "error"
+                    )
+                }
+            })
+        }
     })
 
 </script>

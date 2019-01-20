@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../css/header.css"/>
     <link rel="stylesheet" href="../../css/iconfont.css"/>
     <link rel="stylesheet" href="../../css/mine/see_order_detail.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
 </head>
 <body>
 <div class="layer">
@@ -92,7 +93,8 @@
 <script src="../../js/common/template/template-web.js"></script>
 <script src="../../js/common/template/template.js"></script>
 <script src="../../js/common/sweetAlert/sweetalert2.js"></script>
-<!-- 0确定订单 1买家已支付 2卖家发货/等待上门取货&ndash;&gt;3买家确认收货&ndash;&gt;4取消订单(30min内未支付)
+<!-- status
+0确定订单 1买家已支付 2卖家发货/等待上门取货&ndash;&gt;3买家确认收货&ndash;&gt;4取消订单(30min内未支付)
  'pickUp':'1', 商家发货
 -->
 <script type="text/html" id="detail">
@@ -113,11 +115,11 @@
     {{if data.pickUp==1}}
      <div class="order_people clearfix">
          <div class="order_people_top">
-             <span>收货人：{{data.goodsExpress.address.receiver}}</span>
-             <em class="f_right">{{data.goodsExpress.address.receiverPhone}}</em>
+             <span>收货人：{{data.goodsExpress.address==null?'疯狂倒拍':data.goodsExpress.address.receiver}}</span>
+             <em class="f_right">{{data.goodsExpress.address==null?'暂未设置':data.goodsExpress.address.receiverPhone}}</em>
          </div>
         <div class="order_people_footer ">
-            <em class="iconfont icon-zuobiao1"></em> 收货地址：{{data.goodsExpress.address.expressAddress}}
+            <em class="iconfont icon-zuobiao1"></em> 收货地址：{{data.goodsExpress.address==null?'暂未设置':data.goodsExpress.address.expressAddress}}
         </div>
      </div>
     {{/if}}
@@ -145,38 +147,73 @@
             <span>订单号：{{data.goodsOrderId}}</span>
             <!--只有待收货状态才有 退换-->
             {{if data.status==2}}
-            <a href="./quit_goods.html" class="f_right">退换</a>
+            <a href="./quit_goods.html?id={{data.goodsOrderId}}" class="f_right">退换</a>
             {{/if}}
         </p>
     </div>
     <div class="apply">
         <!--代发货-->
-        {{if data.backGoods==null&&data.status==1}}
+        {{if data.pickUp==1&&data.backGoods==null&&data.status==1}}
         <button onclick=location.href='./apply_quit_money.html?goodsOrderId={{data.goodsOrderId}}'>申请退款</button>
         <button class="color-red">已付款</button>
         {{/if}}
         <!--待收货-->
-        {{if data.status==2}}
+        {{if data.pickUp==1&&data.backGoods==null&&data.status==2}}
         <button onclick="location.href='see_Logistics.html?goodsOrderId={{data.goodsOrderId}}'">查看物流</button>
-        <button class="color-red">确认收货</button>
+        <button class="color-red" onclick="sure_recieve('{{data.goodsOrderId}}',this)">确认收货</button>
+        {{/if}}
+        {{if data.pickUp==1&&data.backGoods==null&&data.status==3}}
+        <button onclick="location.href='see_Logistics.html?goodsOrderId={{data.goodsOrderId}}'">查看物流</button>
+        <button class="color-red" >已收货</button>
         {{/if}}
         <!--上门取货-->
-        {{if data.pickUp==0&&data.status==2}}
-        <button>申请退款</button>
-        <button class="color-red">确认取货</button>
+        {{if data.pickUp==0&&data.status==2||data.status==1}}
+        <button  onclick=location.href='./apply_quit_money.html?goodsOrderId={{data.goodsOrderId}}'>申请退款</button>
+        <button class="color-red"  onclick="sure_recieve('{{data.goodsOrderId}}',this)">确认取货</button>
         {{/if}}
         {{if data.pickUp==0&&data.status==3}}
         <button style="opacity:0;">申请退款</button>
         <button class="color-red">完成取货</button>
         {{/if}}
         <!--退款收货-->
-        {{if data.status==3}}
+        {{if data.backGoods!==null&&data.backGoods.backStatus==0}}
         <button class="color-red">退款中</button>
+        <button class="color-red">等待卖家确认</button>
+        {{/if}}
+        {{if data.backGoods!==null&&data.backGoods.backStatus==1}}
+        <button class="color-red">卖家同意</button>
+        <button class="color-red">等待退款</button>
+        {{/if}}
+        {{if data.backGoods!==null&&data.backGoods.backStatus==2}}
+        <button class="color-red">已处理</button>
+        <button class="color-red">卖家拒绝</button>
+        {{/if}}
+        {{if data.backGoods!==null&&data.backGoods.backStatus==3}}
+        <button class="color-red">已处理</button>
         <button class="color-red">退款成功</button>
         {{/if}}
     </div>
 </script>
+<!--backStatus
+0等待卖家确认 1卖家同意但未退款或退换 2卖家拒绝 3卖家已退款或退换
+给买家 如果退换，此平台不再显示物流-->
 <script>
+    //确认收货
+    function sure_recieve(orderId,e){
+        myAjax({url:`/order/surePickUp/`,type:"post",data:{orderId:orderId}}, function (data) {
+            console.log(data);
+            var data=JSON.parse(data);
+            if(data.code==200){
+                $(e).text("已收货");
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                )
+            }
+        })
+    }
     $(function () {
         mui('body').on('tap','a',function(){document.location.href=this.href;});
         var goodsOrderId=location.href.split("=")[1];

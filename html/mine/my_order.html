@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
-
     <title>我的订单</title>
     <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
     <link rel="stylesheet" href="../../css/base.css"/>
@@ -59,7 +58,6 @@
         </div>
         <!--待收货-->
         <div class="receive_goods">
-
             <ul>
                <!-- <li>
                     <a href="see_order_detail.html">
@@ -202,31 +200,30 @@
     {{else}}
     {{each data as value i}}
     <li>
-        <a href="see_order_detail.html">
+        <a href="see_order_detail.html?goodsOrderId={{value.goodsOrderId}}">
             <p class="shop_top clearfix">
-                <span>Luminox </span>
+                <span>{{value.goods.merchant.merchantName}} </span>
                 <i class="f_right">商家已发货</i>
             </p>
             <div class="shop_content">
-                <img src="../../img/focus-img1.png" alt=""/>
+                <img src="{{value.goods.images[0].imagePath}}" alt="" onerror="this.src='../../img/beat.png'"/>
                 <div class="shop_middle">
                     <div class="text">
-                        鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
-                        鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                        {{value.goods.title}} {{value.goods.introduce}}
                     </div>
                     <p class="clearfix">
-                        <em>￥3000元</em>
+                        <em>￥{{value.price}}元</em>
                         <del class="f_right">X1</del>
                     </p>
                 </div>
                 <div class="shop_info clearfix">
-                    <span class="f_right">共一件商品  合计：￥3000</span>
+                    <span class="f_right">共一件商品  合计：￥{{value.price}}</span>
                 </div>
             </div>
         </a>
         <div class="shop_replay">
-            <button class="see_logistics border-gray">查看物流</button>
-            <button class="sure_order color-red">确认收货</button>
+            <button class="see_logistics border-gray" onclick="location.href='see_Logistics.html?goodsOrderId={{value.goodsOrderId}}'">查看物流</button>
+            <button class="sure_order color-red" onclick="sure_recieve('{{value.goodsOrderId}}',this)">确认收货</button>
         </div>
     </li>
     {{/each}}
@@ -240,7 +237,7 @@
     {{if data.已完成订单.length!==0}}
     {{each data.已完成订单 as value i}}
     <li>
-        <a href="see_order_detail.html" >
+        <a href="see_order_detail.html?goodsOrderId={{value.goodsOrderId}}" >
             <p class="shop_top clearfix">
                 <span>{{value.linkMan.userName}} </span>
             </p>
@@ -261,7 +258,7 @@
             </div>
         </a>
         <div class="shop_replay">
-            <button class=" border-gray" style="display: none;">申请退款</button>
+            <button class=" border-gray" style="opacity: 0">申请退款</button>
             <button class=" color-red">订单已完成</button>
         </div>
     </li>
@@ -291,18 +288,20 @@
             </div>
         </a>
         <div class="shop_replay">
-            <button class=" border-gray">申请退款</button>
-            <button class=" color-red">确认取货</button>
+            <button class=" border-gray" onclick=location.href='./apply_quit_money.html?goodsOrderId={{value.goodsOrderId}}'>申请退款</button>
+            <button class=" color-red" onclick="sure_recieve('{{goodsOrderId}}',this)">确认取货</button>
         </div>
     </li>
     {{/each}}
     {{/if}}
     {{/if}}
 </script>
+<!--退款 退货-->
 <script id="quit_goods" type="text/html">
-    {{if data.length==0}}
+    {{if obj_length(data).length==0}}
     <div class="no_in">对不起，您暂时没有退款售后订单</div>
     {{else}}
+    {{each data as data i}}
     {{each data as value i}}
     <li>
         <a href="see_order_detail.html?goodsOrderId={{value.goodsOrderId}}">
@@ -329,9 +328,26 @@
         </a>
     </li>
     {{/each}}
+    {{/each}}
     {{/if}}
 </script>
 <script>
+    //确认收货
+    function sure_recieve(orderId,e){
+        myAjax({url:`/order/surePickUp/`,type:"post",data:{orderId:orderId}}, function (data) {
+            console.log(data);
+            var data=JSON.parse(data);
+            if(data.code==200){
+                $(e).text("已收货");
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                )
+            }
+        })
+    }
     $(function () {
         mui('body').on('tap','a',function(){document.location.href=this.href;});
         var userId=localStorage.getItem("cr_userId");
@@ -361,7 +377,6 @@
             }
         })
         //先默认渲染 代发货
-
         render("order/getOrderByStatus",1,".send_goods>ul","send_goods");
        function render(url,sta,src,tel){
            myAjax({url:`/${url}/${userId}/${sta}`}, function (data) {

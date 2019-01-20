@@ -41,7 +41,7 @@
          </div>-->
 
         <div class="info">
-            <img src="../../img/focus-img1.png" alt=""/>
+           <!-- <img src="../../img/focus-img1.png" alt=""/>
             <div class="info_middle">
                 <div>鲁美诺斯3152 F-35全球限量版 军表 瑞士制造鲁美诺斯3152 F-35全球限量版 军表 瑞士制造
                 </div>
@@ -49,10 +49,10 @@
                     <em>￥2169</em>
                     <i class="f_right">X1</i>
                 </p>
-            </div>
+            </div>-->
         </div>
         <div class="base_info">
-            <p class="clearfix">
+          <!--  <p class="clearfix">
                 <span>购买数量</span>
                 <i class="f_right">总计1件</i>
             </p>
@@ -62,22 +62,22 @@
 
             <p class="clearfix">
                 <span>订单号：02154451203</span>
-            </p>
+            </p>-->
         </div>
         <div class="apply">
-            <!--代发货-->
+         <!--   &lt;!&ndash;代发货&ndash;&gt;
             <button>暂未发货</button>
             <button class="color-red " onclick="location.href='./business_sure_send.html'">确认发货</button>
-            <!--待收货-->
+            &lt;!&ndash;待收货&ndash;&gt;
             <button onclick="location.href='see_Logistics.html'">查看物流</button>
-            <!--<button class="color-red">买家待收货</button>-->
+            &lt;!&ndash;<button class="color-red">买家待收货</button>&ndash;&gt;
             <button class="color-red">买家已收货</button>
-            <!--上门取货-->
+            &lt;!&ndash;上门取货&ndash;&gt;
             <button>申请退款</button>
             <button class="color-red">确认取货</button>
-            <!--退款收货-->
+            &lt;!&ndash;退款收货&ndash;&gt;
             <button class="color-red">同意退换</button>
-            <button class="color-red">拒绝退换</button>
+            <button class="color-red">拒绝退换</button>-->
         </div>
 
     </div>
@@ -112,11 +112,11 @@
     {{if data.pickUp==1}}
     <div class="order_people clearfix">
         <div class="order_people_top">
-            <span>收货人：{{data.goodsExpress.address.receiver}}</span>
-            <em class="f_right">{{data.goodsExpress.address.receiverPhone}}</em>
+            <span>收货人：{{data.goodsExpress.address==null?"疯狂倒拍":data.goodsExpress.address.receiver}}</span>
+            <em class="f_right">{{data.goodsExpress.address==null?"未设置":data.goodsExpress.address.receiverPhone}}</em>
         </div>
         <div class="order_people_footer ">
-            <em class="iconfont icon-zuobiao1"></em> 收货地址：{{data.goodsExpress.address.expressAddress}}
+            <em class="iconfont icon-zuobiao1"></em> 收货地址：{{data.goodsExpress.address==null?"未设置":data.goodsExpress.address.expressAddress}}
         </div>
     </div>
     {{/if}}
@@ -139,25 +139,24 @@
         <p>
             <span>运   费： {{data.goods.empressPrice}}</span>
         </p>
-
         <p class="clearfix">
             <span>订单号：{{data.goodsOrderId}}</span>
         </p>
     </div>
     <div class="apply">
         <!--代发货-->
-        {{if data.backGoods==null&&data.status==1}}
+        {{if data.pickUp==1&&data.backGoods==null&&data.status==1}}
         <button>暂未发货</button>
-        <button class="color-red " onclick="location.href='./business_sure_send.html'">确认发货</button>
+        <button class="color-red " onclick="location.href='./business_sure_send.html?goodsOrderId={{data.goodsOrderId}}'">确认发货</button>
         {{/if}}
         <!--待收货-->
-        {{if data.status==2}}
-        <button onclick="location.href='see_Logistics.html'">查看物流</button>
-        <!--<button class="color-red">买家待收货</button>-->
-        <button class="color-red">买家已收货</button>
+        {{if data.pickUp==1&&data.backGoods==null&&data.status==2}}
+        <button onclick="location.href='see_Logistics.html?goodsOrderId={{data.goodsOrderId}}'">查看物流</button>
+        <button class="color-red" >买家待收货</button>
+       <!-- <button class="color-red">买家已收货</button>-->
         {{/if}}
         <!--上门取货-->
-        {{if data.pickUp==0&&data.status==2}}
+        {{if data.pickUp==0&&data.status==1||data.pickUp==0&&data.status==2}}
         <button>申请退款</button>
         <button class="color-red">等待取货</button>
         {{/if}}
@@ -166,14 +165,40 @@
         <button class="color-red">已取货</button>
         {{/if}}
         <!--退款收货-->
-        {{if data.backGoods!==null}}
-        <button class="color-red">同意退换</button>
-        <button class="color-red">拒绝退换</button>
+        {{if data.backGoods!==null&&data.backGoods.backStatus==0}}
+        <button class="color-red" onclick="dealQuit_goods('{{data.goodsOrderId}}',1,this)">同意退换</button>
+        <button class="color-red" onclick="dealQuit_goods('{{data.goodsOrderId}}',2,this)">拒绝退换</button>
         {{/if}}
 
+        {{if data.backGoods!==null&&data.backGoods.backStatus==1}}
+        <button class="color-red">已处理</button>
+        <button class="color-red">卖家同意</button>
+        {{/if}}
+        {{if data.backGoods!==null&&data.backGoods.backStatus==2}}
+        <button class="color-red">已处理</button>
+        <button class="color-red">已拒绝</button>
+        {{/if}}
+        {{if data.backGoods!==null&&data.backGoods.backStatus==3}}
+        <button class="color-red">已处理</button>
+        <button class="color-red">退换成功</button>
+        {{/if}}
     </div>
 </script>
+<!--backStatus Integer
+0等待卖家确认 1卖家同意但未退款或退换 2卖家拒绝 3卖家已退款或退换
+给买家 如果退换，此平台不再显示物流-->
 <script>
+    //操作 拒绝 同意申请
+    function dealQuit_goods(orderId,integer,e){
+        myAjax({url:"/order/dealBackOrderByOrderId",type:"post",data:{"orderId":orderId,"status":integer}}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                $(e).attr("disabled","disabled").siblings().attr("disabled","disabled");
+                $(e).text("已处理");
+            }
+        })
+    }
     $(function () {
         mui('body').on('tap','a',function(){document.location.href=this.href;});
         var goodsOrderId=location.href.split("=")[1];
@@ -185,10 +210,12 @@
                 template.helper("obj_length", function (msg) {
                     return Object.keys(msg)
                 });
-                console.log(data.data.backGoods==null);
+               // console.log(data.data.backGoods==null);
                 $(".main").html(template("detail",data));
             }
         })
+
+
     })
 </script>
 </html>

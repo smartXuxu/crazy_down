@@ -7,6 +7,7 @@
 
     <title>我的消息</title>
     <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
     <link rel="stylesheet" href="../../css/base.css"/>
     <link rel="stylesheet" href="../../css/header.css"/>
     <link rel="stylesheet" href="../../css/iconfont.css"/>
@@ -45,6 +46,9 @@
         }
         .main>ul>li>.center>em{
             font-size: 0.32rem;
+           /* height: 100%;
+            width: 100%;
+            line-height: 1rem;*/
         }
         .main>ul>li>.center>p{
             overflow: hidden;
@@ -78,14 +82,18 @@
     </style>
 </head>
 <body>
+<div id="loading" >
+    <img src="../../img/login.gif" alt=""/>
+    <div>请等待，正在加载...</div>
+</div>
 <div class="layer">
     <header id="header" class="mui-bar mui-bar-nav">
         <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
-        <h1 class="mui-title">我的消息</h1>
+        <h1 class="mui-title">聊天好友列表</h1>
     </header>
     <div class="main">
         <ul class="message_lists">
-            <li>
+        <!--<li>
                 <img src="../../img/focus-img1.png" alt=""/>
 
                 <div class="center" onclick="location.href='./message_notice_detail.html?id={{value.id}}'">
@@ -96,6 +104,17 @@
                     <p class="delete" data-id="{{value.id}}">删除</p>
                 </div>
             </li>
+            <li>
+                <img src="../../img/beat.png" alt=""/>
+
+                <div class="center" onclick="location.href='../chat.html?id={{value.id}}'">
+                    <em>系统消息</em>
+                    <p>内容</p>
+                </div>
+                <div class="right">
+                    <p class="delete" data-id="{{value.id}}">删除</p>
+                </div>
+            </li>-->
         </ul>
     </div>
 </div>
@@ -105,34 +124,22 @@
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/mui/mui.min.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
 <script src="../../js/common/template/template-web.js"></script>
 <script src="../../js/common/template/template.js"></script>
 <script type="text/html" id="message">
     {{if data==null||data.length==0}}
-    <li class="no_notice"> 暂时没有消息</li>
+    <li class="no_notice"> 暂时没有好友</li>
     {{else}}
     {{each data as value i}}
     <li>
-        <img src="../../img/logo.png" alt=""/>
-        {{if value.status==0}}
-        <del></del>
-        {{else}}
-        {{/if}}
-        <div class="center" onclick="location.href='./message_notice_detail.html?id={{value.id}}'">
-            {{if value.classify==0}}
-            <em>系统消息</em>
-            {{else if value.classify==1}}
-            <em>课程消息</em>
-            {{else if value.classify==2}}
-            <em>问答消息</em>
-            {{else if value.classify==3}}
-            <em>动态消息</em>
-            {{/if}}
-            <p>{{value.title}}</p>
+        <img src="{{value.avatar}}" alt=""/>
+        <div class="center" onclick="location.href='../index/chat.html?receiverId={{value.userMobilePhone}}'">
+            <em>{{value.nickName==null?value.userName==null?"未设置昵称":value.userName:value.nickName}}</em>
+            <p></p>
         </div>
         <div class="right">
-            {{time(value.createTime)}}
-            <p class="delete" data-id="{{value.id}}">删除</p>
+            <p class="delete" data-id="{{value.userMobilePhone}}">删除好友</p>
         </div>
     </li>
     {{/each}}
@@ -141,15 +148,31 @@
 <script>
     $(function () {
         mui('body').on('tap','a',function(){document.location.href=this.href;});
-        var userid=localStorage.getItem("this_userid");
-        //render();
+        //ajax 发送完毕
+        $(document).on('ajaxStop', function () {
+            $("#loading").hide();
+        })
+        var userid=localStorage.getItem("uName");
+       render();
+        //获取好友列表 //先把头像昵称 手机号码 存储起来
+        //二维数组 存储 手机号 昵称 头像
+        var arr=[];
         function render(){
-            myAjax({url:"/core/my/messages",
-                data:{userid:userid},
-                type:"post"}, function (data) {
+            myAjax({url:`/im/findFriendsByMobilePhone/${userid}`,}, function (data) {
+                var data=JSON.parse(data);
                 console.log(data);
-                if(data.status==200){
-                    template.helper("str",function(str){
+                if(data.code==101){
+                    $(".main>.message_lists").html(` <li class="no_notice"> 暂时没有好友</li>`);
+                    //$(".main>.message_lists").html(template("message",data));
+                }
+                if(data.code==200){
+                    var avatar,phone,nickname;
+                   for(var i=0;i<data.data.length;i++){
+                    arr.push([data.data[i].userMobilePhone,data.data[i].nickName==null?data.data[i].userName==null?'未设置昵称':data.data[i].userName:data.data[i].nickName,data.data[i].avatar==null?"../../img/beat.png":data.data[i].avatar]);
+                   }
+                    //console.log(arr);
+                    querySessionMessage(userid);
+                    /*  template.helper("str",function(str){
                         return str.split(",");
                     });
                     template.helper("time",function(time){
@@ -173,19 +196,54 @@
                         }
                         return timea;
                     });
-                    $(".main>.message_lists").html(template("message",data));
+                 $(".main>.message_lists").html(template("message",data));*/
                 }
             })
         }
+        //获取历史消息
+        function querySessionMessage(senderId){
+            var html='';
+            for(let i=0;i<arr.length;i++){
+                myAjax({url:`/im/getOldMessage/${senderId}/${arr[i][0]}`,type:"get",async:false}, function (data) {
+                    var data=JSON.parse(data);
+                    console.log(data);
+                    if(data.code==200) {
+                        var msgs=data.data.聊天记录;
+                        if(msgs!==null||msgs.length!==0){
+                            html+=` <li>
+                            <img src="${arr[i][2]}" alt=""/>
+                            <div class="center" onclick="location.href='../index/chat.html?receiverId=${arr[i][0]}'">
+                                <em>${arr[i][1]}</em>
+                                <p>${msgs[0].msg}</p>
+                            </div>
+
+                        </li>`;
+                            $(".main>.message_lists").html(html);
+                        }else{
+                            $(".main>.message_lists").html(` <li class="no_notice"> 暂时没有好友</li>`);
+                        }
+                    }
+                });
+            }
+        }
+
+
+
+
+        // 删除好友
         $(".main").on("click",".delete", function (data) {
-            var id=$(this).data("id");
-            myAjax({url:"/core/delete/message",data:{messageid:id},type:'post'}, function (data) {
+            var toMobilePhone =$(this).data("id");
+            var fromMobilePhone=localStorage.getItem("uName");
+            myAjax({url:"/im/deleteFriend",data:{fromMobilePhone:fromMobilePhone,toMobilePhone:toMobilePhone},type:'delete'}, function (data) {
+                var data=JSON.parse(data);
                 console.log(data);
-                if(data.status==200){
+                if(data.code==200){
                     render();
                 }
             })
         })
+
+
 
     })
 

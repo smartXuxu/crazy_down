@@ -33,7 +33,47 @@
             line-height: .6rem;
             padding: 0;
             margin: 0;
+
             margin-top: .1rem;
+        }
+        .main>#show{
+            display: none;
+            border-top:0;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            position: fixed;
+            background-color: #fff;
+            z-index: 6;
+            left: 50%;
+            width: 70%;
+            top: 50%;
+            height:auto;
+            padding:.3rem .3rem;
+            transform:translate(-50%,-50%);
+        }
+        .main>#show>ul{
+            background-color: #fff;
+            width: 100%;
+        }
+        .main>#show>ul>li{
+            height: .8rem;
+            width: 100%;
+            position: relative;
+           line-height:.8rem;
+            border-bottom: 1px solid #eeeeee;
+        }
+        .main>#show>ul>li>span{
+            font-size: .3rem;
+        }
+        .main>#show>ul>li>em{
+            color:#999;
+            position:absolute;
+            right: 3%;
+            top: 5%;
+        }
+        .main>#show>ul>li.active>em{
+            color:#ff6600;
         }
     </style>
 </head>
@@ -42,7 +82,7 @@
     <header id="header" class="mui-bar mui-bar-nav">
         <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
         <h1 class="mui-title">输入物流</h1>
-        <em>保存</em>
+        <em class="save">保存</em>
     </header>
     <div class="main">
         <div class="order_number">
@@ -51,7 +91,56 @@
         </div>
         <div class="order">
             <span>物流公司</span>
-            <input type="text" placeholder="请输入物流公司"/>
+            <input type="text" placeholder="请选择物流公司" disabled/>
+        </div>
+        <div id="mask"></div>
+        <div id="show">
+            <ul>
+                <li class="active" data-value="shentong">
+                <span>申通</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+                <li data-value="ems">
+                <span>EMS</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+                <li data-value="yuantong">
+                <span>圆通</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+                <li data-value="zhongtong">
+                <span>中通</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+                <li data-value="yunda">
+                <span>韵达</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+                <li data-value="tiantian">
+                <span>天天</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+                <li data-value="huitongkuaidi">
+                <span>汇通</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+                <li data-value="quanfengkuaidi">
+                <span>全峰</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+                <li data-value="debangwuliu">
+                <span>德邦</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+                <li data-value="zhaijisong">
+                <span>宅急送</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+                <li data-value="youzhengguonei">
+                <span>邮政包裹</span>
+                    <em class="iconfont icon-duihao"></em>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
@@ -62,9 +151,83 @@
 <script src="../../js/common/base.js"></script>
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template-web.js"></script>
+<!--<script id="lis" type="text/html">
+    {{each data as value i}}
+    <li class="{{i}}==1?'active':"  >
+        <span>{{data[i]}}</span>
+        <em class="iconfont icon-duihao"></em>
+    </li>
+    {{/each}}
+</script>-->
 <script>
     $(function () {
         mui('body').on('tap','a',function(){document.location.href=this.href;});
+        var goodsOrderId=location.href.split("=")[1];
+        $(".order").click(function () {
+            $("#mask").show();
+            $("#show").show();
+        });
+        $("#mask").click(function (e) {
+            if(e.target!==$("#show")){
+                $("#mask").hide();
+                $("#show").hide();
+            }
+        })
+        var expressType;
+        //$("#show li").click(function () {
+        $(".main").on("click",'#show li', function () {
+            $(".order>input").val($(this).children("span").text());
+            expressType=$(this).data("value");
+            $(this).addClass("active").siblings("li").removeClass("active");
+            $("#mask").hide();
+            $("#show").hide()
+        })
+     /*   myAjax({url:"/goods/getExpressType"}, function (data) {
+
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+            $(".main>#show>ul").html(template("lis",data));
+            }
+        })*/
+        $(".save").click(function () {
+            var obj={};
+            obj.goodsOrderId=goodsOrderId;
+            //var expressType=$(".order>input").val().trim();
+            if(expressType==""){
+                sweetAlert(
+                        "sorry",
+                        "请您选择物流公司",
+                        "error"
+                )
+                return ;
+            }
+            obj.expressType=expressType;
+            var expressNumber=$(".order_number>input").val().trim();
+            if(expressNumber.length==0){
+                sweetAlert(
+                        "sorry",
+                        "请您填写物流单号",
+                        "error"
+                )
+                return ;
+            }
+            obj.expressNumber=expressNumber;
+            myAjax({url:"/order/sendGoods",type:"post",data:obj}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==200){
+                    location.href='./business_order.html'
+                }else{
+                    sweetAlert(
+                            "sorry",
+                            data.msg,
+                            "error"
+                    )
+                }
+            })
+        })
     })
 </script>
 </html>

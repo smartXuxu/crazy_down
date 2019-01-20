@@ -14,17 +14,19 @@ html{
   }
   >.main{
     background-color: #fff;
-    position: relative;
+    position: fixed;
     top: 0;
     padding-bottom: 1rem;
     bottom: 1.3rem;
+    height: 100%;
 /*    padding-top: 1.6rem;
     padding-bottom: 1.3rem;*/
     width: 100%;
     >.ct_left{
       width: 30%;
       float: left;
-      background-color: #eeeeee;
+      height: 100%;
+      background-color: #fff;
       >span{
         width: 100%;
         display: block;
@@ -33,10 +35,12 @@ html{
         font-size: .3rem;
         font-weight: 600;
         text-align: center;
+        background-color: #eeeeee;
         border-bottom: 1px solid #d2d2d2;
       }
       >ul{
         >li{
+          background-color: #eeeeee;
           position: relative;
           border-bottom: 1px solid #d2d2d2;
           &.active{
@@ -62,8 +66,8 @@ html{
       }
     }
     >.ct_right{
-      overflow: scroll;
-      height: auto;
+      overflow-y: scroll;
+      height:100%;
       background-color: #fff;
     >.search_header{
       margin-top: 0.3rem;
@@ -131,7 +135,7 @@ html{
                   display: block;
                 }
                 &:first-of-type{
-                  width: 40%;
+                  width: 43%;
                   i{
                     color:#ff6600;
                   }

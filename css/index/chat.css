@@ -9,6 +9,7 @@ section{
     left: 0;
     /*滚动很重要*/
     overflow-y: scroll;
+    width: 100%;
 }
 .main{
     width: 100%;

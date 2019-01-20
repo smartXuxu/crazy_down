@@ -118,7 +118,7 @@
          //return false;
          }*/
         myAjax({url:"/user/getCurrentUserMessage",data:''}, function (data) {
-            console.log(data);
+           // console.log(data);
             //将获取到的data 转为对象object类型
             var data = JSON.parse(data);
             console.log(data);
@@ -129,27 +129,28 @@
                     data.data.avatar='../../img/beat.png'
                 }
                 $(".mine_data>img").attr("src",data.data.avatar);
-           //data.data.nickName==null?data.data.realName==null?'疯狂倒拍':data.data.realName:data.data.nickName
+                //data.data.nickName==null?data.data.realName==null?'疯狂倒拍':data.data.realName:data.data.nickName
                 //var name='疯狂倒拍';
                 if(data.data.nickName==null){
                    if(data.data.userName!==null){
-                      name= data.data.userName
+                      name= data.data.userName;
                     }else{
-                       name='疯狂倒拍'
+                       name='疯狂倒拍';
                    }
                }else{
-                        name= data.data.nickName
+                        name= data.data.nickName;
                }
                 $(".mine_data_middle>span").text(name);
                 $(".mine_data_middle>em").html(`ID：${data.data.userId}<del class=" iconfont icon-bianji" onclick="location.href='./mine_data.html'"></del>
                 `);
-
             }else{
                 sweetAlert(
                         "sorry",
                         data.msg,
                         "error"
-                )
+                ).then(function () {
+                            location.href='../login.html'
+                        })
             }
         })
     })

@@ -9,23 +9,39 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!--标准mui.css-->
-    <link rel="stylesheet" href="../css/mui.min.css">
+    <link rel="stylesheet" href="../css/common/mui/mui.min.css">
 
 </head>
 <style>
+    .mui-slider{
+        position: fixed;
+        height: 100%;
+    }
+    .mui-slider .mui-slider-group{
+        height: 100%;
+    }
     #start{
         position: relative;
+    }
+    .mui-slider .mui-slider-group .mui-slider-item{
+        height: 100%;
+    }
+    .mui-slider .mui-slider-group .mui-slider-item>a:not(.mui-control-item){
+        height: 100%;
+    }
+    .mui-slider .mui-slider-group .mui-slider-item img{
+        height: 100%;
     }
     #start span{
         position: absolute;
         bottom: 10%;
-      /*  background-color: #E73F58;*/
+        background-color: #ff6600;
         border: 1px solid #fff;
         left: 50%;
         padding:15px 18px ;
         transform:translateX(-50%);
         color:#fff;
-        font-size: 18px;
+        font-size: 16px;
         border-radius: 10px;
     }
     .mui-slider-indicator{
@@ -39,12 +55,11 @@
 </header>
 <div class="mui-slider">
     <div class="mui-slider-group">
-        <div class="mui-slider-item"><a href="#"><img src="../img/sweeper01.png" /></a></div>
-        <div class="mui-slider-item"><a href="#"><img src="../img/sweeper002.png" /></a></div>
-        <div class="mui-slider-item"><a href="#"><img src="../img/sweeper032.png" /></a></div>
+        <div class="mui-slider-item"><a href="#"><img src="../img/sweeper01.jpg" /></a></div>
+        <div class="mui-slider-item"><a href="#"><img src="../img/sweeper02.jpg" /></a></div>
         <div class="mui-slider-item" id="start">
             <a href="#">
-                <img src="../img/sweeper04.png" />
+                <img src="../img/sweeper03.jpg" />
                 <span id="begin">立即开启</span>
             </a>
         </div>
@@ -53,10 +68,9 @@
         <div class="mui-indicator mui-active"></div>
         <div class="mui-indicator"></div>
         <div class="mui-indicator"></div>
-        <div class="mui-indicator"></div>
     </div>
 </div>
-<script src="../js/common/mui.min.js"></script>
+<script src="../js/common/mui/mui.min.js"></script>
 <script src="../js/common/jquery.min.js"></script>
 <!--<script src="../js/common/zepto.min.js"></script>
 <script src="../js/common/touch.js"></script>-->

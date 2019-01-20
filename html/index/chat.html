@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../css/base.css"/>
     <link rel="stylesheet" href="../../css/index/chat.css"/>
     <link rel="stylesheet" href="../../css/header.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
 </head>
 <body>
 <div class="layer">
@@ -18,7 +19,7 @@
     </header>
     <section>
         <div class="main clearfix">
-             <div class="right f_right">
+           <!--  <div class="right f_right">
                  <img src="../../img/focus-img1.png" class="f_right" alt=""/>
                  <div class="mess f_right">
                      Hi,您好
@@ -31,13 +32,13 @@
                  <div class="mess f_left">
                      Hi,感谢你报名此职务~可能 无法及时回复消息，请见谅
                  </div>
-             </div>
+             </div>-->
         </div>
     </section>
 
     <div class="send">
         <input type="text" placeholder="发消息..." />
-        <em class="m_send">发送</em>
+        <em class="m_send" >发送</em>
     </div>
 </div>
 </body>
@@ -46,7 +47,8 @@
 <script src="../../js/common/zepto/zepto.min.js"></script>
 <script src="../../js/common/base.js"></script>
 <script src="../../js/common/back.js"></script>
-<script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<!--<script>
     $(function () {
 
         var href=location.href.split("=")[1];
@@ -189,12 +191,216 @@
                                     location.href='./login.html'
                                 })
                     }
-
                 }
-
             })
         }
         $('section').scrollTop($('.main')[0].scrollHeight);
+    })
+</script>-->
+<script>
+    $(function () {
+      var receiverId= getRequest().receiverId;
+     // var senderId= getRequest().senderId;
+        /*if(senderId==undefined){
+            senderId=localStorage.getItem("cr_userId")
+        }*/
+        var  senderId=localStorage.getItem("uName");
+        if(senderId==null){
+            sweetAlert(
+                    "sorry",
+                    "请您先登录",
+                    "error"
+            ).then(function () {
+                        location.href='../login.html'
+                    })
+            return;
+        }
+        console.log(receiverId);
+        console.log(senderId);
+        var obj = {};
+        var html = "";
+        var socket;
+        var receiverImg,sendImg;
+        //获取聊天记录
+        //根据手机号获取即时通信中的信息 接收者 信息
+        myAjax({url:`/im/findImUserMessageByMobilePhone/${receiverId}`,type:"get",async:false}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                if(data.data.avatar==null){
+                    receiverImg='../../img/beat.png'
+                }else{
+                    receiverImg=data.data.avatar;
+                }
+
+            }
+            // 根据即时通信中的用户主键获取信息
+            /*myAjax({url:`/im/findImUserMessageByImUserId/${data.data.userId}`}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+            })*/
+        })
+        //根据手机号获取即时通信中的信息 发送者 信息
+        myAjax({url:`/im/findImUserMessageByMobilePhone/${senderId}`,type:"get",async:false}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                if(data.data.avatar==null){
+                    sendImg='../../img/beat.png'
+                }else{
+                    sendImg=data.data.avatar;
+                }
+            }
+        });
+
+        //获取聊天记录包括未读取信息提示
+        myAjax({url:`/im/getOldMessage/${senderId}/${receiverId}`,type:"get",async:false}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200) {
+                var msgs=data.data.聊天记录;
+                msgs=msgs.reverse();
+                for (var i = 0; i < msgs.length; i++) {
+                    // $('.chat_main').append(456);
+                    //发送者本人
+                    if (msgs[i].senderId == senderId) {
+                        html+=` <div class="right f_right">
+                             <img src="${sendImg}" class="f_right" alt=""/>
+                             <div class="mess f_right">
+                                 ${msgs[i].msg}
+                             </div>
+                         </div>`;
+                    }else{
+                        //接收者
+                        html+=`<div class="left f_left">
+                             <img src="${receiverImg}" class="f_left" alt=""/>
+                             <div class="mess f_left">
+                                ${msgs[i].msg}
+                             </div>
+                         </div>`
+                    }
+                    $(".main").html(html);
+                    $('section').scrollTop($('.main')[0].scrollHeight);
+                }
+            }
+        });
+        //添加好友
+        myAjax({data:{fromMobilePhone:receiverId,toMobilePhone:senderId,status:1,},type:"post",url:"/im/addFriend"}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code!==200){
+                return false;
+            }
+        });
+
+        obj.init = function() {
+                    this.imMsg ={
+                        "msg":"", //发送的数据
+                        "extend":"" ,//携带的额外信息
+                        "receiverId":receiverId, //接收者Id
+                        "senderId":senderId //发送者（本人的即时通信Id）
+                    },
+                    this.action = 1
+        }
+        //初始化
+        obj.init();
+        //点击发送调用的函数，将状态改为06
+        obj.message = function() {
+            console.log(1);
+            //空发送不过去
+            if($(".send>input").val().trim()!= ""){
+                this.action = 2;
+                //等于输入的内容
+                this.imMsg.msg =$(".send>input").val().trim();
+                socket.send(JSON.stringify(obj));
+                //将自己发的内容渲染到页面中
+                console.log(obj);
+                html+=`
+					 <div class="right f_right">
+                 <img src="${sendImg}" class="f_right" alt=""/>
+                 <div class="mess f_right">
+                   ${obj.imMsg.msg}
+                 </div>
+             </div>
+					`
+                $(".main").html(html);
+                $(".send>input").val('');
+                $('section').scrollTop($('.main')[0].scrollHeight);
+            }
+        };
+        $(".m_send").click(function () {
+            obj.message();
+        });
+        if(!window.WebSocket) {
+            window.WebSocket = window.MozWebSocket;
+        }
+        if(window.WebSocket) {
+            socket = new WebSocket("ws://39.104.127.252:9797/ws");
+            socket.onmessage = function(event) {
+                //var ta = document.getElementById('responseText');
+                var allData = JSON.parse(event.data);
+              obj.action=2;
+               // obj.fromUser.userId == allData.dataContent.userId;
+                console.log(allData);
+                if(allData.responseType == 16) { //好友列表
+                    var friends = allData.dataContent;
+                    friends = JSON.parse(friends);
+                    for(var p in friends) {
+                        console.log(friends[p].targetUser.nickName + "----" + friends[p].targetUser.userId + "---" + friends[p].targetUser.mobilePhone)
+
+                    }
+                }
+                if(allData.action == 5) { //好友返回的信息(包括离线信息)
+                    html+=`
+							 <div class="left f_left">
+                 <img src="${receiverImg}" class="f_left" alt=""/>
+                 <div class="mess f_left">
+                    ${allData.imMsg.msg}
+                 </div>
+             </div>
+					`
+                 $(".main").html(html);
+                    console.log(allData.imMsg.msg);
+                    window.scrollTo(0,document.body.scrollHeight)
+                }
+            };
+            socket.onopen = function(event) {
+                // var ta = document.getElementById('responseText');
+                //ta.value = "打开WebSocket服务正常，浏览器支持WebSocket!";
+                console.log("打开WebSocket服务正常，浏览器支持WebSocket!");
+                obj.send();
+                timeObj = setInterval(function() {
+                    obj.action=4;
+                    socket.send(JSON.stringify(obj));
+                }, 600 * 1000)
+
+            };
+            socket.onclose = function(event) {
+                // var ta = document.getElementById('responseText');
+                // ta.value = "";
+                // ta.value = "WebSocket 关闭!";
+                obj.action=4;
+               // socket.send(JSON.stringify(obj));
+                console.log("WebSocket 关闭!");
+
+            };
+        } else {
+            alert("抱歉，您的浏览器不支持WebSocket协议!");
+        }
+
+        obj.send = function() {
+            if(!window.WebSocket) {
+                return;
+            }
+            console.log(socket.readyState);
+            if(socket.readyState == WebSocket.OPEN) {
+                socket.send(JSON.stringify(obj));
+            } else {
+                alert("WebSocket连接没有建立成功!");
+            }
+        }
+
+
     })
 </script>
 </html>

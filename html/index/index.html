@@ -7,6 +7,7 @@
 
     <title>疯狂倒拍首页</title>
     <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/mui/mui_img.css"/>
     <link rel="stylesheet" href="../../css/base.css"/>
     <link rel="stylesheet" href="../../css/header.css"/>
     <link rel="stylesheet" href="../../css/iconfont.css"/>
@@ -32,7 +33,7 @@
     -->
     </header>
     <div class="main">
-<!--        <div class="swiper">
+    <!--        <div class="swiper">
                     <div class="swiper-slide">
                         <img src="../../img/index_show.png" alt=""/>
                         <div class="text">
@@ -77,6 +78,9 @@
 </div>
 </body>
 <script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.zoom.js"></script>
+<script src="../../js/common/mui/mui.preview.js"></script>
 <script src="../../js/common/x_rem.js"></script>
 <script src="../../js/common/base.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
@@ -85,19 +89,19 @@
 <script src="../../js/common/sweetAlert/sweetalert2.js"></script>
 <script src="../../js/common/template/template.js"></script>
 <script type="text/html" id="no_login">
-    <img src="../../img/beat.png" alt=""/>
+    <img src="../../img/beat.png" data-preview-src="" data-preview-group="1" alt=""/>
     <input type="text" placeholder="搜店铺、搜商品" onfocus="location.href='./search.html'"/>
     <span class="quit" onclick="location.href='../login.html'">登录 <i class="iconfont icon-xialasanjiao"></i></span>
 </script>
 <script type="text/html" id="has_login">
-    <img src="{{data.avatar==null?'../../img/beat.png':data.avatar}}" alt=""/>
+    <img src="{{data.avatar==null?'../../img/beat.png':data.avatar}}" data-preview-src="" data-preview-group="1" alt=""/>
     <input type="text" placeholder="搜店铺、搜商品" onfocus="location.href='./search.html'"/>
-    <span class="quit" onclick="location.href='../regist.html'">退出 <i class="iconfont icon-xialasanjiao"></i></span>
+    <span class="quit" onclick="location.href='../login.html'">退出 <i class="iconfont icon-xialasanjiao"></i></span>
 </script>
 <script type="text/html" id="content">
     <div class="swiper">
         <div class="swiper-slide">
-            <img src="{{data.商品基本信息.images[0].imagePath}}" alt=""/>
+            <img src="{{data.商品基本信息.images[0].imagePath}}" data-preview-src="" data-preview-group="2" alt=""/>
             <div class="text">
                 {{data.商品基本信息.introduce}}
             </div>
@@ -142,9 +146,7 @@
         $(document).on('ajaxStop', function () {
             $("#loading").hide();
         })
-        /*$(document).ajaxStop(function(){
-            $("#loading").hide();
-        });*/
+        mui.previewImage();
         mui('body').on('tap','a',function(){document.location.href=this.href;});
         $('#footer').load('../common/footer.html');
         (function($, doc) {
@@ -167,18 +169,17 @@
         }(mui, document));
         // 获取用户的登录信息 登录与未登录 显示两个模板
         myAjax({url:"/user/getCurrentUserMessage",data:''}, function (data) {
-            console.log(data);
+           // console.log(data);
             //将获取到的data 转为对象object类型
             var data = JSON.parse(data);
             console.log(data);
             if(data.code == 200) {
                 //已登录
                 localStorage.setItem("cr_userId",data.data.userId);
-                $(".layer>header").html(template("has_login",data))
-
+                $(".layer>header").html(template("has_login",data));
             }else if(data.code==707){
                 //未登录
-                $(".layer>header").html(template("no_login",data))
+                $(".layer>header").html(template("no_login",data));
             }else{
                 sweetAlert(
                         "sorry",
@@ -191,7 +192,6 @@
         var data_length=0;
         var data_data;
         var tl=setInterval(function () {
-
         },1000);
         function render(id){
             myAjax({url:`/goods/getAuctionIndex/${id}`,async:false}, function (data) {
@@ -206,7 +206,7 @@
                     template.helper("GetRTime",function(data){
                         //结束时间
                         var EndTime = new Date(data).getTime();
-                       // console.log(EndTime);
+                        // console.log(EndTime);
                         //当前时间
                         var NowTime = new Date().getTime();
                         //console.log(NowTime);
@@ -214,7 +214,7 @@
                         if (EndTime < NowTime) {
                             status=false;
                             titm = "活动已经超时";
-                        // window.clearInterval(tl);
+                            // window.clearInterval(tl);
                         } else {
                             //结束时间减去当前时间剩余的毫秒数
                             //var t = EndTime.getTime() - NowTime.getTime();
@@ -228,7 +228,7 @@
                              titm = "活动正在进行中";
                              } else*/
                             if (h == 0 && m == 0 && s == 0) {
-                              //window.clearInterval(t1);
+                                //window.clearInterval(t1);
                                 titm = "活动已经超时";
                                 status=false;
                             } else {
@@ -237,7 +237,6 @@
                                 s < 10 ? s = '0' + s : s = s;
                                 titm = h + ":" + m + ":" + s ;
                             }
-
                         }
                         return titm;
                     });
@@ -251,28 +250,25 @@
                         var min=tot_time[1];
                         var hour=tot_time[0];
                         console.log(tot_time+"/"+sec+"/"+min+"/"+hour);
-                         tl=setInterval(function () {
-                         sec--;
-                         if(sec<0){
-                         sec=60;
-                         sec--;
-                           min--;
-                         }
-                         if(min<0){
-                         min--;
-                             hour--;
-                             min=0;
-                         }
-                         if(hour<0){
-                             $(".auction_top>li:first-of-type>em").text('活动已结束');
-                        return;
-                         }
-                      $(".auction_top>li:first-of-type>em").text(hour+":"+min+":"+sec);
-                         },1000)
-
+                        tl=setInterval(function () {
+                            sec--;
+                            if(sec<0){
+                                sec=60;
+                                sec--;
+                                min--;
+                            }
+                            if(min<0){
+                                min--;
+                                hour--;
+                                min=0;
+                            }
+                            if(hour<0){
+                                $(".auction_top>li:first-of-type>em").text('活动已结束');
+                                return;
+                            }
+                            $(".auction_top>li:first-of-type>em").text(hour+":"+min+":"+sec);
+                        },1000)
                     }
-
-                }else{
 
                 }
             });
@@ -284,14 +280,24 @@
                 data_length=data.data.length;
                 console.log(data_length);
                 data_data=data.data;
-                console.log(data_data);
                 render(data_data[0]);
+                //console.log(data_data);
+                downPrice(data_data[0]);
+
             }
         })
+
+        var t2;
+        function downPrice(id){
+       t2= setInterval(function () {
+                render(id);
+            },20000)
+        }
         var num=0;
         $(".main").swipeLeft(function () {
             //console.log(1);
             //alert(1);
+            clearInterval(t2);
             num--;
             if(num<0){
                 num=data_length-1;
@@ -299,11 +305,13 @@
             }
             console.log(num);
              render(data_data[num]);
+           downPrice(data_data[num]);
 
         });
 
         $(".main").swipeRight(function () {
             //console.log(2);
+            clearInterval(t2);
             num++;
             if(num>data_length-1){
                 num=0;
@@ -311,9 +319,9 @@
             console.log(num);
             //alert(2);
             render(data_data[num]);
-
+            downPrice(data_data[num]);
         });
-
+      //  downPrice(data_data[num]);
         /*zepto 在安卓手机上滑动无效*/
         var sUserAgent = navigator.userAgent.toLowerCase();
         if(sUserAgent.match(/android/i) == 'android'){

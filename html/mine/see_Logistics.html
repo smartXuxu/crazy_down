@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../css/header.css"/>
     <link rel="stylesheet" href="../../css/iconfont.css"/>
     <link rel="stylesheet" href="../../css/mine/see_logistics.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
 </head>
 <body>
 <div class="layer">
@@ -19,14 +20,14 @@
         <h1 class="mui-title">交易物流</h1>
     </header>
     <div class="main">
-        <div class="order_base">
+      <!--  <div class="order_base">
             <span>订单追踪</span>
             <em>已下单</em>
         </div>
         <p>
             <span>09-12 01:09</span>
             <del>您的订单开始处理您的订单开始处理您的订单开始处理您的订单开始处理您的订单开始处理您的订单开始处理</del>
-        </p>
+        </p>-->
     </div>
 </div>
 </body>
@@ -35,5 +36,31 @@
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/mui/mui.min.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
-
+<script src="../../js/common/template/template.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script type="text/html" id="detail">
+    {{if data.expressData==null||data.expressData.data==null||data.expressData.data.length==0}}
+    <div class="no_in">对不起，暂时没有快递消息</div>
+    {{else}}
+    {{each data.expressData.data as value i}}
+    <p>
+        <span>{{value.time}}</span>
+        <del>{{value.context}}</del>
+    </p>
+    {{/each}}
+    {{/if}}
+</script>
+<script>
+    $(function () {
+        var goodsOrderId=location.href.split("=")[1];
+        myAjax({url:`/order/getExpressByGoodsOrderId/${goodsOrderId}`}, function (data) {
+           // console.log(data);
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                $(".main").html(template("detail",data))
+            }
+        })
+    })
+</script>
 </html>

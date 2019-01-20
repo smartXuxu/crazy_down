@@ -126,32 +126,34 @@
     {{if data==null||data.length==0}}
     <div class="no_in">对不起，暂时没有合适的商品推荐</div>
     {{else}}
+    <ul>
     {{each data as value i}}
-    <li onclick="location.href='cat_show.html'">
+    <li onclick="location.href='cat_show.html?goodsId={{value.goodsId}}'">
         <div class="time_auction clearfix">
             <!--判断时间是否进入倒计时 显示样式不同
             或直接显示竞拍时间-->
                             <span>
                                 <em>竞拍时间</em>
-                                <i>今晚20:00</i>
+                                <i>{{time(value.startTime)}}</i>
                             </span>
                             <span>
                                 <em>现价</em>
-                                <i>1999元</i>
+                                <i>{{value.nowPrice}}元</i>
                             </span>
                             <span>
                                 <em>数量</em>
-                                <i>100</i>
+                                <i>{{value.number}}</i>
                             </span>
         </div>
         <div class="middle_li">
-            <img src="../../img/focus-img1.png" alt=""/>
+            <img src="{{value.images[0].imagePath}}" onerror="this.src='../../img/beat.png'" alt=""/>
             <div class="center_text">
-                鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造 鲁美诺斯3152 F-35全球限 量版军表 瑞士制造
-            </div>
+                {{value.title}} {{value.introduce}}
+               </div>
         </div>
     </li>
     {{/each}}
+    </ul>
     {{/if}}
 </script>
 <script>
@@ -198,11 +200,17 @@
         }
         render(goodsType);
         function render(goodsType){
-            myAjax({url:`/goods/findByCityAndType/${city}/${goodsType}`,async:false},function(data){
+           myAjax({url:`/goods/findByCityAndType/${city}/${goodsType}`,async:false},function(data){
+            //myAjax({url:`/goods/findByType/${goodsType}`,async:false},function(data){
                        // console.log(data);
                         var data=JSON.parse(data);
                         console.log(data);
                         if(data.code==200){
+                            template.helper("time",function(date){
+                                var time=new Date(date).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,11).replace(/\//g,"-");
+                                return time;
+                                /* return new Date(parseInt(date) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');*/
+                            });
                         $(".ct_right>.content").html(template("show",data))
                         }else{
                             sweetAlert(

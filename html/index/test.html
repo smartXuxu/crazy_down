@@ -5,7 +5,9 @@
     <title></title>
 </head>
 <body>
-
+<div class="layer">
+    <input type="file"/>
+</div>
 </body>
 <script src="../../js/common/jquery.min.js"></script>
 <script>
@@ -31,5 +33,36 @@
     }
     var op = fn(arr,arr1);
     console.log(op);
+    var test=[];
+    test.push(1);
+    test.push(2);
+   console.log(test);
+document.querySelector("input").onchange= function (e) {
+    var file_input=document.querySelector("input").files[0];
+    var createObjectURL = function(blob){
+           return window[window.webkitURL ? 'webkitURL' : 'URL']['createObjectURL'](blob);
+       };
+       var newimgdata = createObjectURL(file_input);
+       var pvImg = new Image();
+       pvImg.src = newimgdata;
+       pvImg.setAttribute('id','previewImg');
+       $('.layer').append(pvImg);
+};
+
+//   //preview img ： URL.createObjectURL 方式
+//   document.getElementById('imgFile').onchange = function(e){
+//       var ele =  document.getElementById('imgFile').files[0];
+//
+//       var createObjectURL = function(blob){
+//           return window[window.webkitURL ? 'webkitURL' : 'URL']['createObjectURL'](blob);
+//       };
+//       var newimgdata = createObjectURL(ele);
+//
+//       var pvImg = new Image();
+//       pvImg.src = newimgdata;
+//       pvImg.setAttribute('id','previewImg');
+//
+//       $('.preview_wrap').html('').append(pvImg);
+//   }
 </script>
 </html>

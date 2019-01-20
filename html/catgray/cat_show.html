@@ -7,6 +7,7 @@
 
     <title>商品展示页面</title>
     <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/mui/mui_img.css"/>
     <link rel="stylesheet" href="../../css/base.css"/>
     <link rel="stylesheet" href="../../css/header.css"/>
     <link rel="stylesheet" href="../../css/iconfont.css"/>
@@ -20,7 +21,7 @@
         <h1 class="mui-title">商品展示</h1>
     </header>
     <div class="main">
-        <div class="swiper">
+    <!--    <div class="swiper">
             <div class="swiper-slide">
                 <img src="../../img/index_show.png" alt=""/>
                 <div class="text">
@@ -28,11 +29,11 @@
                 </div>
             </div>
         </div>
-        <!-- 竞拍区域-->
+        &lt;!&ndash; 竞拍区域&ndash;&gt;
         <div class="auction_area">
             <ul class="auction_top clearfix">
                 <li>
-                    <!--这个显示的竞拍时间or倒计时-->
+                    &lt;!&ndash;这个显示的竞拍时间or倒计时&ndash;&gt;
                     <span>竞拍时间</span>
                     <em>09.12 09:00</em>
                 </li>
@@ -52,18 +53,107 @@
             <a class="replay" href="../index/goods_detail.html">
             商品介绍
             </a>
-        </div>
+        </div>-->
     </div>
 </div>
 </body>
 <script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.zoom.js"></script>
+<script src="../../js/common/mui/mui.preview.js"></script>
 <script src="../../js/common/x_rem.js"></script>
 <script src="../../js/common/back.js"></script>
+<script src="../../js/common/base.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script id="show_detail" type="text/html">
+    <div class="swiper">
+        <div class="swiper-slide">
+            <img src="{{data.images[0].imagePath}}" data-preview-src="" data-preview-group="1" onerror="this.src='../../img/beat.png'" alt=""/>
+            <div class="text">
+                {{data.title}}
+            </div>
+        </div>
+    </div>
+    <!-- 竞拍区域-->
+    <div class="auction_area">
+        <ul class="auction_top clearfix">
+            <li>
+                <!--这个显示的竞拍时间or倒计时-->
+                <span>竞拍时间</span>
+                <em>{{time(data.startTime)}}</em>
+            </li>
+            <li>
+                <span>当前价格</span>
+                <em>{{data.nowPrice}}元</em>
+            </li>
+            <li>
+                <span>剩余数量</span>
+                <em>{{data.number}}</em>
+            </li>
+        </ul>
+        {{if GetRTime(data.startTime,data.endTime)=="活动未开始"}}
+        <div class="auction_middle">
+            <span class="beat"></span>
+            <p>活动尚未开始，敬请期待！</p>
+        </div>
+        {{/if}}
+        {{if GetRTime(data.startTime,data.endTime)=="活动进行中"}}
+        <div class="auction_middle" onclick="location.href='../index/sure_order.html?price={{data.nowPrice}}&goodsId={{data.goodsId}}&empressPrice={{data.empressPrice}}'">
+            <span class="beat"></span>
+            <p>立即竞拍！</p>
+        </div>
+    {{/if}}
+        {{if GetRTime(data.startTime,data.endTime)=="活动已经结束"}}
+        <div class="auction_middle">
+            <span class="beat"></span>
+            <p>活动已超时，期待下次活动！</p>
+        </div>
+    {{/if}}
+        <a class="replay" href="../index/goods_detail.html?id={{data.goodsId}}">
+            商品介绍
+        </a>
+    </div>
+</script>
 <script>
     $(function () {
+        mui.previewImage();
         mui('body').on('tap','a',function(){document.location.href=this.href;});
-
+        //查询商品详情 /goods/findGoodsByGoodsId/{goodsId}
+        var goodsId=location.href.split("=")[1];
+        myAjax({url:`/goods/findGoodsByGoodsId/${goodsId}`}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                template.helper("time",function(date){
+                    var time=new Date(date).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,20).replace(/\//g,"-");
+                    return time;
+                    /* return new Date(parseInt(date) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');*/
+                });
+                template.helper("GetRTime",function(startTime,endTime){
+                    //开始时间
+                    var startTime = new Date(startTime).getTime();
+                    //结束时间
+                    var EndTime = new Date(endTime).getTime();
+                    //当前时间
+                    var NowTime = new Date().getTime();
+                    if (EndTime < startTime) {
+                        titm = "活动未开始";
+                        // window.clearInterval(t1);
+                    } else {
+                        //结束时间减去当前时间剩余的毫秒数
+                        var t = EndTime-NowTime;
+                        if(t<0){
+                            titm="活动已经结束"
+                        }else{
+                            titm="活动进行中"
+                        }
+                    }
+                    return titm;
+                });
+              $(".main").html(template("show_detail",data));
+            }
+        })
     })
 </script>
 </html>

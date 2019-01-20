@@ -17,6 +17,7 @@
     <header id="header" class="mui-bar mui-bar-nav">
         <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
         <h1 class="mui-title">商家认证</h1>
+        <span class="mui-icon mui-icon-location" onclick="location.href='../catgray/select_city.html'">郑州</span>
     </header>
     <div class="main">
         <div class="name">
@@ -37,6 +38,7 @@
                 <input type="file" accept="image/*" id="file" value="" />
             </div>
         </div>
+        <p><s>请注意</s>：商家发货的快递可选择的有：申通、EMS、顺丰、圆通、中通、韵达、天天、汇通、全峰、德邦、宅急送、邮政包裹，请选择以上快递公司进行发货。</p>
         <div class="img"></div>
         <button class="submit">提交审核</button>
     </div>
@@ -51,11 +53,16 @@
 <script>
     $(function () {
         mui('body').on('tap','a',function(){document.location.href=this.href;});
-
+        var city=localStorage.getItem("city");
+        if(city!==null){
+            $("#header>span").text(city);
+        }else{
+            city='郑州';
+        }
         document.querySelector("#file").onchange=function () {
             var file=document.querySelector("#file").files;
             html5IMG(file,".img")
-        }
+        };
 
         function html5IMG(file,ele){
             /* var file1 = file[0].size;
@@ -95,6 +102,8 @@
         var tel=new RegExp('^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$')
         var parm={};
         $(".submit").click(function () {
+
+
             var merchantName =$(".name>input").val().trim();
             if(merchantName==''){
                 sweetAlert(
@@ -126,11 +135,11 @@
                 )
                 return false;
             }else{
-                parm.addresse=address;
+                parm.address=address;
             }
 
         var base64License=$(".img>img").attr("src");
-            console.log(base64License);
+            //console.log(base64License);
             if(base64License==''){
                 sweetAlert(
                         "sorry",
@@ -141,11 +150,13 @@
             }else{
                 parm.base64License=base64License;
             }
+            parm.city=city;
+            console.log(parm);
             myAjax({url:'/merchant/addMerchant',data:parm,type:"post"}, function (data) {
+                var data=JSON.parse(data);
                 console.log(data);
-                var data=JSON.parse(data)
                 if(data.code==200){
-                    $(this).text(data.data.msg);
+                    $(".submit").text(data.msg);
                 }else{
                     sweetAlert(
                             "sorry",

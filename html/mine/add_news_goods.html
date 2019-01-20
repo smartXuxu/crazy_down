@@ -56,7 +56,7 @@
         <div id="mask"></div>
         <div class="price" data-content="元">
             <span>现价</span>
-            <input type="text" />
+            <input type="number" />
         </div>
         <div class="number">
             <span>竞拍数量</span>
@@ -64,10 +64,14 @@
         </div>
         <div class="freight" data-content="元">
             <span>运费</span>
-            <input type="text" />
+            <input type="number" />
         </div>
         <div class="down_price" data-content="元">
             <span>每20秒降价金额</span>
+            <input type="number"/>
+        </div>
+        <div class="down_price smallPrice" data-content="元">
+            <span>商品最低价格</span>
             <input type="number"/>
         </div>
         <div class="lie clearfix startTime">
@@ -164,7 +168,7 @@
             );
             return;
         }
-        console.log(base64Images);
+        //console.log(base64Images);
         //字符串转数组
         obj.base64Images=base64Images.split().join("。").replace(/"/g,"");
         obj.goodsImagesBase64=images.join("。").replace(/"/g,"");
@@ -216,7 +220,7 @@
         if(empressPrice.length==0||parseFloat(empressPrice)<=0){
             obj.empressPrice=0;
         }
-
+        obj.empressPrice=empressPrice;
         var  downPrice=$(".down_price>input").val().trim();
         console.log(downPrice);
         if(downPrice.length==0||parseFloat(downPrice)<=0){
@@ -228,6 +232,18 @@
             return;
         }
         obj.downPrice=downPrice;
+        var smallPrice=$(".smallPrice>input").val().trim();
+        console.log(smallPrice);
+        if(smallPrice.length==0||parseFloat(smallPrice)<=0){
+            sweetAlert(
+                    "sorry",
+                    "请您设置商品的最低价格",
+                    "error"
+            )
+            return;
+        }
+        obj.smallPrice=smallPrice;
+
         var startTime=$(".startTime>input").val().trim();
         var endTime=$(".endTime>input").val().trim();
         if(startTime.length==0||endTime.length==0){
@@ -241,7 +257,7 @@
         obj.startTime=new Date(startTime).getTime();
         obj.endTime=new Date(endTime).getTime();
         obj.introduce=$(".goods_detail_show>textarea").val();
-        console.log(obj);
+       console.log(obj);
         /*
                 * title string 是 标题
                  goodsType string 是 商品类型
@@ -285,7 +301,9 @@
                             "恭喜您",
                             '上传成功了',
                             "success"
-                    )
+                    ).then(function () {
+                                location.href='./goods_manage.html'
+                            })
                 } else{
                     sweetAlert(
                             "sorry",
@@ -303,7 +321,6 @@
                 )
             }
         });
-
     })
     /*上传图片
      * */

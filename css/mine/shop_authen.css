@@ -1,27 +1,42 @@
 html {
   background-color: #fff;
 }
+.layer > #header > span {
+  color: #fff;
+  font-size: 0.3rem;
+  position: absolute;
+  top: 45%;
+  right: 3%;
+  vertical-align: middle;
+}
 .main {
   background-color: #fff;
 }
+.main > p {
+  font-size: .22rem;
+  padding: 0 .3rem;
+}
+.main > p > s {
+  color: #f01414;
+}
 .main > .submit {
-  height: 0.8rem;
-  line-height: 0.8rem;
+  height: .8rem;
+  line-height: .8rem;
   position: fixed;
   bottom: 3%;
   left: 5%;
   width: 90%;
   background-color: #ff6600;
   color: #fff;
-  font-size: 0.3rem;
+  font-size: .3rem;
 }
 .main > .name,
 .main > .tel,
 .main > .address {
   height: 1rem;
   line-height: 1rem;
-  padding: 0 0.3rem;
-  font-size: 0.28rem;
+  padding: 0 .3rem;
+  font-size: .28rem;
   color: #666;
 }
 .main > .name > span,
@@ -32,8 +47,8 @@ html {
 .main > .name > input,
 .main > .tel > input,
 .main > .address > input {
-  height: 0.6rem;
-  line-height: 0.8rem;
+  height: .6rem;
+  line-height: .8rem;
   width: 65%;
   border: 0;
   padding: 0;
@@ -42,25 +57,25 @@ html {
 .main > .name.name,
 .main > .tel.name,
 .main > .address.name {
-  border-top: 0.2rem solid #eeeeee;
+  border-top: .2rem solid #eeeeee;
 }
 .main > .name.address,
 .main > .tel.address,
 .main > .address.address {
-  border-bottom: 0.2rem solid #eeeeee;
+  border-bottom: .2rem solid #eeeeee ;
 }
 .main > .auth > span {
   display: block;
-  padding-left: 0.3rem;
+  padding-left: .3rem;
   height: 1rem;
   line-height: 1rem;
-  font-size: 0.3rem;
+  font-size: .3rem;
   color: #666;
 }
 .main > .auth > .z_file {
   width: 2.3rem;
   height: 2.3rem;
-  margin-left: 0.3rem;
+  margin-left: .3rem;
   background: url("../../img/add_pic.jpg") no-repeat center;
   -webkit-background-size: 100%;
   background-size: 100%;

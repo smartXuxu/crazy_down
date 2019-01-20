@@ -174,6 +174,14 @@
         <span>运费</span>
         <input type="text" value="{{data.empressPrice}}" />
     </div>
+    <div class="down_price" data-content="元">
+        <span>每20秒降价金额</span>
+        <input type="number" value="{{data.downPrice}}"/>
+    </div>
+    <div class="down_price smallPrice" data-content="元">
+        <span>商品最低价格</span>
+        <input type="number" value="{{data.smallPrice}}"/>
+    </div>
     <div class="lie clearfix">
         <span>竞拍开始时间</span>
         <input id="startTime" class="kbtn f_right" value="{{time(data.startTime)}}" disabled style="background-color:#fff; border: 1px solid rgba(0,0,0,.2);border-radius:3px ">
@@ -198,7 +206,6 @@
         {{/each}}
         {{/if}}
     </div>
-
     <div class="z_photo">
         <div class="z_file">
             <input type="file" capture="camera" name="file" id="file" value=""  accept="image/*" multiple  />
@@ -219,7 +226,11 @@
         <input type="number" value="5"/>
     </div>
     <div class="delete">
-        <button class="delete_goods">删除商品</button>
+        {{if data.obtained==true}}
+        <button class="delete_goods">已下架</button>
+        {{else}}
+        <button class="delete_goods no_car">删除商品</button>
+        {{/if}}
     </div>
 </script>
 <script>
@@ -228,12 +239,15 @@
         mui('body').on('tap','a',function(){document.location.href=this.href;});
         /*回显 */
         var goodsId=location.href.split("=")[1];
-        var base64Images,goodsImagesBase64,title,goodsType,originalPrice,number,empressPrice,downPrice,introduce;
+        var base64Images,goodsImagesBase64,title,goodsType,originalPrice,number,empressPrice,downPrice,introduce,smallPrice;
         var images=[];
         myAjax({url:`/goods/findGoodsByGoodsId/${goodsId}`,async:false}, function (data) {
             //var data=JSON.parse(data)
             console.log(data);
             if(data.code==200){
+                if(data.data.obtained==true){
+                    $(".save").hide();
+                }
                 template.helper("time",function(date){
                     var time=new Date(date).toLocaleString().replace(/:\d{1,2}$/,' ').replace(/\//g,"-");
                     return time;
@@ -250,6 +264,7 @@
                 number=data.data.number;
                 empressPrice=data.data.empressPrice;
                 introduce=data.data.introduce;
+                smallPrice=data.data.smallPrice;
                /* startTime=data.data.startTime
                 endTime=data.data.startTime*/
                 $(".main").html(template("goods_detail",data));
@@ -490,7 +505,18 @@
                 return;
             }
             obj.downPrice=downPrice;
-            introduce=$(".goods_detail_show>textarea").val()
+          smallPrice=$(".smallPrice>input").val().trim();
+            console.log(smallPrice);
+            if(smallPrice.length==0||parseFloat(smallPrice)<=0){
+                sweetAlert(
+                        "sorry",
+                        "请您设置商品的最低价格",
+                        "error"
+                )
+                return;
+            }
+            obj.smallPrice=smallPrice;
+            introduce=$(".goods_detail_show>textarea").val();
             obj.introduce=introduce;
             console.log(obj);
             /*
@@ -559,8 +585,8 @@
        /* $('#endTime').date({theme:"datetime"});
         $('#startTime').date({theme:"datetime"});*/
 
-//删除商品
-        $(".main").on("click", '.delete_goods',function () {
+        //删除商品
+        $(".main").on("click", '.no_car',function () {
         myAjax({url:`/goods/deleteGoods/${goodsId}`,type:"delete"}, function (data) {
             console.log(data);
             if(data.code==200){
@@ -570,7 +596,7 @@
                         "删除成功",
                         "success"
                 ).then(function () {
-                            back();
+                          location.href='./goods_manage.html'
                         })
             }else{
                 sweetAlert(

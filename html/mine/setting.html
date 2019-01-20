@@ -79,7 +79,7 @@
                 </a>
             </li>
             <li class="mui-table-view-cell">
-                <a class="" href="./about.html">
+                <a class="" href="javascript:;">
                     检查更新
                     <em class="f_right" style="color:#999">V3.2.1</em>
                 </a>
@@ -98,6 +98,10 @@
 <script>
     $(function () {
         mui('body').on('tap','a',function(){document.location.href=this.href;});
+        $(".quit_login").click(function () {
+            localStorage.removeItem("pwd");
+            location.href='../login.html';
+        })
     })
 </script>
 </html>

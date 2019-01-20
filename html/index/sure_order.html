@@ -129,6 +129,23 @@
         var goodsPrice=getRequest().price-0;
         var empressPrice=getRequest().empressPrice-0
         var price=goodsPrice+empressPrice;
+        //先判断是否登录
+        myAjax({url:"/user/getCurrentUserMessage",data:''}, function (data) {
+            // console.log(data);
+            //将获取到的data 转为对象object类型
+            var data = JSON.parse(data);
+            console.log(data);
+            if (data.code !== 200) {
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                ).then(function () {
+                            location.href='../login.html';
+                        })
+                return false;
+            }
+        })
         myAjax({url:"/order/pushGoodsOrder",data:{'goods.goodsId':goodsId,price:price},type:"post",async:false}, function (data) {
             var data=JSON.parse(data);
             console.log(data);
@@ -208,7 +225,7 @@
             myAjax({url:"/pay/aliPay",data:pay_json,type:"post"}, function (data) {
                 console.log(data);
                 if(data!==''){
-                    localStorage.setItem("purseData",data);
+                    sessionStorage.setItem("purseData",data);
                     //清除本地存储的订单信息等
                     localStorage.removeItem("receiver");
                     localStorage.removeItem("buy_status");

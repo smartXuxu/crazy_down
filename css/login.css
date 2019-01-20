@@ -47,6 +47,8 @@ html{
     display: inline-block;
     color: #999;
     left:23%;
+    height: .8rem;
+    line-height: .6rem;
 
 }
 .username,.password{
@@ -61,6 +63,7 @@ html{
 .username input{
     margin-top: -0.3rem;
     width: 70%;
+
     display: block;
     position: relative;
 }
@@ -89,7 +92,6 @@ html{
     width: 70%;
     display: block;
     position: relative;
-
 }
 .login_Button{
     display: block;

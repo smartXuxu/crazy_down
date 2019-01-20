@@ -7,6 +7,7 @@
 
     <title>商品详情</title>
     <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/mui/mui_img.css">
     <link rel="stylesheet" href="../../css/base.css"/>
     <link rel="stylesheet" href="../../css/header.css"/>
     <link rel="stylesheet" href="../../css/iconfont.css"/>
@@ -18,7 +19,7 @@
     <header id="header" class="mui-bar mui-bar-nav">
         <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
         <h1 class="mui-title">商品详情</h1>
-        <em class="iconfont icon-kefu" onclick="location.href='./chat.html'"></em>
+        <em class="iconfont icon-kefu" ></em>
     </header>
     <div class="main">
         <!--<div class="img-box">
@@ -60,6 +61,9 @@
 </div>
 </body>
 <script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.zoom.js"></script>
+<script src="../../js/common/mui/mui.preview.js"></script>
 <script src="../../js/common/x_rem.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
 <script src="../../js/common/base.js"></script>
@@ -67,7 +71,7 @@
 <script src="../../js/common/template/template.js"></script>
 <script type="text/html" id="detail">
     <div class="img-box">
-        <img src="{{data.images[0].imagePath}}" onerror="this.src='../../img/beat.png'" alt=""/>
+        <img src="{{data.images[0].imagePath}}" onerror="this.src='../../img/beat.png'" data-preview-src="" data-preview-group="1" alt=""/>
     </div>
     <div class="info">
         <p>{{data.title}} </p>
@@ -86,7 +90,7 @@
         </div>
         <div class="business_address">
             <span>店铺地址：</span>
-            <em>{{data.merchant==null||data.merchant.address==null?"地址不详":data.merchant.address}}</em>
+            <em>{{data.merchant==null||data.merchant.city==null?'':data.merchant.city}} {{data.merchant==null||data.merchant.address==null?"详细地址不详":data.merchant.address}}</em>
         </div>
     </div>
     <div class="business_detail">
@@ -96,7 +100,7 @@
            </div>
         {{if data.goodsImages!==null&&data.goodsImages.length!==0}}
         {{each data.goodsImages as img i}}
-        <img src="{{img.path}}"onerror="this.src='../../img/beat.png'" alt=""/>
+        <img src="{{img.path}}"onerror="this.src='../../img/beat.png'"  data-preview-src="" data-preview-group="1" alt=""/>
         {{/each}}
         {{/if}}
     </div>
@@ -107,6 +111,9 @@
 </script>
 <script>
     $(function () {
+
+        mui.previewImage();
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
         var goodsId=location.href.split("=")[1];
         console.log(goodsId);
         myAjax({url:`/goods/findGoodsByGoodsId/${goodsId}`,async:false}, function (data) {
@@ -121,6 +128,9 @@
                     /* return new Date(parseInt(date) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');*/
                 });
                 $(".main").html(template("detail",data));
+                $("#header>em").click(function () {
+                    location.href=`./chat.html?receiverId=${data.data.merchant.user.mobilePhone}`;
+                })
             }else{
                 sweetAlert(
                         "sorry",
@@ -129,6 +139,7 @@
                 )
             }
         })
+
     })
 </script>
 </html>

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../../css/iconfont.css"/>
     <link rel="stylesheet" href="../../css/send_pic/send_pic.css"/>
     <link rel="stylesheet" href="../../css/mine/apply_quit_money.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
 </head>
 <body>
 <div class="layer">
@@ -21,7 +22,7 @@
     </header>
     <div class="main">
         <div class="info">
-            <img src="../../img/focus-img1.png" alt=""/>
+            <!--<img src="../../img/focus-img1.png" alt=""/>
             <div class="info_middle">
                 <div>鲁美诺斯3152 F-35全球限量版 军表 瑞士制造鲁美诺斯3152 F-35全球限量版 军表 瑞士制造
                 </div>
@@ -29,7 +30,7 @@
                     <em>￥2169</em>
                     <i class="f_right">X1</i>
                 </p>
-            </div>
+            </div>-->
         </div>
         <div class="status clearfix">
             <span>货物状态</span>
@@ -53,7 +54,7 @@
         </div>
         <div class="total">
             <span>退款金额：</span>
-            <em>￥ 2169.00</em>
+            <em>￥ <s>2169.00</s></em>
         </div>
         <div class="quit">
             <span>退款说明：</span>
@@ -91,7 +92,117 @@
 <script src="../../js/common/zepto/zepto.min.js"></script>
 <script src="../../js/common/zepto/fx.js"></script>
 <script src="../../js/common/zepto/fx_methods.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script type="text/html" id="detail">
+    <img src="{{data.goods.images[0].imagePath}}" alt=""/>
+    <div class="info_middle">
+        <div>{{data.goods.title}} {{data.goods.introduce}}
+        </div>
+        <p class="clearfix">
+            <em>￥{{data.price}}</em>
+            <i class="f_right">X1</i>
+        </p>
+    </div>
+</script>
 <script>
+    /*上传图片
+     * */
+    function imgChange(obj1, obj2) {
+        //获取点击的文本框
+        var file = document.getElementById("file");
+        //存放图片的父级元素
+        var imgContainer = document.getElementsByClassName(obj1)[0];
+        //获取的图片文件
+        var fileList = file.files;
+        //文本框的父级元素
+        var input = document.getElementsByClassName(obj2)[0];
+        var imgArr = [];
+        //遍历获取到得图片文件
+        for (var i = 0; i < fileList.length; i++) {
+            //判断上传的图片大小
+            if(file.files && file.files[i]){
+                var fileData = file.files[i];
+                var size = fileData.size;   //注意，这里读到的是字节数
+                var isAllow = false;
+                if(!size) isAllow = false;
+                var maxSize = 2048;
+                maxSize = maxSize * 1024;   //转化为字节
+                isAllow = size <= maxSize;
+                if(!isAllow){
+                    alert("大小超过2 M，请重新上传");
+                    return false;
+                }
+            }
+            //结束
+            var imgUrl = window.URL.createObjectURL(file.files[i]);
+            imgArr.push(imgUrl);
+            var img = document.createElement("img");
+            img.setAttribute("src", imgArr[i]);
+            var imgAdd = document.createElement("div");
+            imgAdd.setAttribute("class", "z_addImg");
+            imgAdd.appendChild(img);
+            imgContainer.appendChild(imgAdd);
+            //getBase64Image(img,imgArr[i]);
+        };
+        //'console.log(imgArr);这个是图片的本地地址
+        for(let i=0;i<imgArr.length;i++){
+            (function(image, x, y,index){
+                drawing(image, x, y,index)
+            })(imgArr[i],0,0,i)
+        }
+        imgRemove();
+    };
+    function imgRemove() {
+        var imgList = document.getElementsByClassName("z_addImg");
+        var mask = document.getElementsByClassName("z_mask")[0];
+        var cancel = document.getElementsByClassName("z_cancel")[0];
+        var sure = document.getElementsByClassName("z_sure")[0];
+        for (var j = 0; j < imgList.length; j++) {
+            imgList[j].index = j;
+            imgList[j].onclick = function() {
+                var t = this;
+                mask.style.display = "block";
+                cancel.onclick = function() {
+                    mask.style.display = "none";
+                };
+                sure.onclick = function() {
+                    mask.style.display = "none";
+                    t.style.display = "none";
+                };
+            }
+        };
+    };
+    var container=document.querySelector(".z_photo");
+    var images=[];
+    function drawing(image, x, y,index) {
+        var img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = image;
+        img.onload = function () {
+            let id='canvas'+index;
+            createCanvas(id,img.width,img.height);
+            var cs = document.getElementById(id);
+            var ctx = cs.getContext("2d");
+            ctx.drawImage(img, x, y);
+            var imageUrl=cs.toDataURL('', 1);
+            images.push(imageUrl);
+            //转换成功
+            // console.log(images);
+            removeDom(id);
+        } ;
+    }
+    function createCanvas(id,width,height){
+        var canvas=document.createElement("canvas");
+        canvas.setAttribute('id',id);
+        canvas.setAttribute('width',width);
+        canvas.setAttribute('height',height);
+        canvas.style.display="none";
+        container.appendChild(canvas);
+    }
+    function removeDom(id){
+        document.getElementById(id).outerHTML='';
+    }
     $(function () {
         $(".status>i").click(function () {
             $("#mask").fadeIn(500);
@@ -101,13 +212,71 @@
         $("#show>ul>li").click(function () {
             $(this).addClass("active").siblings().removeClass("active");
             status=$(this).data("status");
-          $(".status>em").text($(this).children("span").text())
+          $(".status>em").text($(this).children("span").text());
             $("#mask").fadeOut(500);
             $("#show").fadeOut(500);
         });
         $("#show>.close").click(function () {
             $("#mask").fadeOut(500);
             $("#show").fadeOut(500);
+        });
+
+        var goodsOrderId=location.href.split("=")[1];
+
+        myAjax({url:`/order/getGoodsOrderByOrderId/${goodsOrderId}`,async:false}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                template.helper("spl", function (a,b) {
+                    return a-b;
+                })
+                $(".main>.total>em>s").text(`${data.data.price-data.data.goods.empressPrice}`);
+                $(".main>.info").html(template("detail",data));
+                //status=data.data.status;
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                )
+            }
+        })
+        function quit_money(goodsOrderId,sureGoods,backPrice,base64Images,backReason){
+            myAjax({url:"/order/applyBackGoods",type:"post",
+                data:{"goodsOrderId":goodsOrderId,
+                    "backType":"0",
+                    "sureGoods":sureGoods,
+                    "backPrice ":backPrice,
+                    "base64Images":base64Images,
+                    "backReason":backReason
+                }}, function (data) {
+                console.log(data);
+                var data=JSON.parse(data);
+                if(data.code==200){
+                    $("#loading").hide();
+                    $(".footer").text("已提交");
+                    sweetAlert(
+                            "恭喜",
+                            "提交成功了",
+                            "success"
+                    )
+                }else{
+                    $("#loading").hide();
+                    sweetAlert(
+                            "sorry",
+                            data.msg,
+                            "error"
+                    )
+                }
+            })
+        }
+        $(".footer").click(function () {
+            $("#loading").show();
+            var base64Images=images.join("。").replace(/"/g,"");
+
+            var backPrice=$(".main>.total>em>s").text();
+            var backReason=$(".quit>input").val().trim();
+            quit_money(goodsOrderId,status,backPrice,base64Images,backReason);
         })
     })
 </script>

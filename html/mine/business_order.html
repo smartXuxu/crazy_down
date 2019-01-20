@@ -196,6 +196,10 @@
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/sweetAlert/sweetalert2.js"></script>
 <script src="../../js/common/template/template.js"></script>
+<!-- status
+0确定订单 1买家已支付 2卖家发货/等待上门取货&ndash;&gt;3买家确认收货&ndash;&gt;4取消订单(30min内未支付)
+ 'pickUp':'1', 商家发货
+-->
 <!--代发货订单-->
 <script type="text/html" id="send_goods">
     {{if data.length==0||data==null}}
@@ -225,7 +229,7 @@
             </div>
         </a>
         <div class="shop_replay">
-            <button class="sure_order color-red">确认发货</button>
+            <button class="sure_order color-red" onclick="location.href='./business_sure_send.html?goodsOrderId={{value.goodsOrderId}}'">确认发货</button>
         </div>
     </li>
     {{/each}}
@@ -240,30 +244,33 @@
     <li>
         <a href="business_see_order_detail.html?goodsOrderId={{value.goodsOrderId}}">
             <p class="shop_top clearfix">
-                <span>Luminox </span>
+                <span>{{value.goods.merchant.merchantName}} </span>
                 <i class="f_right">商家已发货</i>
             </p>
             <div class="shop_content">
-                <img src="../../img/focus-img1.png" alt=""/>
+                <img src="{{value.goods.images[0].imagePath}}" alt="" onerror="this.src='../../img/beat.png'"/>
                 <div class="shop_middle">
                     <div class="text">
-                        鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
-                        鲁美诺斯3152 F-35全球限量 版军表 瑞士制造
+                        {{value.goods.title}} {{value.goods.introduce}}
                     </div>
                     <p class="clearfix">
-                        <em>￥3000元</em>
+                        <em>￥{{value.price}}元</em>
                         <del class="f_right">X1</del>
                     </p>
                 </div>
                 <div class="shop_info clearfix">
-                    <span class="f_right">共一件商品  合计：￥3000</span>
+                    <span class="f_right">共一件商品  合计：￥{{value.price}}</span>
                 </div>
             </div>
         </a>
         <div class="shop_replay">
-            <button class="see_logistics border-gray">查看物流</button>
+            <button class="see_logistics border-gray" onclick="location.href='see_Logistics.html?goodsOrderId={{value.goodsOrderId}}'">查看物流</button>
+            <!--有待确认-->
+            {{if value.status==2}}
             <button class="sure_order color-red">等待收货</button>
+            {{else if value.status==3}}
             <button class="sure_order color-red">买家已收货</button>
+            {{/if}}
         </div>
     </li>
     {{/each}}
@@ -335,7 +342,7 @@
     {{/if}}
 </script>
 <script id="quit_goods" type="text/html">
-    {{if data.length==0}}
+    {{if obj_length(data).length==0}}
     <div class="no_in">对不起，您暂时没有需要处理的退款售后订单</div>
     {{else}}
     {{each data as value i}}
@@ -363,17 +370,64 @@
             </div>
         </a>
         <div class="shop_replay">
-            <button class="color-red">同意退换</button>
-            <button class="color-red">拒绝退换</button>
+            {{if value.backGoods.backStatus==0}}
+            <button class="color-red" onclick="dealQuit_goods('{{value.goodsOrderId}}',1,this)">同意退换</button>
+            <button class="color-red" onclick="dealQuit_goods('{{value.goodsOrderId}}',2,this)">拒绝退换</button>
+
+            {{/if}}
+        {{if value.backGoods.backStatus==1}}
+            <button class="color-red">已同意</button>
+        {{/if}}
+        {{if value.backGoods.backStatus==2}}
+            <button class="color-red">已拒绝</button>
+        {{/if}}
+        {{if value.backGoods.backStatus==3}}
+            <button class="color-red">退换成功</button>
+        {{/if}}
         </div>
     </li>
     {{/each}}
     {{/if}}
 </script>
+<!--backStatus Integer
+0等待卖家确认 1卖家同意但未退款或退换 2卖家拒绝 3卖家已退款或退换
+给买家 如果退换，此平台不再显示物流-->
 <script>
+    var userId=localStorage.getItem("cr_userId");
+    //操作 拒绝 同意申请
+    function dealQuit_goods(orderId,integer,e){
+        myAjax({url:"/order/dealBackOrderByOrderId",type:"post",data:{"orderId":orderId,"status":integer}}, function (data) {
+
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                $(e).attr("disabled","disabled").siblings().attr("disabled","disabled");
+              $(e).text("已处理");
+                pick_quit_order("/order/getApplyBackOrderBySeller",".quit_goods>ul","quit_goods");
+            }
+        })
+    }
+    function pick_quit_order(url,src,tel){
+        myAjax({url:`/${url}/${userId}`}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==200){
+                template.helper("obj_length", function (msg) {
+                    return Object.keys(msg)
+                });
+                $(src).html(template(tel,data))
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.msg,
+                        "error"
+                )
+            }
+        })
+    }
     $(function () {
         mui('body').on('tap','a',function(){document.location.href=this.href;});
-        var userId=localStorage.getItem("cr_userId");
+
         //tab 栏的切换
         $("nav>ul>li").click(function () {
             $(this).addClass("active").siblings().removeClass("active");
@@ -417,24 +471,7 @@
                 }
             })
         }
-        function pick_quit_order(url,src,tel){
-            myAjax({url:`/${url}/${userId}`}, function (data) {
-                var data=JSON.parse(data);
-                console.log(data);
-                if(data.code==200){
-                    template.helper("obj_length", function (msg) {
-                        return Object.keys(msg)
-                    });
-                    $(src).html(template(tel,data))
-                }else{
-                    sweetAlert(
-                            "sorry",
-                            data.msg,
-                            "error"
-                    )
-                }
-            })
-        }
+
     })
 
 </script>

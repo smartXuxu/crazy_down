@@ -115,7 +115,7 @@
                     // location.href=baseUrl+"/pay/aliPay.html"+"?price="+price+"&"+"type=1"+"userId="+userId;
                     //跳转页面
                     if(data!==""){
-                        localStorage.setItem("purseData",data);
+                        sessionStorage.setItem("purseData",data);
                         location.href='my_purse_recharge_b.html';
                         $(".layer").hide();
                         $(".show").show();

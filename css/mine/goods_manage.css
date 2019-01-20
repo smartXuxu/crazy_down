@@ -66,6 +66,7 @@ html {
   width: 100%;
 }
 .layer > .main > ul > li > a > .middle_li > .center_text > p {
+  width: 80%;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;

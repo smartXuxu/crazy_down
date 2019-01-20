@@ -10,10 +10,11 @@ html {
 }
 .layer > .main {
   background-color: #fff;
-  position: relative;
+  position: fixed;
   top: 0;
   padding-bottom: 1rem;
   bottom: 1.3rem;
+  height: 100%;
   /*    padding-top: 1.6rem;
     padding-bottom: 1.3rem;*/
   width: 100%;
@@ -21,7 +22,8 @@ html {
 .layer > .main > .ct_left {
   width: 30%;
   float: left;
-  background-color: #eeeeee;
+  height: 100%;
+  background-color: #fff;
 }
 .layer > .main > .ct_left > span {
   width: 100%;
@@ -31,9 +33,11 @@ html {
   font-size: .3rem;
   font-weight: 600;
   text-align: center;
+  background-color: #eeeeee;
   border-bottom: 1px solid #d2d2d2;
 }
 .layer > .main > .ct_left > ul > li {
+  background-color: #eeeeee;
   position: relative;
   border-bottom: 1px solid #d2d2d2;
   height: 1.08rem;
@@ -56,8 +60,8 @@ html {
   content: "";
 }
 .layer > .main > .ct_right {
-  overflow: scroll;
-  height: auto;
+  overflow-y: scroll;
+  height: 100%;
   background-color: #fff;
 }
 .layer > .main > .ct_right > .search_header {
@@ -132,7 +136,7 @@ html {
   display: block;
 }
 .layer > .main > .ct_right > .content > ul > li > .time_auction > span:first-of-type {
-  width: 40%;
+  width: 43%;
 }
 .layer > .main > .ct_right > .content > ul > li > .time_auction > span:first-of-type i {
   color: #ff6600;

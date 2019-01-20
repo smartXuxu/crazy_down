@@ -22,7 +22,7 @@
         <i class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back()"></i>
         <h1 class="mui-title">商品管理</h1>
     </header>
-    <div class="main">
+    <div class="main" style="overflow-x: hidden">
         <ul>
            <!-- <li>
                 <a href="./edit_goods.html">
@@ -100,7 +100,11 @@
                     </p>
                     <div class="center_footer clearfix">
                         <span>竞拍数量：{{value.number}}</span>
+                        {{if value.obtained==true}}
+                        <em class="f_right">商品已下架</em>
+                        {{else}}
                         <em class="f_right">编辑商品</em>
+                        {{/if}}
                     </div>
                 </div>
 
@@ -122,6 +126,7 @@
        var data=JSON.parse(data);
        console.log(data);
        if(data.code==200){
+        data.data.reverse();
            template.helper("time",function(date){
                var time=new Date(date).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,20).replace(/\//g,"-");
                return time;
